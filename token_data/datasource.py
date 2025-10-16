@@ -51,3 +51,15 @@ class DataSource(ABC):
             df.write_csv(file_path)
         else:
             raise ValueError(f"Unsupported file type: {file_type}")
+
+    def read_data(self, token: str, file_type: str = 'parquet') -> pl.DataFrame:
+        """Reads the data from a file."""
+        file_path = self.data_folder / f"{token}.{file_type}"
+        if not file_path.exists():
+            return pl.DataFrame()
+        if file_type == 'parquet':
+            return pl.read_parquet(file_path)
+        elif file_type == 'csv':
+            return pl.read_csv(file_path)
+        else:
+            raise ValueError(f"Unsupported file type: {file_type}")

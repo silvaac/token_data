@@ -102,11 +102,12 @@ class HyperliquidDataSource(DataSource):
         funding_rates = self.get_funding_rates(token, start_date, end_date)
 
         # Rename columns to avoid conflicts
-        perp_prices = perp_prices.rename({'open': 'perp_open', 'high': 'perp_high', 'low': 'perp_low', 'close': 'perp_close', 'volume': 'perp_volume'})
-        spot_prices = spot_prices.rename({'open': 'spot_open', 'high': 'spot_high', 'low': 'spot_low', 'close': 'spot_close', 'volume': 'spot_volume'})
+        perp_prices = perp_prices.rename({'open': 'perp_open', 'high': 'perp_high', 'low': 'perp_low', 'close': 'perp_close', 'volume': 'perp_volume', 'token': 'perp_token'})
+        spot_prices = spot_prices.rename({'open': 'spot_open', 'high': 'spot_high', 'low': 'spot_low', 'close': 'spot_close', 'volume': 'spot_volume', 'token': 'spot_token'})
+        funding_rates = funding_rates.rename({'token': 'funding_token'})
 
         # Join the dataframes
-        df = perp_prices.join(spot_prices.drop('token'), on='datetime', how='outer', suffix='_spot')
-        df = df.join(funding_rates.drop('token'), on='datetime', how='outer', suffix='_funding')
+        df = perp_prices.join(spot_prices, on='datetime', how='outer', suffix='_spot')
+        df = df.join(funding_rates, on='datetime', how='outer', suffix='_funding')
 
         return df
