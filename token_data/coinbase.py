@@ -19,6 +19,14 @@ class CoinbaseDataSource(DataSource):
     def __init__(self, data_folder: Path):
         super().__init__(data_folder)
         self.api_url = "https://api.exchange.coinbase.com"
+        self.time_interval_map = {
+            '1m': 60,
+            '5m': 300,
+            '15m': 900,
+            '1h': 3600,
+            '4h': 14400,
+            '1d': 86400
+        }
 
     def get_tokens(self) -> List[str]:
         """Returns a list of available tokens."""
@@ -28,13 +36,16 @@ class CoinbaseDataSource(DataSource):
         tokens = response.json()
         return [token['id'] for token in tokens]
 
-    def get_prices(self, token: str, start_date: str, end_date: str, time_interval: int = 3600) -> pl.DataFrame:
+    def get_spot_prices(self, token: str, start_date: str, end_date: str, time_interval: str = '1h') -> pl.DataFrame:
         """Returns a DataFrame of prices for a given token."""
+        granularity = self.time_interval_map.get(time_interval)
+        if granularity is None:
+            raise ValueError(f"Unsupported time interval: {time_interval}")
         url = f"{self.api_url}/products/{token}/candles"
         params = {
             'start': start_date,
             'end': end_date,
-            'granularity': time_interval
+            'granularity': granularity
         }
         response = requests.get(url, params=params)
         response.raise_for_status()
@@ -56,7 +67,9 @@ class CoinbaseDataSource(DataSource):
         ])
         return df.select(['datetime', 'open', 'high', 'low', 'close', 'volume', 'token'])
     
-    def save_data(self, df: pl.DataFrame, token: str, file_type: str = 'parquet'):
-        """Saves the data to a file."""
-        super().save_data(df, token, file_type)
+    def get_perp_prices(self, token: str, start_date: str, end_date: str, time_interval: str) -> pl.DataFrame:
+        raise NotImplementedError("Coinbase does not support perpetual futures.")
+
+    def get_funding_rates(self, token: str, start_date: str, end_date: str) -> pl.DataFrame:
+        raise NotImplementedError("Coinbase does not support funding rates.")
 

@@ -18,7 +18,6 @@ logging.basicConfig(level=logging.INFO)
 class DataSource(ABC):
     """An abstract base class for data sources."""
 
-    @abstractmethod
     def __init__(self, data_folder: Path):
         self.data_folder = data_folder
         self.data_folder.mkdir(parents=True, exist_ok=True)
@@ -29,11 +28,20 @@ class DataSource(ABC):
         pass
 
     @abstractmethod
-    def get_prices(self, token: str, start_date: str, end_date: str, time_interval: int) -> pl.DataFrame:
-        """Returns a DataFrame of prices for a given token."""
+    def get_perp_prices(self, token: str, start_date: str, end_date: str, time_interval: str) -> pl.DataFrame:
+        """Returns a DataFrame of perpetual prices for a given token."""
         pass
 
     @abstractmethod
+    def get_spot_prices(self, token: str, start_date: str, end_date: str, time_interval: str) -> pl.DataFrame:
+        """Returns a DataFrame of spot prices for a given token."""
+        pass
+
+    @abstractmethod
+    def get_funding_rates(self, token: str, start_date: str, end_date: str) -> pl.DataFrame:
+        """Returns a DataFrame of funding rates for a given token."""
+        pass
+
     def save_data(self, df: pl.DataFrame, token: str, file_type: str = 'parquet'):
         """Saves the data to a file."""
         file_path = self.data_folder / f"{token}.{file_type}"

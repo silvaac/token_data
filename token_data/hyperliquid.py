@@ -36,8 +36,8 @@ class HyperliquidDataSource(DataSource):
         meta = self.info.meta()
         return [coin['name'] for coin in meta['universe']]
 
-    def get_prices(self, token: str, start_date: str, end_date: str, time_interval: str = '1h') -> pl.DataFrame:
-        """Returns a DataFrame of prices for a given token."""
+    def get_perp_prices(self, token: str, start_date: str, end_date: str, time_interval: str = '1h') -> pl.DataFrame:
+        """Returns a DataFrame of perpetual prices for a given token."""
         start_time = int(datetime.fromisoformat(start_date.replace('Z', '')).timestamp() * 1000)
         end_time = int(datetime.fromisoformat(end_date.replace('Z', '')).timestamp() * 1000)
         candles = self.info.candles_snapshot(token, time_interval, start_time, end_time)
@@ -50,8 +50,30 @@ class HyperliquidDataSource(DataSource):
             pl.lit(token).alias('token')
         ])
         return df.select(['datetime', 'o', 'h', 'l', 'c', 'v', 'token']).rename({'o': 'open', 'h': 'high', 'l': 'low', 'c': 'close', 'v': 'volume'})
-    
-    def save_data(self, df: pl.DataFrame, token: str, file_type: str = 'parquet'):
-        """Saves the data to a file."""
-        super().save_data(df, token, file_type)
+
+    def get_spot_prices(self, token: str, start_date: str, end_date: str, time_interval: str = '1h') -> pl.DataFrame:
+        """Returns a DataFrame of spot prices for a given token."""
+        # The hyperliquid API uses the same candles_snapshot function for spot prices, but with a different token format.
+        # We need to find the correct ticker for the spot market.
+        meta = self.info.spot_meta()
+        spot_token = next((t for t in meta['universe'] if t['name'] == token), None)
+        if not spot_token:
+            raise ValueError(f"Spot token {token} not found.")
+
+        return self.get_perp_prices(spot_token['name'], start_date, end_date, time_interval)
+
+    def get_funding_rates(self, token: str, start_date: str, end_date: str) -> pl.DataFrame:
+        """Returns a DataFrame of funding rates for a given token."""
+        start_time = int(datetime.fromisoformat(start_date.replace('Z', '')).timestamp() * 1000)
+        end_time = int(datetime.fromisoformat(end_date.replace('Z', '')).timestamp() * 1000)
+        funding_rates = self.info.funding_history(token, start_time, end_time)
+        if not funding_rates:
+            return pl.DataFrame()
+
+        df = pl.DataFrame(funding_rates)
+        df = df.with_columns([
+            pl.from_epoch(pl.col('time'), time_unit='ms').alias('datetime'),
+            pl.lit(token).alias('token')
+        ])
+        return df.select(['datetime', 'fundingRate', 'premium', 'token']).rename({'fundingRate': 'funding_rate'})
 
