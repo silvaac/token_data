@@ -53,14 +53,32 @@ class HyperliquidDataSource(DataSource):
 
     def get_spot_prices(self, token: str, start_date: str, end_date: str, time_interval: str = '1h') -> pl.DataFrame:
         """Returns a DataFrame of spot prices for a given token."""
-        # The hyperliquid API uses the same candles_snapshot function for spot prices, but with a different token format.
-        # We need to find the correct ticker for the spot market.
-        meta = self.info.spot_meta()
-        spot_token = next((t for t in meta['universe'] if t['name'] == token), None)
-        if not spot_token:
+        maps = self.info.spot_meta_and_asset_ctxs()
+        if token.upper() == "ETH":
+            coin = "UETH"
+        elif token.upper() == "BTC":
+            coin = "UBTC"
+        else:
+            coin = token
+
+        id_coin, id_base = None, None
+        for token_ctx in maps[0]['tokens']:
+            if token_ctx['name'] == coin:
+                id_coin = token_ctx['index']
+            elif token_ctx['name'] == 'USDC':
+                id_base = token_ctx['index']
+        if id_coin is None or id_base is None:
             raise ValueError(f"Spot token {token} not found.")
 
-        return self.get_perp_prices(spot_token['name'], start_date, end_date, time_interval)
+        spot_token_name = None
+        for i in maps[0]['universe']:
+            if i['tokens'] == [id_coin,id_base]:
+                spot_token_name = i['name']
+
+        if not spot_token_name:
+            raise ValueError(f"Spot token {token} not found.")
+
+        return self.get_perp_prices(spot_token_name, start_date, end_date, time_interval)
 
     def get_funding_rates(self, token: str, start_date: str, end_date: str) -> pl.DataFrame:
         """Returns a DataFrame of funding rates for a given token."""
@@ -77,3 +95,18 @@ class HyperliquidDataSource(DataSource):
         ])
         return df.select(['datetime', 'fundingRate', 'premium', 'token']).rename({'fundingRate': 'funding_rate'})
 
+    def get_combined_data(self, token: str, start_date: str, end_date: str, time_interval: str = '1h') -> pl.DataFrame:
+        """Returns a DataFrame with perpetual prices, spot prices, and funding rates."""
+        perp_prices = self.get_perp_prices(token, start_date, end_date, time_interval)
+        spot_prices = self.get_spot_prices(token, start_date, end_date, time_interval)
+        funding_rates = self.get_funding_rates(token, start_date, end_date)
+
+        # Rename columns to avoid conflicts
+        perp_prices = perp_prices.rename({'open': 'perp_open', 'high': 'perp_high', 'low': 'perp_low', 'close': 'perp_close', 'volume': 'perp_volume'})
+        spot_prices = spot_prices.rename({'open': 'spot_open', 'high': 'spot_high', 'low': 'spot_low', 'close': 'spot_close', 'volume': 'spot_volume'})
+
+        # Join the dataframes
+        df = perp_prices.join(spot_prices.drop('token'), on='datetime', how='outer', suffix='_spot')
+        df = df.join(funding_rates.drop('token'), on='datetime', how='outer', suffix='_funding')
+
+        return df
