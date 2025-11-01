@@ -4,7 +4,7 @@
 __all__ = ['setup', 'retrieve_hyperliquid_perp_price', 'spot_tickers', 'retrieve_hyperliquid_spot_price', 'hyperliquid_tokens',
            'funding_calc', 'retrieve_hyperliquid_funding_history', 'retrieve_hyperliquid_data',
            'retrieve_hyperliquid_l2_snapshot', 'hyperliquid_mids', 'save_hyperliquid_file', 'HyperliquidDataManager',
-           'HyperliquidPerpManager', 'HyperliquidSpotManager', 'HyperliquidFundingManager', 'rename_hyperliquid_files']
+           'HyperliquidPerpManager', 'HyperliquidSpotManager', 'HyperliquidFundingManager']
 
 # %% ../nbs/hyperliquid.ipynb 3
 from nbdev.showdoc import *
@@ -328,7 +328,7 @@ def retrieve_hyperliquid_funding_history(coin="ETH",
         print(f"Error retrieving funding history for {coin}: {e}")
         return None
 
-# %% ../nbs/hyperliquid.ipynb 31
+# %% ../nbs/hyperliquid.ipynb 30
 def retrieve_hyperliquid_data(ticker="ETH", 
                               data_type="perp",
                               start_date=None,
@@ -458,7 +458,7 @@ def retrieve_hyperliquid_data(ticker="ETH",
         print(f"Error retrieving {data_type} data for {ticker}: {e}")
         return None
 
-# %% ../nbs/hyperliquid.ipynb 40
+# %% ../nbs/hyperliquid.ipynb 39
 def retrieve_hyperliquid_l2_snapshot(coin="ETH", info=None):
     """
     Retrieves current L2 order book snapshot from Hyperliquid for a given coin.
@@ -535,7 +535,7 @@ def retrieve_hyperliquid_l2_snapshot(coin="ETH", info=None):
         print(f"Error retrieving L2 snapshot for {coin}: {e}")
         return None
 
-# %% ../nbs/hyperliquid.ipynb 43
+# %% ../nbs/hyperliquid.ipynb 42
 def hyperliquid_mids(coin=None,info=None,typecast_to_float=True):
     """
     Retrieves current mid prices from Hyperliquid for specified coins or all available coins.
@@ -583,7 +583,7 @@ def hyperliquid_mids(coin=None,info=None,typecast_to_float=True):
         return None
 
 
-# %% ../nbs/hyperliquid.ipynb 47
+# %% ../nbs/hyperliquid.ipynb 46
 def save_hyperliquid_file(df, folder_path, file_name, type="parquet"):
     """
     Save a pandas DataFrame to a file in either CSV or Parquet format.
@@ -609,7 +609,7 @@ def save_hyperliquid_file(df, folder_path, file_name, type="parquet"):
     else:
         raise ValueError(f"Type {type} not supported. Use 'csv' or 'parquet'")
 
-# %% ../nbs/hyperliquid.ipynb 48
+# %% ../nbs/hyperliquid.ipynb 47
 class HyperliquidDataManager:
     """
     Base class for managing Hyperliquid data files.
@@ -840,7 +840,7 @@ class HyperliquidDataManager:
         else:
             raise ValueError("ticker must be None, str, or list")
 
-# %% ../nbs/hyperliquid.ipynb 49
+# %% ../nbs/hyperliquid.ipynb 48
 class HyperliquidPerpManager(HyperliquidDataManager):
     """
     Manager for Hyperliquid perpetual futures data.
@@ -1081,7 +1081,7 @@ class HyperliquidPerpManager(HyperliquidDataManager):
         
         return df
 
-# %% ../nbs/hyperliquid.ipynb 51
+# %% ../nbs/hyperliquid.ipynb 50
 class HyperliquidSpotManager(HyperliquidDataManager):
     """
     Manager for Hyperliquid spot market data.
@@ -1344,7 +1344,7 @@ class HyperliquidSpotManager(HyperliquidDataManager):
         
         return df
 
-# %% ../nbs/hyperliquid.ipynb 52
+# %% ../nbs/hyperliquid.ipynb 51
 class HyperliquidSpotManager(HyperliquidDataManager):
     """
     Manager for Hyperliquid spot market data.
@@ -1609,7 +1609,7 @@ class HyperliquidSpotManager(HyperliquidDataManager):
         
         return df
 
-# %% ../nbs/hyperliquid.ipynb 58
+# %% ../nbs/hyperliquid.ipynb 57
 class HyperliquidFundingManager(HyperliquidDataManager):
     """
     Manager for Hyperliquid funding rate data.
@@ -1854,96 +1854,3 @@ class HyperliquidFundingManager(HyperliquidDataManager):
                     print(f"Saved {len(df)} rows for {ticker}")
         
         return df
-
-# %% ../nbs/hyperliquid.ipynb 62
-def rename_hyperliquid_files(folder_path="../data/hyperliquid/perp", suffix="_1h", verbose=True):
-    """
-    Renames parquet files in the specified folder by adding a suffix before the extension.
-    
-    Args:
-        folder_path (str): Path to the folder containing parquet files. Defaults to "../data/hyperliquid/perp"
-        suffix (str): Suffix to add to filenames (e.g., "_1h"). Defaults to "_1h"
-        verbose (bool): If True, prints progress messages. Defaults to True
-    
-    Examples:
-        # Rename all files in default folder
-        rename_hyperliquid_files()
-        
-        # Rename with custom suffix
-        rename_hyperliquid_files(suffix="_4h")
-        
-        # Rename files in custom folder
-        rename_hyperliquid_files(folder_path="../data/custom_folder")
-    
-    Notes:
-        - Only processes files with .parquet extension
-        - Original files are deleted after successful rename
-        - Skips files that already have the suffix
-        - Example: "ETH.parquet" becomes "ETH_1h.parquet"
-    """
-    # Check if folder exists
-    if not os.path.exists(folder_path):
-        print(f"Error: Folder '{folder_path}' does not exist")
-        return
-    
-    # Get all parquet files in the folder
-    files = [f for f in os.listdir(folder_path) if f.endswith('.parquet')]
-    
-    if not files:
-        if verbose:
-            print(f"No parquet files found in '{folder_path}'")
-        return
-    
-    if verbose:
-        print(f"Found {len(files)} parquet files to process")
-    
-    # Track successes and failures
-    success_count = 0
-    skip_count = 0
-    failure_count = 0
-    
-    # Process each file
-    for filename in files:
-        try:
-            # Extract name without extension
-            name_without_ext = filename.replace('.parquet', '')
-            
-            # Check if file already has the suffix
-            if name_without_ext.endswith(suffix):
-                if verbose:
-                    print(f"  Skipping '{filename}' - already has suffix '{suffix}'")
-                skip_count += 1
-                continue
-            
-            # Create new filename
-            new_filename = f"{name_without_ext}{suffix}.parquet"
-            
-            # Full paths
-            old_path = os.path.join(folder_path, filename)
-            new_path = os.path.join(folder_path, new_filename)
-            
-            # Check if new file already exists
-            if os.path.exists(new_path):
-                if verbose:
-                    print(f"  Warning: '{new_filename}' already exists, skipping '{filename}'")
-                skip_count += 1
-                continue
-            
-            # Rename the file
-            os.rename(old_path, new_path)
-            
-            if verbose:
-                print(f"  Renamed: '{filename}' -> '{new_filename}'")
-            success_count += 1
-            
-        except Exception as e:
-            if verbose:
-                print(f"  Error processing '{filename}': {e}")
-            failure_count += 1
-    
-    # Print summary
-    if verbose:
-        print(f"\nSummary:")
-        print(f"  Successfully renamed: {success_count}")
-        print(f"  Skipped: {skip_count}")
-        print(f"  Failed: {failure_count}")

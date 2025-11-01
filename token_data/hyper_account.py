@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['get_user_fills', 'get_user_funding_history', 'get_user_ledger_updates', 'get_account_summary']
 
-# %% ../nbs/hyper_account.ipynb 5
+# %% ../nbs/hyper_account.ipynb 6
 def get_user_fills(address, info=None, aggregated=False, include_hash_oid=False):
     """
     Retrieves user fill history from Hyperliquid and returns as a DataFrame.
@@ -108,7 +108,7 @@ def get_user_fills(address, info=None, aggregated=False, include_hash_oid=False)
         print(f"Error retrieving user fills: {e}")
         return None
 
-# %% ../nbs/hyper_account.ipynb 9
+# %% ../nbs/hyper_account.ipynb 10
 def get_user_funding_history(address, start_date=None, end_date=None, lookback=30, info=None,include_hash_time=False):
     """
     Retrieves user funding payment history from Hyperliquid and returns as a DataFrame.
@@ -163,7 +163,7 @@ def get_user_funding_history(address, start_date=None, end_date=None, lookback=3
     
     # Handle end_date
     if end_date is None:
-        end_dt = pd.Timestamp.now()
+        end_dt = pd.Timestamp.now(tz='UTC')
     else:
         try:
             end_dt = pd.to_datetime(end_date)
@@ -304,7 +304,7 @@ def get_user_ledger_updates(address, start_date=None, end_date=None, lookback=30
     
     # Handle end_date
     if end_date is None:
-        end_dt = pd.Timestamp.now()
+        end_dt = pd.Timestamp.now(tz='UTC')
     else:
         try:
             end_dt = pd.to_datetime(end_date)
@@ -377,7 +377,7 @@ def get_user_ledger_updates(address, start_date=None, end_date=None, lookback=30
         print(f"Error retrieving user ledger updates: {e}")
         return None
 
-# %% ../nbs/hyper_account.ipynb 23
+# %% ../nbs/hyper_account.ipynb 25
 def get_account_summary(address, info=None, lookback_days=3650):
     """
     Retrieves a comprehensive account summary including deposits, withdrawals, and current value.
@@ -444,9 +444,12 @@ def get_account_summary(address, info=None, lookback_days=3650):
         user_state = info.user_state(address)
         margin_summary = user_state["marginSummary"]
         
-        # Get margin value (this is the collateral in perp account)
+        # Get margin value (this is the perp account)
         perp_margin = float(margin_summary["accountValue"])
         
+        # Cash in the perp account
+        cash_in_perp = float(user_state['withdrawable'])
+
         # Get spot balances
         spot_user_state = info.spot_user_state(address)
         spot_balances = spot_user_state["balances"]
@@ -476,6 +479,11 @@ def get_account_summary(address, info=None, lookback_days=3650):
                     'price': current_price,
                     'current_usdc_value': usdc_value,
                     'unrealized_pnl': 0.0,  # Spot positions don't have unrealized PnL tracked
+                    'leverage':1,
+                    'ROE': 0, #basically p&l
+                    'liquidation_px': 0, # in USDC
+                    'max_leverage': 0,
+                    'cum_funding': 0,  # all time funding in USDC
                     'asset_type': 'spot'
                 })
         
@@ -484,12 +492,16 @@ def get_account_summary(address, info=None, lookback_days=3650):
         unrealized_pnl = 0
         position_notional = 0
         
-        for position in perp_positions:
+        for position in perp_positions: # Sum over all tokens.... # Only perpetual positions
             if position["position"]["szi"] != "0":  # Only non-zero positions
                 coin = position["position"]["coin"]
                 size = float(position["position"]["szi"])
                 unrealized = float(position["position"]["unrealizedPnl"])
-                
+                leverage = float(position["position"]["leverage"]["value"])
+                roe = float(position["position"]["returnOnEquity"])
+                lpx = float(position["position"]["liquidationPx"])
+                mxl = float(position["position"]["maxLeverage"])
+                cfd = float(position["position"]["cumFunding"]["allTime"]) # since open and since change also available,but not extracted here
                 # Get current market price
                 current_price = float(all_mids.get(coin, 0))
                 
@@ -502,7 +514,12 @@ def get_account_summary(address, info=None, lookback_days=3650):
                     'signed_position': size,
                     'price': current_price,
                     'current_usdc_value': usdc_value,
-                    'unrealized_pnl': unrealized,
+                    'unrealized_pnl': unrealized, #pnl in USDC
+                    'leverage':leverage,
+                    'ROE': roe, #basically p&l
+                    'liquidation_px': lpx, # in USDC
+                    'max_leverage': mxl,
+                    'cum_funding': cfd,  # all time funding in USDC
                     'asset_type': 'perp'
                 })
 
@@ -513,18 +530,24 @@ def get_account_summary(address, info=None, lookback_days=3650):
         # Calculate P&L
         total_pnl = current_value - net_deposits
         pnl_percentage = (total_pnl / net_deposits * 100) if net_deposits > 0 else 0
-        
+
+        # info time
+        balance_time = pd.to_datetime(user_state['time'], unit='ms')
+        positions_df['datetime'] = balance_time
+
         summary = {
             'total_deposits': deposits,
             'total_withdrawals': withdrawals,
             'net_deposits': net_deposits,
             'current_value': current_value,
             'spot_value': spot_value,
-            'perp_margin': perp_margin,
+            'perp_value': perp_margin,
             'perp_position_value': position_notional,
             'total_pnl': total_pnl,
             'pnl_percentage': pnl_percentage,
-            'unrealized_pnl': unrealized_pnl
+            'unrealized_pnl': unrealized_pnl,
+            'cash_in_perp': cash_in_perp,
+            'when': balance_time.strftime('%Y-%m-%d %H:%M:%S')  # info time
         }
         return summary, positions_df
         
