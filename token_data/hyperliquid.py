@@ -20,6 +20,7 @@ from hyperliquid.exchange import Exchange
 from hyperliquid.info import Info
 import pandas as pd
 from datetime import datetime
+import datetime as dt
 import numpy as np
 
 # %% ../nbs/hyperliquid.ipynb 5
@@ -51,8 +52,8 @@ def setup(base_url=None, skip_ws=False, perp_dexs=None,config='../config_hyperli
 
 # %% ../nbs/hyperliquid.ipynb 7
 def retrieve_hyperliquid_perp_price(coin="ETH", interval="1h", 
-                                end_date=datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ'),
-                                start_date=(datetime.now()-pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                                end_date=datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                                start_date=(datetime.now(dt.timezone.utc)-pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ'),
                                 info=None):
     """
     Retrieves historical candle data from Hyperliquid for a given coin and time interval.
@@ -186,8 +187,8 @@ def spot_tickers(coin="ETH", base='USDC',info=None):
 
 # %% ../nbs/hyperliquid.ipynb 16
 def retrieve_hyperliquid_spot_price(coin="ETH", base='USDC',interval="1h", 
-                                end_date=datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ'),
-                                start_date=(datetime.now()-pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                                end_date=datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                                start_date=(datetime.now(dt.timezone.utc)-pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ'),
                                 info=None,recheck=False):
     # get the ticker for the given coin
     if recheck:
@@ -243,8 +244,8 @@ def funding_calc(rate,premium,max_rate=0.0005,min_rate=-0.0005):
 
 # %% ../nbs/hyperliquid.ipynb 26
 def retrieve_hyperliquid_funding_history(coin="ETH", 
-                                        end_date=datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ'),
-                                        start_date=(datetime.now()-pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                                        end_date=datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                                        start_date=(datetime.now(dt.timezone.utc)-pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ'),
                                         info=None,
                                         calc=False):
     """
@@ -400,7 +401,7 @@ def retrieve_hyperliquid_data(ticker="ETH",
     
     # Handle end_date
     if end_date is None:
-        end_dt = pd.Timestamp.now()
+        end_dt = pd.Timestamp.now(tz='UTC')
     else:
         # Parse end_date string
         try:
@@ -733,7 +734,7 @@ class HyperliquidDataManager:
         if existing_df is not None and not existing_df.empty:
             # Get last date and subtract refresh hours
             last_date = pd.to_datetime(existing_df['datetime'].max())
-            cutoff_time = datetime.now(tz=dt.UTC) - dt.timedelta(hours=self.refresh_hours)
+            cutoff_time = last_date - dt.timedelta(hours=self.refresh_hours)
             
             # Remove data within refresh window
             rows_before = len(existing_df)
