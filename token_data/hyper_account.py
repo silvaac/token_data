@@ -440,6 +440,16 @@ def get_account_summary(address, info=None, lookback_days=3650):
         # Get current market prices
         all_mids = info.all_mids()
         
+        # PnL again ... using fills
+        a = get_user_fills(address, info=info)
+        a['last_px'] = a['coin'].apply(lambda x: float(all_mids.get(x,0)))
+        a['sign'] = a['side_readable'].apply(lambda x: 1 if x == 'Buy' else -1)
+        a['tc'] = a['feeToken'].apply(lambda x: 0 if x == 'USDC' else 1)
+        a['pnl'] = a['sign'] * (a['last_px']-a['px']) * (a['sz']-a['tc']*a['fee'])
+        a['pnl'] = np.where(a['coin']=='USDC', a['pnl']-a['fee'], a['pnl'])
+        pnl_dollar = a.groupby('coin')['pnl'].apply(lambda x: x.sum().round(2)).to_dict()
+        print(f"PnL: {pnl_dollar}")
+
         # Get user state for perpetual account
         user_state = info.user_state(address)
         margin_summary = user_state["marginSummary"]
@@ -472,13 +482,13 @@ def get_account_summary(address, info=None, lookback_days=3650):
                 current_price = float(all_mids.get(coin, 0))
                 usdc_value = total * current_price
                 spot_value += usdc_value
-
+            unrealized_pnl = pnl_dollar.get(coin, 0)
             positions.append({
                     'coin': coin,
                     'signed_position': total,
                     'price': current_price,
                     'current_usdc_value': usdc_value,
-                    'unrealized_pnl': 0.0,  # Spot positions don't have unrealized PnL tracked
+                    'unrealized_pnl': unrealized_pnl,  # Spot positions don't have unrealized PnL tracked
                     'leverage':1,
                     'ROE': 0, #basically p&l
                     'liquidation_px': 0, # in USDC
