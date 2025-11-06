@@ -50,7 +50,7 @@ def setup(base_url=None, skip_ws=False, perp_dexs=None,config='../config_hyperli
     exchange = Exchange(account, base_url, account_address=address, perp_dexs=perp_dexs)
     return address, info, exchange
 
-# %% ../nbs/hyperliquid.ipynb 7
+# %% ../nbs/hyperliquid.ipynb 9
 def retrieve_hyperliquid_perp_price(coin="ETH", interval="1h", 
                                 end_date=datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
                                 start_date=(datetime.now(dt.timezone.utc)-pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -128,7 +128,7 @@ def retrieve_hyperliquid_perp_price(coin="ETH", interval="1h",
         print(f"Error retrieving candles for {coin}: {e}")
         return None
 
-# %% ../nbs/hyperliquid.ipynb 13
+# %% ../nbs/hyperliquid.ipynb 14
 def spot_tickers(coin="ETH", base='USDC',info=None):
     """
     Retrieves current tickers for a given coin.
@@ -185,7 +185,7 @@ def spot_tickers(coin="ETH", base='USDC',info=None):
             return i['name']
     return None                
 
-# %% ../nbs/hyperliquid.ipynb 16
+# %% ../nbs/hyperliquid.ipynb 18
 def retrieve_hyperliquid_spot_price(coin="ETH", base='USDC',interval="1h", 
                                 end_date=datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
                                 start_date=(datetime.now(dt.timezone.utc)-pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -221,7 +221,7 @@ def retrieve_hyperliquid_spot_price(coin="ETH", base='USDC',interval="1h",
         print(f"Error retrieving price for {coin}: {e}")
         return None
 
-# %% ../nbs/hyperliquid.ipynb 22
+# %% ../nbs/hyperliquid.ipynb 24
 def hyperliquid_tokens(info=None,rm_delisted=True):
     if info is None:
         from hyperliquid.info import Info
@@ -238,11 +238,11 @@ def hyperliquid_tokens(info=None,rm_delisted=True):
     df = df.loc[(~df['isDelisted']) & (~df['onlyIsolated'])]
     return df
 
-# %% ../nbs/hyperliquid.ipynb 25
+# %% ../nbs/hyperliquid.ipynb 28
 def funding_calc(rate,premium,max_rate=0.0005,min_rate=-0.0005):
     return premium+max(min(rate-premium, max_rate), min_rate)
 
-# %% ../nbs/hyperliquid.ipynb 26
+# %% ../nbs/hyperliquid.ipynb 29
 def retrieve_hyperliquid_funding_history(coin="ETH", 
                                         end_date=datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
                                         start_date=(datetime.now(dt.timezone.utc)-pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -329,7 +329,7 @@ def retrieve_hyperliquid_funding_history(coin="ETH",
         print(f"Error retrieving funding history for {coin}: {e}")
         return None
 
-# %% ../nbs/hyperliquid.ipynb 30
+# %% ../nbs/hyperliquid.ipynb 33
 def retrieve_hyperliquid_data(ticker="ETH", 
                               data_type="perp",
                               start_date=None,
@@ -459,7 +459,7 @@ def retrieve_hyperliquid_data(ticker="ETH",
         print(f"Error retrieving {data_type} data for {ticker}: {e}")
         return None
 
-# %% ../nbs/hyperliquid.ipynb 39
+# %% ../nbs/hyperliquid.ipynb 43
 def retrieve_hyperliquid_l2_snapshot(coin="ETH", info=None):
     """
     Retrieves current L2 order book snapshot from Hyperliquid for a given coin.
@@ -536,7 +536,7 @@ def retrieve_hyperliquid_l2_snapshot(coin="ETH", info=None):
         print(f"Error retrieving L2 snapshot for {coin}: {e}")
         return None
 
-# %% ../nbs/hyperliquid.ipynb 42
+# %% ../nbs/hyperliquid.ipynb 47
 def hyperliquid_mids(coin=None,info=None,typecast_to_float=True):
     """
     Retrieves current mid prices from Hyperliquid for specified coins or all available coins.
@@ -584,7 +584,7 @@ def hyperliquid_mids(coin=None,info=None,typecast_to_float=True):
         return None
 
 
-# %% ../nbs/hyperliquid.ipynb 46
+# %% ../nbs/hyperliquid.ipynb 52
 def save_hyperliquid_file(df, folder_path, file_name, type="parquet"):
     """
     Save a pandas DataFrame to a file in either CSV or Parquet format.
@@ -610,7 +610,7 @@ def save_hyperliquid_file(df, folder_path, file_name, type="parquet"):
     else:
         raise ValueError(f"Type {type} not supported. Use 'csv' or 'parquet'")
 
-# %% ../nbs/hyperliquid.ipynb 47
+# %% ../nbs/hyperliquid.ipynb 53
 class HyperliquidDataManager:
     """
     Base class for managing Hyperliquid data files.
@@ -841,7 +841,7 @@ class HyperliquidDataManager:
         else:
             raise ValueError("ticker must be None, str, or list")
 
-# %% ../nbs/hyperliquid.ipynb 48
+# %% ../nbs/hyperliquid.ipynb 55
 class HyperliquidPerpManager(HyperliquidDataManager):
     """
     Manager for Hyperliquid perpetual futures data.
@@ -1082,270 +1082,7 @@ class HyperliquidPerpManager(HyperliquidDataManager):
         
         return df
 
-# %% ../nbs/hyperliquid.ipynb 50
-class HyperliquidSpotManager(HyperliquidDataManager):
-    """
-    Manager for Hyperliquid spot market data.
-    
-    Handles reading, updating, and saving spot price data (OHLCV).
-    Data is stored in the 'spot' subfolder with files named as {ticker}_{base}_{interval}.{file_type}
-    
-    Args:
-        ticker (str or list, optional): Token symbol(s) to manage. If None, uses all available spot tokens.
-        base (str, optional): Base currency for spot pairs. Defaults to "USDC".
-        data_dir (str, optional): Base directory for data storage. Defaults to "../data/hyperliquid"
-        interval (str, optional): Time interval for data ("1m", "5m", "15m", "1h", "4h", "1d"). 
-            Defaults to "1h".
-        file_type (str, optional): File format - "parquet" or "csv". Defaults to "parquet"
-        update (bool, optional): If True, checks for and downloads new data. Defaults to False
-        save (bool, optional): If True, saves updated data back to file. Defaults to False
-        refresh_hours (int, optional): Hours of data to refresh when updating. Defaults to 24
-        info (Info, optional): Hyperliquid Info client. If None, creates a new one.
-        verbose (bool, optional): If True, prints progress messages. Defaults to True
-    
-    Examples:
-        # Load existing spot data for ETH/USDC
-        manager = HyperliquidSpotManager(ticker="ETH", base="USDC", interval="1h", info=info)
-        eth_data = manager.data["ETH"]
-        
-        # Update and save data for multiple tokens
-        manager = HyperliquidSpotManager(
-            ticker=["ETH", "BTC", "SOL"],
-            base="USDC",
-            interval="4h",
-            update=True,
-            save=True,
-            refresh_hours=48,
-            info=info
-        )
-        
-        # Load all available spot tokens
-        manager = HyperliquidSpotManager(base="USDC", update=True, save=True, info=info)
-    """
-    
-    def __init__(self, ticker=None, base="USDC", data_dir="../data/hyperliquid", interval="1h",
-                 file_type="parquet", update=False, save=False, refresh_hours=24,
-                 info=None, verbose=True):
-        # Set data type and base before calling parent constructor
-        self.data_type = "spot"
-        self.base = base
-        
-        # Call parent constructor
-        super().__init__(ticker=ticker, data_dir=data_dir, interval=interval,
-                        file_type=file_type, update=update, save=save,
-                        refresh_hours=refresh_hours, info=info, verbose=verbose, data_type="spot")
-        
-        # Load and optionally update data for all tickers
-        self._process_all_tickers()
-    
-    def _get_file_path(self, ticker):
-        """
-        Get the file path for a specific ticker, including base currency.
-        
-        Args:
-            ticker (str): Token symbol
-        
-        Returns:
-            str: Full file path
-        """
-        file_name = f"{ticker}_{self.base}_{self.interval}.{self.file_type}"
-        return os.path.join(self.data_dir, self.data_type, file_name)
-    
-    def _get_all_tickers(self):
-        """Get all available spot tokens from Hyperliquid for the specified base."""
-        try:
-            spot_tokens_df = hyperliquid_spot_tokens(base=self.base, info=self.info)
-            if spot_tokens_df is None or spot_tokens_df.empty:
-                if self.verbose:
-                    print(f"No spot tokens found for base {self.base}")
-                return []
-            
-            tickers = spot_tokens_df['coin'].tolist()
-            if self.verbose:
-                print(f"Found {len(tickers)} spot tokens for {self.base}")
-            return tickers
-        except Exception as e:
-            print(f"Error getting spot tokens: {e}")
-            return []
-    
-    def _get_new_data(self, ticker, start_date=None):
-        """
-        Retrieve new spot price data from Hyperliquid.
-        
-        Args:
-            ticker (str): Token symbol
-            start_date (str, optional): Start date for data retrieval. If None, uses refresh_hours.
-        
-        Returns:
-            pandas.DataFrame: DataFrame with OHLCV data or None if error
-        """
-        try:
-            # Calculate date range
-            if start_date is None:
-                end_date = None  # Will use current time
-                lookback_days = self.refresh_hours / 24
-            else:
-                end_date = None
-                lookback_days = None
-            
-            # Use retrieve_hyperliquid_data to get spot prices
-            df = retrieve_hyperliquid_data(
-                ticker=ticker,
-                data_type="spot",
-                start_date=start_date,
-                end_date=end_date,
-                lookback=lookback_days if lookback_days else 2,
-                interval=self.interval,
-                base=self.base,
-                info=self.info
-            )
-            
-            if df is not None and not df.empty:
-                if self.verbose:
-                    print(f"Retrieved {len(df)} new rows for {ticker}/{self.base}")
-            
-            return df
-            
-        except Exception as e:
-            print(f"Error retrieving new data for {ticker}/{self.base}: {e}")
-            return None
-    
-    def _update_data(self, ticker, existing_df):
-        """
-        Update existing spot data with new records.
-        
-        Args:
-            ticker (str): Token symbol
-            existing_df (pandas.DataFrame): Existing data
-        
-        Returns:
-            pandas.DataFrame: Updated DataFrame with new data merged
-        """
-        import datetime as dt
-        
-        # Calculate start date for new data
-        if existing_df is not None and not existing_df.empty:
-            # Get the most recent datetime from existing data
-            max_datetime = existing_df['datetime'].max()
-            
-            # Subtract refresh_hours to ensure overlap and catch any missing data
-            start_datetime = max_datetime - pd.Timedelta(hours=self.refresh_hours)
-            start_date = start_datetime.strftime('%Y-%m-%dT%H:%M:%SZ')
-            
-            if self.verbose:
-                print(f"Updating {ticker}/{self.base} from {start_date}")
-        else:
-            # No existing data, get default lookback period
-            start_date = None
-            if self.verbose:
-                print(f"No existing data for {ticker}/{self.base}, fetching initial data")
-        
-        # Get new data
-        new_df = self._get_new_data(ticker, start_date)
-        
-        if new_df is None or new_df.empty:
-            if self.verbose:
-                print(f"No new data retrieved for {ticker}/{self.base}")
-            return existing_df
-        
-        # Merge with existing data
-        if existing_df is not None and not existing_df.empty:
-            # Combine dataframes
-            existing_df['datetime'] = existing_df['datetime'].dt.tz_localize(None)
-            combined_df = pd.concat([existing_df, new_df], ignore_index=True)
-            # Remove duplicates based on datetime, keeping the last occurrence
-            combined_df = combined_df.drop_duplicates(subset=['datetime'], keep='last')
-            # Sort by datetime
-            combined_df = combined_df.sort_values('datetime').reset_index(drop=True)
-            if self.verbose:
-                new_rows = len(combined_df) - len(existing_df)
-                print(f"Added {new_rows} new rows for {ticker}/{self.base}")
-            
-            return combined_df
-        else:
-            # No existing data, return new data
-            return new_df.sort_values('datetime').reset_index(drop=True)
-    
-    def _process_all_tickers(self):
-        """Load and optionally update data for all tickers."""
-        for ticker in self.tickers:
-            try:
-                # Load existing data
-                existing_df = self._load_existing_data(ticker)
-                
-                # Update if requested
-                if self.update:
-                    df = self._update_data(ticker, existing_df)
-                else:
-                    df = existing_df
-                
-                # Store in data dictionary
-                if df is not None and not df.empty:
-                    self.data[ticker] = df
-                    
-                    # Save if requested
-                    if self.save and df is not None:
-                        file_path = self._get_file_path(ticker)
-                        save_hyperliquid_file(df, os.path.dirname(file_path), 
-                                            os.path.splitext(os.path.basename(file_path))[0],
-                                            type=self.file_type)
-                        if self.verbose:
-                            print(f"Saved {len(df)} rows for {ticker}/{self.base}")
-                
-            except Exception as e:
-                print(f"Error processing {ticker}/{self.base}: {e}")
-                continue
-    
-    def get_data(self, ticker):
-        """
-        Get data for a specific ticker.
-        
-        Args:
-            ticker (str): Token symbol
-        
-        Returns:
-            pandas.DataFrame: Data for the ticker or None if not available
-        """
-        return self.data.get(ticker)
-    
-    def refresh_ticker(self, ticker, save=None):
-        """
-        Refresh data for a specific ticker.
-        
-        Args:
-            ticker (str): Token symbol
-            save (bool, optional): Override instance save setting. If None, uses instance setting.
-        
-        Returns:
-            pandas.DataFrame: Updated data for the ticker
-        """
-        if ticker not in self.tickers:
-            print(f"Ticker {ticker} not in managed tickers")
-            return None
-        
-        # Load existing data
-        existing_df = self._load_existing_data(ticker)
-        
-        # Update data
-        df = self._update_data(ticker, existing_df)
-        
-        # Store in data dictionary
-        if df is not None and not df.empty:
-            self.data[ticker] = df
-            
-            # Save if requested
-            should_save = save if save is not None else self.save
-            if should_save:
-                file_path = self._get_file_path(ticker)
-                save_hyperliquid_file(df, os.path.dirname(file_path),
-                                    os.path.splitext(os.path.basename(file_path))[0],
-                                    type=self.file_type)
-                if self.verbose:
-                    print(f"Saved {len(df)} rows for {ticker}/{self.base}")
-        
-        return df
-
-# %% ../nbs/hyperliquid.ipynb 51
+# %% ../nbs/hyperliquid.ipynb 59
 class HyperliquidSpotManager(HyperliquidDataManager):
     """
     Manager for Hyperliquid spot market data.
@@ -1610,7 +1347,7 @@ class HyperliquidSpotManager(HyperliquidDataManager):
         
         return df
 
-# %% ../nbs/hyperliquid.ipynb 57
+# %% ../nbs/hyperliquid.ipynb 66
 class HyperliquidFundingManager(HyperliquidDataManager):
     """
     Manager for Hyperliquid funding rate data.
