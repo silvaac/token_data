@@ -652,9 +652,8 @@ class HyperliquidDataManager:
         
         # Initialize info client if needed
         if self.info is None:
-            from hyperliquid.info import Info
-            from hyperliquid.utils import constants
-            address, self.info, exchange = setup(base_url=constants.MAINNET_API_URL, skip_ws=True)
+            if self.update:
+                raise ValueError("To update data, Info client must be provided")
         
         # Get list of tickers to process
         self._initialize_tickers()
@@ -894,14 +893,33 @@ class HyperliquidPerpManager(HyperliquidDataManager):
         # Load and optionally update data for all tickers
         self._process_all_tickers()
     
+    def _get_all_tokens_from_folder(self):
+        """Get all tokens from the perp folder."""
+        # Load all files in the perp folder
+        file_list = os.listdir(self.data_dir+'/perp')
+        #perp_files = [ff for ff in file_list if f"_{self.interval}" in ff)]
+        
+        # Extract token names from file names
+        tickers = [f.split("_")[0] for f in file_list if self.interval in f]
+        
+        # Return unique tokens
+        return list(set(tickers))
+
     def _get_all_tickers(self):
         """Get all available perpetual tokens from Hyperliquid."""
         try:
-            tickers = hyperliquid_tokens(info=self.info)
-            tickers = tickers['name'].tolist()
-            if self.verbose:
-                print(f"Found {len(tickers)} perpetual tokens")
-            return tickers
+            if self.info is not None:
+                tickers = hyperliquid_tokens(info=self.info)
+                tickers = tickers['name'].tolist()
+                if self.verbose:
+                    print(f"Found {len(tickers)} perpetual tokens")
+                return tickers
+            else:
+                # read the list of tokens from folder
+                tickers = self._get_all_tokens_from_folder()
+                if self.verbose:
+                    print(f"Found {len(tickers)} perpetual tokens from folder")
+                return tickers
         except Exception as e:
             print(f"Error getting perpetual tokens: {e}")
             return []
@@ -1033,7 +1051,7 @@ class HyperliquidPerpManager(HyperliquidDataManager):
                 print(f"Error processing {ticker}: {e}")
                 continue
     
-    def get_data(self, ticker):
+    def get_data(self, ticker=None):
         """
         Get data for a specific ticker.
         
@@ -1043,6 +1061,9 @@ class HyperliquidPerpManager(HyperliquidDataManager):
         Returns:
             pandas.DataFrame: Data for the ticker or None if not available
         """
+        if ticker is None:
+            #a = [self.data.get(i) for i in self.tickers]
+            return pd.concat(self.data.values())
         return self.data.get(ticker)
     
     def refresh_ticker(self, ticker, save=None):
@@ -1082,7 +1103,7 @@ class HyperliquidPerpManager(HyperliquidDataManager):
         
         return df
 
-# %% ../nbs/hyperliquid.ipynb 59
+# %% ../nbs/hyperliquid.ipynb 60
 class HyperliquidSpotManager(HyperliquidDataManager):
     """
     Manager for Hyperliquid spot market data.
@@ -1298,7 +1319,7 @@ class HyperliquidSpotManager(HyperliquidDataManager):
                 print(f"Error processing {ticker}/{self.base}: {e}")
                 continue
     
-    def get_data(self, ticker):
+    def get_data(self, ticker=None):
         """
         Get data for a specific ticker.
         
@@ -1308,6 +1329,8 @@ class HyperliquidSpotManager(HyperliquidDataManager):
         Returns:
             pandas.DataFrame: Data for the ticker or None if not available
         """
+        if ticker is None:
+            return pd.concat(self.data.values())
         return self.data.get(ticker)
     
     def refresh_ticker(self, ticker, save=None):
@@ -1347,7 +1370,7 @@ class HyperliquidSpotManager(HyperliquidDataManager):
         
         return df
 
-# %% ../nbs/hyperliquid.ipynb 66
+# %% ../nbs/hyperliquid.ipynb 68
 class HyperliquidFundingManager(HyperliquidDataManager):
     """
     Manager for Hyperliquid funding rate data.
@@ -1400,9 +1423,26 @@ class HyperliquidFundingManager(HyperliquidDataManager):
         # Load and optionally update data for all tickers
         self._process_all_tickers()
     
+    def _get_all_tokens_from_folder(self):
+        """Get all tokens from the perp folder."""
+        # Load all files in the perp folder
+        file_list = os.listdir(self.data_dir+'/funding')
+        
+        # Extract token names from file names
+        tickers = [f.split(".")[0] for f in file_list]
+        
+        # Return unique tokens
+        return list(set(tickers))
+
     def _get_all_tickers(self):
         """Get all available tokens from Hyperliquid."""
         try:
+            if self.info is None:
+                # read the list of tokens from folder
+                tickers = self._get_all_tokens_from_folder()
+                if self.verbose:
+                    print(f"Found {len(tickers)} perpetual tokens from folder")
+                return tickers
             tickers = hyperliquid_tokens(info=self.info)
             tickers = tickers['name'].tolist()
             if self.verbose:
@@ -1544,7 +1584,7 @@ class HyperliquidFundingManager(HyperliquidDataManager):
                 print(f"Error processing {ticker}: {e}")
                 continue
     
-    def get_data(self, ticker):
+    def get_data(self, ticker=None):
         """
         Get data for a specific ticker.
         
@@ -1554,6 +1594,8 @@ class HyperliquidFundingManager(HyperliquidDataManager):
         Returns:
             pandas.DataFrame: Data for the ticker or None if not available
         """
+        if ticker is None:
+            return pd.concat(self.data.values())
         return self.data.get(ticker)
     
     def refresh_ticker(self, ticker, save=None):
