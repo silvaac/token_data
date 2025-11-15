@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['get_user_fills', 'get_user_funding_history', 'get_user_ledger_updates', 'get_account_summary']
 
-# %% ../nbs/hyper_account.ipynb 6
+# %% ../nbs/hyper_account.ipynb 7
 def get_user_fills(address, info=None, aggregated=False, include_hash_oid=False):
     """
     Retrieves user fill history from Hyperliquid and returns as a DataFrame.
@@ -108,7 +108,7 @@ def get_user_fills(address, info=None, aggregated=False, include_hash_oid=False)
         print(f"Error retrieving user fills: {e}")
         return None
 
-# %% ../nbs/hyper_account.ipynb 10
+# %% ../nbs/hyper_account.ipynb 11
 def get_user_funding_history(address, start_date=None, end_date=None, lookback=30, info=None,include_hash_time=False):
     """
     Retrieves user funding payment history from Hyperliquid and returns as a DataFrame.
@@ -236,7 +236,7 @@ def get_user_funding_history(address, start_date=None, end_date=None, lookback=3
         print(f"Error retrieving user funding history: {e}")
         return None
 
-# %% ../nbs/hyper_account.ipynb 17
+# %% ../nbs/hyper_account.ipynb 18
 def get_user_ledger_updates(address, start_date=None, end_date=None, lookback=30, info=None, include_hash=False):
     """
     Retrieves user non-funding ledger updates from Hyperliquid and returns as a DataFrame.
@@ -377,7 +377,7 @@ def get_user_ledger_updates(address, start_date=None, end_date=None, lookback=30
         print(f"Error retrieving user ledger updates: {e}")
         return None
 
-# %% ../nbs/hyper_account.ipynb 25
+# %% ../nbs/hyper_account.ipynb 26
 def get_account_summary(address, info=None, lookback_days=3650):
     """
     Retrieves a comprehensive account summary including deposits, withdrawals, and current value.
