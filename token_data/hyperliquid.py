@@ -7,12 +7,12 @@ __all__ = ['setup', 'retrieve_hyperliquid_perp_price', 'spot_tickers', 'retrieve
            'HyperliquidPerpManager', 'HyperliquidSpotManager', 'HyperliquidFundingManager']
 
 # %% ../nbs/hyperliquid.ipynb 3
-from nbdev.showdoc import *
+#from nbdev.showdoc import *
 import json
-from typing import List, Dict, Tuple, Optional, Union, Any, Callable
+#from typing import List, Dict, Tuple, Optional, Union, Any, Callable
 from hyperliquid.utils import constants
 import os
-import csv
+#import csv
 
 import eth_account
 from eth_account.signers.local import LocalAccount
