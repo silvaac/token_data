@@ -32,12 +32,6 @@ Install latest from the GitHub
 $ pip install git+https://github.com/silvaac/token_data.git
 ```
 
-or from [conda](https://anaconda.org/silvaac/token_data)
-
-``` sh
-$ conda install -c silvaac token_data
-```
-
 or from [pypi](https://pypi.org/project/token_data/)
 
 ``` sh
@@ -70,8 +64,8 @@ manager.get_data()
     Running with agent address: 0x0486f56Bf31b2E3B880248dAcd1BFf3C8bdC09e0
     Loaded 5791 rows for ETH from ../data/hyperliquid/perp/ETH_1h.parquet
     Updating ETH from 2025-11-14T21:00:00Z
-    Retrieved 25 new rows for ETH
-    Added 0 new rows for ETH
+    Retrieved 47 new rows for ETH
+    Added 22 new rows for ETH
 
 <div>
 <style scoped>
@@ -94,13 +88,13 @@ manager.get_data()
 | 3    | 2025-03-19 18:00:00 | 2026.1 | 2059.9 | 1998.0 | 2045.0 | 84148.3569 | ETH  |
 | 4    | 2025-03-19 19:00:00 | 2045.1 | 2052.1 | 2020.1 | 2029.7 | 38921.5619 | ETH  |
 | ...  | ...                 | ...    | ...    | ...    | ...    | ...        | ...  |
-| 5786 | 2025-11-15 17:00:00 | 3187.2 | 3220.0 | 3183.2 | 3215.9 | 11232.4093 | ETH  |
-| 5787 | 2025-11-15 18:00:00 | 3215.9 | 3231.3 | 3205.2 | 3209.0 | 9992.3206  | ETH  |
-| 5788 | 2025-11-15 19:00:00 | 3209.0 | 3215.4 | 3193.2 | 3198.7 | 13669.4272 | ETH  |
-| 5789 | 2025-11-15 20:00:00 | 3198.7 | 3201.0 | 3167.7 | 3175.3 | 10595.2642 | ETH  |
-| 5790 | 2025-11-15 21:00:00 | 3175.3 | 3189.7 | 3156.1 | 3162.4 | 15325.0882 | ETH  |
+| 5808 | 2025-11-16 15:00:00 | 3172.9 | 3181.5 | 3099.3 | 3105.8 | 24519.9226 | ETH  |
+| 5809 | 2025-11-16 16:00:00 | 3105.9 | 3127.5 | 3057.8 | 3062.0 | 43373.1840 | ETH  |
+| 5810 | 2025-11-16 17:00:00 | 3061.5 | 3087.7 | 3027.5 | 3079.9 | 57582.5327 | ETH  |
+| 5811 | 2025-11-16 18:00:00 | 3080.3 | 3129.2 | 3045.0 | 3061.1 | 48971.9446 | ETH  |
+| 5812 | 2025-11-16 19:00:00 | 3061.3 | 3116.6 | 3057.9 | 3102.2 | 14953.9102 | ETH  |
 
-<p>5791 rows × 7 columns</p>
+<p>5813 rows × 7 columns</p>
 </div>
 
 For coinbase data (only spot prices are supported):

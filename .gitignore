@@ -16,6 +16,7 @@ tags
 *.pkg
 config_hyperliquid.json
 config_hyperliquid_old.json
+.pypirc
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
