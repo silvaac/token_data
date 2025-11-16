@@ -1,0 +1,7 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - coinbase.ipynb
+      - hyper_account.ipynb
+      - hyperliquid.ipynb

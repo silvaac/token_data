@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "token_data"
+  site-url: "https://silvaac.github.io/token_data"
+  description: "Token data from a series of sources"
+  repo-branch: main
+  repo-url: "https://github.com/silvaac/token_data"
