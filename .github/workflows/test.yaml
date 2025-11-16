@@ -8,5 +8,5 @@ jobs:
       - uses: fastai/workflows/nbdev-ci@master
         with:
           version: '3.11'
-          pre_run: |
+          pre: |
             echo "${{ secrets.CONFIG_HYPERLIQUID_JSON }}" > config_hyperliquid.json
