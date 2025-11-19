@@ -12,7 +12,7 @@ import json
 #from typing import List, Dict, Tuple, Optional, Union, Any, Callable
 from hyperliquid.utils import constants
 import os
-#import csv
+import time
 
 import eth_account
 from eth_account.signers.local import LocalAccount
@@ -1023,6 +1023,15 @@ class HyperliquidPerpManager(HyperliquidDataManager):
     
     def _process_all_tickers(self):
         """Load and optionally update data for all tickers."""
+        n = len(self.tickers)
+        if self.verbose:
+            print(f"Processing {n} perpetual tokens...")
+        max_per_batch = 1200/100 #120 per min and 100 weighrs per hyperliquid api
+        waiting_time = 2
+        if n>max_per_batch:
+            waiting_time = 60/max_per_batch
+        if self.update:
+            print(f"Warning: Processing {n} perpetual tokens exceeds the maximum number of requests per minute. Adjusting waiting time to {waiting_time} seconds.")
         for ticker in self.tickers:
             try:
                 # Load existing data
@@ -1050,6 +1059,8 @@ class HyperliquidPerpManager(HyperliquidDataManager):
             except Exception as e:
                 print(f"Error processing {ticker}: {e}")
                 continue
+            if self.update:
+                time.sleep(waiting_time)  # wait to avoid rate limiting
     
     def get_data(self, ticker=None):
         """
@@ -1556,6 +1567,13 @@ class HyperliquidFundingManager(HyperliquidDataManager):
     
     def _process_all_tickers(self):
         """Load and optionally update data for all tickers."""
+        n = len(self.tickers)
+        max_per_batch = 1200/100 #120 per min and 100 weighrs per hyperliquid api
+        waiting_time = 2
+        if n>max_per_batch:
+            waiting_time = 60/max_per_batch
+        if self.update:
+            print(f"Warning: Processing {n} perpetual tokens exceeds the maximum number of requests per minute. Adjusting waiting time to {waiting_time} seconds.")
         for ticker in self.tickers:
             try:
                 # Load existing data
@@ -1583,7 +1601,8 @@ class HyperliquidFundingManager(HyperliquidDataManager):
             except Exception as e:
                 print(f"Error processing {ticker}: {e}")
                 continue
-    
+            if self.update:
+                time.sleep(waiting_time)    
     def get_data(self, ticker=None):
         """
         Get data for a specific ticker.

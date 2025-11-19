@@ -10,6 +10,7 @@ import pandas as pd
 import requests
 import os
 import datetime as dt
+import time
 
 
 # %% ../nbs/coinbase.ipynb 4
@@ -189,11 +190,9 @@ def save_file(df, folder_path, file_name, type="csv"):
     elif type == "parquet":
         df.to_parquet(f"{folder_path}/{file_name}.parquet")
 
-
-
 # %% ../nbs/coinbase.ipynb 9
 def coinbase_to_file(folder_path="../data/coinbase",token_list=coinbase_usd_tokens()['id'].tolist(),type="csv",
-                     interval=3600,all_tokens=True,refresh_24h=False):
+                     interval=3600,all_tokens=True,refresh_24h=False,pause=0):
     """
     Downloads and maintains historical price data for Coinbase tokens, saving to files.
     
@@ -269,6 +268,8 @@ def coinbase_to_file(folder_path="../data/coinbase",token_list=coinbase_usd_toke
                 print(f"Error first download for {token}: {e}")
             if not df.empty:
                 save_file(df,folder_path,token,type)
+        if pause > 0:
+            time.sleep(pause)
 
 # %% ../nbs/coinbase.ipynb 10
 def coinbase_data_update(folder_path="../data/coinbase",token='AAVE-USD',type="parquet",
