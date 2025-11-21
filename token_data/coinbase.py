@@ -238,6 +238,8 @@ def coinbase_to_file(folder_path="../data/coinbase",token_list=coinbase_usd_toke
             last_date = pd.to_datetime(df['datetime'].iloc[-1]).tz_localize(dt.UTC)
             today = datetime.now(tz=dt.UTC)
             #print(last_date.tz_localize(dt.UTC),today)
+            print(last_date)
+            print(today)
             first_date = today - dt.timedelta(hours=24)
             if first_date < last_date and refresh_24h:
                 t_date = pd.to_datetime(df['datetime'],utc=True)
