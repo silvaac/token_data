@@ -34,14 +34,7 @@ Install latest from the GitHub [repository][repo]:
 $ pip install git+https://github.com/silvaac/token_data.git
 ```
 
-or from [conda][conda]
-
-```sh
-$ conda install -c silvaac token_data
-```
-
 or from [pypi][pypi]
-
 
 ```sh
 $ pip install token_data
@@ -51,7 +44,6 @@ $ pip install token_data
 [repo]: https://github.com/silvaac/token_data
 [docs]: https://silvaac.github.io/token_data/
 [pypi]: https://pypi.org/project/token_data/
-[conda]: https://anaconda.org/silvaac/token_data
 
 ### Documentation
 
@@ -77,10 +69,10 @@ manager.get_data()
 
 ::: {.cell-output .cell-output-stdout}
 ```
-Running with account address: 0x143E18B563C4aD6913a9D89C774fE69A54F66cAa
-Running with agent address: 0x0486f56Bf31b2E3B880248dAcd1BFf3C8bdC09e0
-Loaded 5791 rows for ETH from ../data/hyperliquid/perp/ETH_1h.parquet
-Updating ETH from 2025-11-14T21:00:00Z
+Processing 1 perpetual tokens...
+Warning: Processing 1 perpetual tokens exceeds the maximum number of requests per minute. Adjusting waiting time to 2 seconds.
+Loaded 6250 rows for ETH from ../data/hyperliquid/perp/ETH_1h.parquet
+Updating ETH from 2025-12-04T00:00:00Z
 Retrieved 25 new rows for ETH
 Added 0 new rows for ETH
 ```
@@ -177,58 +169,58 @@ Added 0 new rows for ETH
       <td>...</td>
     </tr>
     <tr>
-      <th>5786</th>
-      <td>2025-11-15 17:00:00</td>
-      <td>3187.2</td>
-      <td>3220.0</td>
-      <td>3183.2</td>
-      <td>3215.9</td>
-      <td>11232.4093</td>
+      <th>6245</th>
+      <td>2025-12-04 20:00:00</td>
+      <td>3117.9</td>
+      <td>3143.8</td>
+      <td>3104.4</td>
+      <td>3140.5</td>
+      <td>15553.2974</td>
       <td>ETH</td>
     </tr>
     <tr>
-      <th>5787</th>
-      <td>2025-11-15 18:00:00</td>
-      <td>3215.9</td>
-      <td>3231.3</td>
-      <td>3205.2</td>
-      <td>3209.0</td>
-      <td>9992.3206</td>
+      <th>6246</th>
+      <td>2025-12-04 21:00:00</td>
+      <td>3140.2</td>
+      <td>3150.0</td>
+      <td>3117.2</td>
+      <td>3121.8</td>
+      <td>13448.5987</td>
       <td>ETH</td>
     </tr>
     <tr>
-      <th>5788</th>
-      <td>2025-11-15 19:00:00</td>
-      <td>3209.0</td>
-      <td>3215.4</td>
-      <td>3193.2</td>
-      <td>3198.7</td>
-      <td>13669.4272</td>
+      <th>6247</th>
+      <td>2025-12-04 22:00:00</td>
+      <td>3122.1</td>
+      <td>3147.2</td>
+      <td>3121.5</td>
+      <td>3142.4</td>
+      <td>11888.6633</td>
       <td>ETH</td>
     </tr>
     <tr>
-      <th>5789</th>
-      <td>2025-11-15 20:00:00</td>
-      <td>3198.7</td>
-      <td>3201.0</td>
-      <td>3167.7</td>
-      <td>3175.3</td>
-      <td>10595.2642</td>
+      <th>6248</th>
+      <td>2025-12-04 23:00:00</td>
+      <td>3142.6</td>
+      <td>3142.6</td>
+      <td>3127.9</td>
+      <td>3131.7</td>
+      <td>4731.0506</td>
       <td>ETH</td>
     </tr>
     <tr>
-      <th>5790</th>
-      <td>2025-11-15 21:00:00</td>
-      <td>3175.3</td>
-      <td>3189.7</td>
-      <td>3156.1</td>
-      <td>3162.4</td>
-      <td>15325.0882</td>
+      <th>6249</th>
+      <td>2025-12-05 00:00:00</td>
+      <td>3131.8</td>
+      <td>3156.0</td>
+      <td>3131.4</td>
+      <td>3147.8</td>
+      <td>10836.3869</td>
       <td>ETH</td>
     </tr>
   </tbody>
 </table>
-<p>5791 rows × 7 columns</p>
+<p>6250 rows × 7 columns</p>
 </div>
 ```
 :::
@@ -247,6 +239,9 @@ coinbase_to_file(token_list=['OP-USD'],type="parquet",all_tokens=False)
 ::: {.cell-output .cell-output-stdout}
 ```
 Processing OP-USD
+2025-11-17 09:00:00+00:00
+2025-12-05 00:32:14.730630+00:00
+OP-USD is not listed.
 ```
 :::
 :::

@@ -24,7 +24,7 @@ import datetime as dt
 import numpy as np
 
 # %% ../nbs/hyperliquid.ipynb 5
-def setup(base_url=None, skip_ws=False, perp_dexs=None,config='../config_hyperliquid.json'):
+def setup(base_url=None, skip_ws=False, perp_dexs=None,config='../config_hyperliquid.json',debug=False):
     # This function is copied from hyperliquid-python-sdk/examples/example_utils.py
     # for setting up the environment in our script.
     # config_path = os.path.join(os.path.dirname(__file__), "config.json")
@@ -35,9 +35,11 @@ def setup(base_url=None, skip_ws=False, perp_dexs=None,config='../config_hyperli
     address = config["account_address"]
     if address == "":
         address = account.address
-    print("Running with account address:", address)
+        if debug:
+            print("Running with account address:", address)
     if address != account.address:
-        print("Running with agent address:", account.address)
+        if debug:
+            print("Running with agent address:", account.address)
     info = Info(base_url, skip_ws, perp_dexs=perp_dexs)
     user_state = info.user_state(address)
     spot_user_state = info.spot_user_state(address)

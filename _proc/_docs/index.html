@@ -240,10 +240,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="installation">Installation</h3>
 <p>Install latest from the GitHub <a href="https://github.com/silvaac/token_data">repository</a>:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pip install git+https://github.com/silvaac/token_data.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>or from <a href="https://anaconda.org/silvaac/token_data">conda</a></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda install <span class="at">-c</span> silvaac token_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>or from <a href="https://pypi.org/project/token_data/">pypi</a></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pip install token_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pip install token_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="documentation" class="level3">
 <h3 class="anchored" data-anchor-id="documentation">Documentation</h3>
@@ -254,16 +252,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="how-to-use">How to use</h2>
 <p>Simple example to pull ETH perpetual price history from Hyperliquid. See documents for more complex use cases.</p>
 <div id="cell-13" class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> token_data.hyperliquid <span class="im">import</span> <span class="op">*</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hyperliquid.utils <span class="im">import</span> constants</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>address, info, exchange <span class="op">=</span> setup(base_url<span class="op">=</span>constants.MAINNET_API_URL, skip_ws<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>manager <span class="op">=</span> HyperliquidPerpManager(ticker<span class="op">=</span><span class="st">'ETH'</span>,update<span class="op">=</span><span class="va">True</span>, save<span class="op">=</span><span class="va">False</span>, verbose<span class="op">=</span><span class="va">True</span>,info<span class="op">=</span>info)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>manager.get_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> token_data.hyperliquid <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hyperliquid.utils <span class="im">import</span> constants</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>address, info, exchange <span class="op">=</span> setup(base_url<span class="op">=</span>constants.MAINNET_API_URL, skip_ws<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>manager <span class="op">=</span> HyperliquidPerpManager(ticker<span class="op">=</span><span class="st">'ETH'</span>,update<span class="op">=</span><span class="va">True</span>, save<span class="op">=</span><span class="va">False</span>, verbose<span class="op">=</span><span class="va">True</span>,info<span class="op">=</span>info)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>manager.get_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Running with account address: 0x143E18B563C4aD6913a9D89C774fE69A54F66cAa
-Running with agent address: 0x0486f56Bf31b2E3B880248dAcd1BFf3C8bdC09e0
-Loaded 5791 rows for ETH from ../data/hyperliquid/perp/ETH_1h.parquet
-Updating ETH from 2025-11-14T21:00:00Z
+<pre><code>Processing 1 perpetual tokens...
+Warning: Processing 1 perpetual tokens exceeds the maximum number of requests per minute. Adjusting waiting time to 2 seconds.
+Loaded 6250 rows for ETH from ../data/hyperliquid/perp/ETH_1h.parquet
+Updating ETH from 2025-12-04T00:00:00Z
 Retrieved 25 new rows for ETH
 Added 0 new rows for ETH</code></pre>
 </div>
@@ -346,69 +344,72 @@ Added 0 new rows for ETH</code></pre>
 <td>...</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">5786</td>
-<td>2025-11-15 17:00:00</td>
-<td>3187.2</td>
-<td>3220.0</td>
-<td>3183.2</td>
-<td>3215.9</td>
-<td>11232.4093</td>
+<td data-quarto-table-cell-role="th">6245</td>
+<td>2025-12-04 20:00:00</td>
+<td>3117.9</td>
+<td>3143.8</td>
+<td>3104.4</td>
+<td>3140.5</td>
+<td>15553.2974</td>
 <td>ETH</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">5787</td>
-<td>2025-11-15 18:00:00</td>
-<td>3215.9</td>
-<td>3231.3</td>
-<td>3205.2</td>
-<td>3209.0</td>
-<td>9992.3206</td>
+<td data-quarto-table-cell-role="th">6246</td>
+<td>2025-12-04 21:00:00</td>
+<td>3140.2</td>
+<td>3150.0</td>
+<td>3117.2</td>
+<td>3121.8</td>
+<td>13448.5987</td>
 <td>ETH</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">5788</td>
-<td>2025-11-15 19:00:00</td>
-<td>3209.0</td>
-<td>3215.4</td>
-<td>3193.2</td>
-<td>3198.7</td>
-<td>13669.4272</td>
+<td data-quarto-table-cell-role="th">6247</td>
+<td>2025-12-04 22:00:00</td>
+<td>3122.1</td>
+<td>3147.2</td>
+<td>3121.5</td>
+<td>3142.4</td>
+<td>11888.6633</td>
 <td>ETH</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">5789</td>
-<td>2025-11-15 20:00:00</td>
-<td>3198.7</td>
-<td>3201.0</td>
-<td>3167.7</td>
-<td>3175.3</td>
-<td>10595.2642</td>
+<td data-quarto-table-cell-role="th">6248</td>
+<td>2025-12-04 23:00:00</td>
+<td>3142.6</td>
+<td>3142.6</td>
+<td>3127.9</td>
+<td>3131.7</td>
+<td>4731.0506</td>
 <td>ETH</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">5790</td>
-<td>2025-11-15 21:00:00</td>
-<td>3175.3</td>
-<td>3189.7</td>
-<td>3156.1</td>
-<td>3162.4</td>
-<td>15325.0882</td>
+<td data-quarto-table-cell-role="th">6249</td>
+<td>2025-12-05 00:00:00</td>
+<td>3131.8</td>
+<td>3156.0</td>
+<td>3131.4</td>
+<td>3147.8</td>
+<td>10836.3869</td>
 <td>ETH</td>
 </tr>
 </tbody>
 </table>
 
-<p>5791 rows × 7 columns</p>
+<p>6250 rows × 7 columns</p>
 </div>
 </div>
 </div>
 <p>For coinbase data (only spot prices are supported):</p>
 <div id="cell-15" class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> token_data.coinbase <span class="im">import</span> <span class="op">*</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull data from coinbase and save it to "./data/coinbase" folder. See function for details.</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>coinbase_to_file(token_list<span class="op">=</span>[<span class="st">'OP-USD'</span>],<span class="bu">type</span><span class="op">=</span><span class="st">"parquet"</span>,all_tokens<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> token_data.coinbase <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull data from coinbase and save it to "./data/coinbase" folder. See function for details.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>coinbase_to_file(token_list<span class="op">=</span>[<span class="st">'OP-USD'</span>],<span class="bu">type</span><span class="op">=</span><span class="st">"parquet"</span>,all_tokens<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Processing OP-USD</code></pre>
+<pre><code>Processing OP-USD
+2025-11-17 09:00:00+00:00
+2025-12-05 00:32:14.730630+00:00
+OP-USD is not listed.</code></pre>
 </div>
 </div>
 

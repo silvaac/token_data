@@ -60,12 +60,12 @@ manager = HyperliquidPerpManager(ticker='ETH',update=True, save=False, verbose=T
 manager.get_data()
 ```
 
-    Running with account address: 0x143E18B563C4aD6913a9D89C774fE69A54F66cAa
-    Running with agent address: 0x0486f56Bf31b2E3B880248dAcd1BFf3C8bdC09e0
-    Loaded 5791 rows for ETH from ../data/hyperliquid/perp/ETH_1h.parquet
-    Updating ETH from 2025-11-14T21:00:00Z
-    Retrieved 47 new rows for ETH
-    Added 22 new rows for ETH
+    Processing 1 perpetual tokens...
+    Warning: Processing 1 perpetual tokens exceeds the maximum number of requests per minute. Adjusting waiting time to 2 seconds.
+    Loaded 6250 rows for ETH from ../data/hyperliquid/perp/ETH_1h.parquet
+    Updating ETH from 2025-12-04T00:00:00Z
+    Retrieved 25 new rows for ETH
+    Added 0 new rows for ETH
 
 <div>
 <style scoped>
@@ -88,13 +88,13 @@ manager.get_data()
 | 3    | 2025-03-19 18:00:00 | 2026.1 | 2059.9 | 1998.0 | 2045.0 | 84148.3569 | ETH  |
 | 4    | 2025-03-19 19:00:00 | 2045.1 | 2052.1 | 2020.1 | 2029.7 | 38921.5619 | ETH  |
 | ...  | ...                 | ...    | ...    | ...    | ...    | ...        | ...  |
-| 5808 | 2025-11-16 15:00:00 | 3172.9 | 3181.5 | 3099.3 | 3105.8 | 24519.9226 | ETH  |
-| 5809 | 2025-11-16 16:00:00 | 3105.9 | 3127.5 | 3057.8 | 3062.0 | 43373.1840 | ETH  |
-| 5810 | 2025-11-16 17:00:00 | 3061.5 | 3087.7 | 3027.5 | 3079.9 | 57582.5327 | ETH  |
-| 5811 | 2025-11-16 18:00:00 | 3080.3 | 3129.2 | 3045.0 | 3061.1 | 48971.9446 | ETH  |
-| 5812 | 2025-11-16 19:00:00 | 3061.3 | 3116.6 | 3057.9 | 3102.2 | 14953.9102 | ETH  |
+| 6245 | 2025-12-04 20:00:00 | 3117.9 | 3143.8 | 3104.4 | 3140.5 | 15553.2974 | ETH  |
+| 6246 | 2025-12-04 21:00:00 | 3140.2 | 3150.0 | 3117.2 | 3121.8 | 13448.5987 | ETH  |
+| 6247 | 2025-12-04 22:00:00 | 3122.1 | 3147.2 | 3121.5 | 3142.4 | 11888.6633 | ETH  |
+| 6248 | 2025-12-04 23:00:00 | 3142.6 | 3142.6 | 3127.9 | 3131.7 | 4731.0506  | ETH  |
+| 6249 | 2025-12-05 00:00:00 | 3131.8 | 3156.0 | 3131.4 | 3147.8 | 10836.3869 | ETH  |
 
-<p>5813 rows × 7 columns</p>
+<p>6250 rows × 7 columns</p>
 </div>
 
 For coinbase data (only spot prices are supported):
@@ -106,3 +106,6 @@ coinbase_to_file(token_list=['OP-USD'],type="parquet",all_tokens=False)
 ```
 
     Processing OP-USD
+    2025-11-17 09:00:00+00:00
+    2025-12-05 00:32:14.730630+00:00
+    OP-USD is not listed.

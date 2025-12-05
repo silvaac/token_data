@@ -9,27 +9,10 @@ title: Hyperliquid Account Information
 
 ## Setup
 
-::: {#13fcd32d .cell}
-``` {.python .cell-code}
-from token_data.hyperliquid import *
-from hyperliquid.utils import constants
-import pandas as pd
-import numpy as np
-```
-:::
-
-
 ::: {#56f56af8 .cell}
 ``` {.python .cell-code}
 address, info, exchange = setup(base_url=constants.MAINNET_API_URL, skip_ws=True)
 ```
-
-::: {.cell-output .cell-output-stdout}
-```
-Running with account address: 0x143E18B563C4aD6913a9D89C774fE69A54F66cAa
-Running with agent address: 0x0486f56Bf31b2E3B880248dAcd1BFf3C8bdC09e0
-```
-:::
 :::
 
 
@@ -39,7 +22,7 @@ Function to list all trades and fills for a given account.
 
 ---
 
-[source](https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L7){target="_blank" style="float:right; font-size:smaller"}
+[source](https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L13){target="_blank" style="float:right; font-size:smaller"}
 
 ### get_user_fills
 
@@ -106,19 +89,19 @@ if fills_df is not None:
 
 ::: {.cell-output .cell-output-stdout}
 ```
-Total Fills: 4
+Total Fills: 6
 
 Fills Summary:
-Date Range: 2025-09-13 13:41:44.333000 to 2025-10-21 00:52:28.595000
+Date Range: 2025-09-13 13:41:44.333000 to 2025-11-04 21:42:37.897000
 
 Fills by Coin:
 coin
+ETH     4
 @151    2
-ETH     2
 dtype: int64
 
-Total Fees Paid: $0.01
-Total Closed PnL: $0.00
+Total Fees Paid: $0.02
+Total Closed PnL: $4.15
 ```
 :::
 :::
@@ -131,26 +114,32 @@ print(fills_df)
 
 ::: {.cell-output .cell-output-stdout}
 ```
-                         coin      px      sz side  startPosition         dir  \
-datetime                                                                        
-2025-09-13 13:41:44.333  @151  4716.2  0.0025    B       0.000000         Buy   
-2025-09-13 13:45:17.196   ETH  4713.5  0.0023    A       0.000000  Open Short   
-2025-10-21 00:51:35.312  @151  3974.8  0.0030    B       0.002498         Buy   
-2025-10-21 00:52:28.595   ETH  3972.2  0.0030    A      -0.002300  Open Short   
+                         coin      px      sz side  startPosition  \
+datetime                                                            
+2025-09-13 13:41:44.333  @151  4716.2  0.0025    B       0.000000   
+2025-09-13 13:45:17.196   ETH  4713.5  0.0023    A       0.000000   
+2025-10-21 00:51:35.312  @151  3974.8  0.0030    B       0.002498   
+2025-10-21 00:52:28.595   ETH  3972.2  0.0030    A      -0.002300   
+2025-11-04 21:41:13.734   ETH  3108.1  0.0035    B      -0.005300   
+2025-11-04 21:42:37.897   ETH  3088.4  0.0036    A      -0.001800   
 
-                         closedPnl  crossed       fee feeToken twapId  \
-datetime                                                                
-2025-09-13 13:41:44.333        0.0     True  0.000002     UETH   None   
-2025-09-13 13:45:17.196        0.0    False  0.001626     USDC   None   
-2025-10-21 00:51:35.312        0.0     True  0.000002     UETH   None   
-2025-10-21 00:52:28.595        0.0     True  0.005362     USDC   None   
+                                 dir  closedPnl  crossed       fee feeToken  \
+datetime                                                                      
+2025-09-13 13:41:44.333          Buy   0.000000     True  0.000002     UETH   
+2025-09-13 13:45:17.196   Open Short   0.000000    False  0.001626     USDC   
+2025-10-21 00:51:35.312          Buy   0.000000     True  0.000002     UETH   
+2025-10-21 00:52:28.595   Open Short   0.000000     True  0.005362     USDC   
+2025-11-04 21:41:13.734  Close Short   4.150265     True  0.004895     USDC   
+2025-11-04 21:42:37.897   Open Short   0.000000     True  0.005003     USDC   
 
-                        side_readable  fee_usdc   fee_bps  
-datetime                                                   
-2025-09-13 13:41:44.333           Buy  0.008253  7.000000  
-2025-09-13 13:45:17.196          Sell  0.001626  1.499855  
-2025-10-21 00:51:35.312           Buy  0.008347  7.000000  
-2025-10-21 00:52:28.595          Sell  0.005362  4.499606  
+                        twapId side_readable  fee_usdc   fee_bps  
+datetime                                                          
+2025-09-13 13:41:44.333   None           Buy  0.008253  7.000000  
+2025-09-13 13:45:17.196   None          Sell  0.001626  1.499855  
+2025-10-21 00:51:35.312   None           Buy  0.008347  7.000000  
+2025-10-21 00:52:28.595   None          Sell  0.005362  4.499606  
+2025-11-04 21:41:13.734   None           Buy  0.004895  4.499763  
+2025-11-04 21:42:37.897   None          Sell  0.005003  4.499813  
 ```
 :::
 :::
@@ -162,7 +151,7 @@ Function to retrieve funding rate history for a personal account. This is what y
 
 ---
 
-[source](https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L112){target="_blank" style="float:right; font-size:smaller"}
+[source](https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L118){target="_blank" style="float:right; font-size:smaller"}
 
 ### get_user_funding_history
 
@@ -232,14 +221,14 @@ if funding_df is not None:
 
 ::: {.cell-output .cell-output-stdout}
 ```
-Total Funding Records: 500
+Total Funding Records: 268
 
-Date Range: 2025-09-13 00:00:00 to 2025-11-01 13:00:00.047000
+Date Range: 2025-09-13 00:00:00 to 2025-12-05 00:00:00.002000
 
 Funding Summary by Coin:
       Total USDC  Count  Avg Payment
 coin                                
-ETH     0.132697    500     0.000265
+ETH     0.258885    268     0.000966
 ```
 :::
 :::
@@ -255,24 +244,24 @@ print(funding_df)
 ::: {.cell-output .cell-output-stdout}
 ```
 
-Total Funding Received/Paid: $0.13
+Total Funding Received/Paid: $0.26
 
 Recent Funding Payments:
-                        coin      usdc     szi   fundingRate
-datetime                                                    
-2025-09-13 00:00:00.000  ETH  0.001983 -0.0023  1.860820e-05
-2025-09-14 00:00:00.000  ETH  0.004339 -0.0023  1.697070e-05
-2025-09-15 00:00:00.000  ETH  0.003951 -0.0023  1.573280e-05
-2025-09-16 00:00:00.000  ETH  0.003097 -0.0023  1.252500e-05
-2025-09-17 00:00:00.000  ETH  0.003098 -0.0023  1.250000e-05
-...                      ...       ...     ...           ...
-2025-11-01 09:00:00.075  ETH  0.000087 -0.0053  4.272600e-06
-2025-11-01 10:00:00.010  ETH  0.000009 -0.0053  4.400000e-07
-2025-11-01 11:00:00.062  ETH  0.000051 -0.0053  2.511500e-06
-2025-11-01 12:00:00.072  ETH  0.000140 -0.0053  6.840700e-06
-2025-11-01 13:00:00.047  ETH  0.000124 -0.0053  6.043900e-06
+                        coin      usdc     szi  fundingRate
+datetime                                                   
+2025-09-13 00:00:00.000  ETH  0.001983 -0.0023     0.000019
+2025-09-14 00:00:00.000  ETH  0.004339 -0.0023     0.000017
+2025-09-15 00:00:00.000  ETH  0.003951 -0.0023     0.000016
+2025-09-16 00:00:00.000  ETH  0.003097 -0.0023     0.000013
+2025-09-17 00:00:00.000  ETH  0.003098 -0.0023     0.000013
+...                      ...       ...     ...          ...
+2025-12-04 20:00:00.021  ETH  0.000149 -0.0054     0.000009
+2025-12-04 21:00:00.078  ETH  0.000165 -0.0054     0.000010
+2025-12-04 22:00:00.034  ETH  0.000153 -0.0054     0.000009
+2025-12-04 23:00:00.015  ETH  0.000122 -0.0054     0.000007
+2025-12-05 00:00:00.002  ETH  0.000100 -0.0054     0.000006
 
-[500 rows x 4 columns]
+[268 rows x 4 columns]
 ```
 :::
 :::
@@ -284,7 +273,7 @@ funding_df[funding_df['coin'] == 'ETH']['usdc'].plot(figsize=(12, 6), title="ETH
 ```
 
 ::: {.cell-output .cell-output-display}
-![](hyper_account_files/figure-html/cell-10-output-1.png){}
+![](hyper_account_files/figure-html/cell-9-output-1.png){}
 :::
 :::
 
@@ -295,7 +284,7 @@ funding_df[funding_df['coin'] == 'ETH']['fundingRate'].cumsum().plot(figsize=(12
 ```
 
 ::: {.cell-output .cell-output-display}
-![](hyper_account_files/figure-html/cell-11-output-1.png){}
+![](hyper_account_files/figure-html/cell-10-output-1.png){}
 :::
 :::
 
@@ -306,7 +295,7 @@ funding_df[funding_df['coin'] == 'ETH']['usdc'].cumsum().plot(figsize=(12, 6), t
 ```
 
 ::: {.cell-output .cell-output-display}
-![](hyper_account_files/figure-html/cell-12-output-1.png){}
+![](hyper_account_files/figure-html/cell-11-output-1.png){}
 :::
 :::
 
@@ -315,7 +304,7 @@ funding_df[funding_df['coin'] == 'ETH']['usdc'].cumsum().plot(figsize=(12, 6), t
 
 ---
 
-[source](https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L240){target="_blank" style="float:right; font-size:smaller"}
+[source](https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L246){target="_blank" style="float:right; font-size:smaller"}
 
 ### get_user_ledger_updates
 
@@ -541,7 +530,7 @@ In order to validate these results, you can use the Hyperliquid Portfolio. Log-i
 
 ---
 
-[source](https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L381){target="_blank" style="float:right; font-size:smaller"}
+[source](https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L387){target="_blank" style="float:right; font-size:smaller"}
 
 ### get_account_summary
 
@@ -625,11 +614,11 @@ if summary:
 
 ::: {.cell-output .cell-output-stdout}
 ```
-PnL: {'@151': -6.2, 'ETH': 5.89}
+PnL: {'@151': -6.41, 'ETH': 6.02}
 ============================================================
 ACCOUNT SUMMARY
 ============================================================
-When(UTC):                2025-11-04 20:54:48
+When(UTC):                2025-12-05 00:30:28
 
 Deposit/Withdrawal History:
   Total Deposits:    $91.26
@@ -637,18 +626,18 @@ Deposit/Withdrawal History:
   Net Deposits:      $91.26
 
 Current Account Value:
-  Total Value:       $91.06
-    Spot Balance:    $28.78
-    Perp Balance:     $62.28
+  Total Value:       $91.10
+    Spot Balance:    $28.57
+    Perp Balance:     $62.53
 
 Perpetual Positions:
-  Position Value: $16.86
-  Unrealized perp PnL:    $5.89
-  Cash in Perp accout:    $45.41
+  Position Value: $16.97
+  Unrealized perp PnL:    $1.87
+  Cash in Perp accout:    $45.55
 
 Profit/Loss:
-  Total P&L:         $-0.20
-  P&L Percentage:    -0.22%
+  Total P&L:         $-0.16
+  P&L Percentage:    -0.18%
 ============================================================
 ```
 :::
@@ -703,44 +692,44 @@ df
       <td>11.285100</td>
       <td>1.00</td>
       <td>11.285100</td>
-      <td>0.0000</td>
-      <td>1.0</td>
       <td>0.000000</td>
+      <td>1.0</td>
+      <td>0.00000</td>
       <td>0.000000</td>
       <td>0.0</td>
       <td>0.000000</td>
       <td>spot</td>
-      <td>2025-11-04 20:54:48.906</td>
+      <td>2025-12-05 00:30:28.972</td>
     </tr>
     <tr>
       <th>1</th>
       <td>@151</td>
       <td>0.005496</td>
-      <td>3183.05</td>
-      <td>17.494520</td>
-      <td>-6.2000</td>
+      <td>3145.55</td>
+      <td>17.288415</td>
+      <td>-6.410000</td>
       <td>1.0</td>
-      <td>0.000000</td>
+      <td>0.00000</td>
       <td>0.000000</td>
       <td>0.0</td>
       <td>0.000000</td>
       <td>spot</td>
-      <td>2025-11-04 20:54:48.906</td>
+      <td>2025-12-05 00:30:28.972</td>
     </tr>
     <tr>
       <th>2</th>
       <td>ETH</td>
-      <td>-0.005300</td>
-      <td>3181.95</td>
-      <td>16.864335</td>
-      <td>5.8904</td>
+      <td>-0.005400</td>
+      <td>3143.15</td>
+      <td>16.973010</td>
+      <td>1.873973</td>
       <td>1.0</td>
-      <td>0.258832</td>
-      <td>14640.706437</td>
+      <td>0.09943</td>
+      <td>14433.467502</td>
       <td>25.0</td>
-      <td>-0.136997</td>
+      <td>-0.258885</td>
       <td>perp</td>
-      <td>2025-11-04 20:54:48.906</td>
+      <td>2025-12-05 00:30:28.972</td>
     </tr>
   </tbody>
 </table>
@@ -752,10 +741,5 @@ df
 
 ## Trade
 
-::: {#f6d84ba2 .cell}
-``` {.python .cell-code}
-#[i for i in dir(exchange) if i.startswith('sp')]
-```
-:::
-
+TODO ....
 
