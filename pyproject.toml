@@ -1,3 +1,30 @@
 [build-system]
-requires = ["setuptools>=64.0"]
+requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "token_data"
+dynamic = ["version"]
+description = "Token data from a series of sources"
+readme = "README.md"
+requires-python = ">=3.14"
+license = {text = "Apache-2.0"}
+authors = [{name = "Christian Silva", email = "csilva@idatafactory.com"}]
+keywords = ['nbdev', 'jupyter', 'notebook', 'python']
+classifiers = ["Natural Language :: English", "Intended Audience :: Developers", "Development Status :: 3 - Alpha", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3 :: Only"]
+dependencies = ['fastcore', 'pandas', 'numpy', 'matplotlib', 'pyarrow', 'requests', 'eth-account', 'hyperliquid-python-sdk', 'ccxt']
+
+[project.urls]
+Repository = "https://github.com/silvaac/token_data"
+Documentation = "https://silvaac.github.io/token_data"
+
+[project.entry-points.nbdev]
+token_data = "token_data._modidx:d"
+
+[tool.setuptools.dynamic]
+version = {attr = "token_data.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["token_data"]
+
+[tool.nbdev]
