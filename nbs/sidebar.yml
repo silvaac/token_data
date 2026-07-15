@@ -2,6 +2,12 @@ website:
   sidebar:
     contents:
       - index.ipynb
+      - binance.ipynb
       - coinbase.ipynb
       - hyper_account.ipynb
       - hyperliquid.ipynb
+      - kraken.ipynb
+      - kucoin.ipynb
+      - nbdev.yml
+      - sidebar.yml
+      - styles.css

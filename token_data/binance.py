@@ -4,7 +4,7 @@
 __all__ = ['binance_available', 'retry_fetch_ohlcv', 'scrape_ohlcv', 'ohlcv_to_df', 'binance_ohlcv', 'binance_usdt_tokens',
            'save_file', 'symbol_to_file_name', 'file_name_to_symbol', 'binance_to_file']
 
-# %% ../nbs/binance.ipynb #708eea71
+# %% ../nbs/binance.ipynb #79385eba
 import os
 import time
 import datetime as dt
@@ -12,7 +12,7 @@ from datetime import datetime
 import pandas as pd
 import ccxt
 
-# %% ../nbs/binance.ipynb #a8ecbca8
+# %% ../nbs/binance.ipynb #91e7e6bc
 def binance_available(exchange_id='binance', timeout=10000):
     """
     Check whether the Binance API is reachable from this machine.
@@ -35,7 +35,7 @@ def binance_available(exchange_id='binance', timeout=10000):
         print(f"{exchange_id} API not reachable: {e}")
         return False
 
-# %% ../nbs/binance.ipynb #216fdf50
+# %% ../nbs/binance.ipynb #6b0efed6
 def retry_fetch_ohlcv(exchange, max_retries, symbol, timeframe, since, limit, verbose=False):
     """
     Fetch a single page of OHLCV candles from an exchange, retrying on failure.
@@ -71,7 +71,7 @@ def retry_fetch_ohlcv(exchange, max_retries, symbol, timeframe, since, limit, ve
             print(f"Error fetching {symbol}: {error}. Retry {num_retries}/{max_retries}")
             time.sleep(2)
 
-# %% ../nbs/binance.ipynb #7b5875d0
+# %% ../nbs/binance.ipynb #c7c2436d
 def scrape_ohlcv(exchange, symbol, timeframe, since, end=None, max_retries=3, limit=1000, verbose=False):
     """
     Download OHLCV candles in pages of `limit` bars between `since` and `end`.
@@ -113,7 +113,7 @@ def scrape_ohlcv(exchange, symbol, timeframe, since, end=None, max_retries=3, li
             break
     return exchange.filter_by_since_limit(all_ohlcv, since, None, key=0)
 
-# %% ../nbs/binance.ipynb #0701a84d
+# %% ../nbs/binance.ipynb #c0f46f40
 def ohlcv_to_df(ohlcv, symbol):
     """
     Convert a raw ccxt OHLCV list into a tidy DataFrame.
@@ -137,7 +137,7 @@ def ohlcv_to_df(ohlcv, symbol):
     df = df.drop_duplicates(subset='datetime').sort_values('datetime').reset_index(drop=True)
     return df
 
-# %% ../nbs/binance.ipynb #322876d7
+# %% ../nbs/binance.ipynb #831307b5
 def binance_ohlcv(symbol='BTC/USDT', timeframe='1h', since=None, end=None,
                   max_retries=3, limit=1000, exchange=None, exchange_id='binance', verbose=False):
     """
@@ -169,7 +169,7 @@ def binance_ohlcv(symbol='BTC/USDT', timeframe='1h', since=None, end=None,
                          max_retries=max_retries, limit=limit, verbose=verbose)
     return ohlcv_to_df(ohlcv, symbol)
 
-# %% ../nbs/binance.ipynb #3dfe4129
+# %% ../nbs/binance.ipynb #b60f2efc
 def binance_usdt_tokens(exchange=None, exchange_id='binance'):
     """
     Retrieves all active Binance spot trading pairs quoted in USDT.
@@ -195,7 +195,7 @@ def binance_usdt_tokens(exchange=None, exchange_id='binance'):
             for m in markets.values() if m.get('spot', False) and m['quote'] == 'USDT']
     return pd.DataFrame(rows)
 
-# %% ../nbs/binance.ipynb #9143debb
+# %% ../nbs/binance.ipynb #d684de9d
 def save_file(df, folder_path, file_name, type="parquet"):
     """
     Save a pandas DataFrame to a file in either CSV or Parquet format.
@@ -218,7 +218,7 @@ def save_file(df, folder_path, file_name, type="parquet"):
     else:
         raise ValueError(f"Type {type} not supported. Use 'csv' or 'parquet'")
 
-# %% ../nbs/binance.ipynb #368e5a63
+# %% ../nbs/binance.ipynb #00cfd3d0
 def symbol_to_file_name(symbol, timeframe='1h'):
     """
     Convert a ccxt symbol and timeframe into a file name (without extension).
@@ -237,7 +237,7 @@ def file_name_to_symbol(file_name):
     pair = base.rsplit('_', 1)[0]
     return pair.replace('-', '/')
 
-# %% ../nbs/binance.ipynb #ba7fee4c
+# %% ../nbs/binance.ipynb #4e0291c2
 def binance_to_file(folder_path="../data/binance", token_list=['BTC/USDT', 'ETH/USDT'], type="parquet",
                     timeframe='1h', refresh_hours=24, first_date='2021-01-01T00:00:00Z',
                     all_tokens=True, pause=1, exchange_id='binance', verbose=False):

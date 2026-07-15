@@ -8,7 +8,7 @@ __all__ = ['setup', 'retrieve_hyperliquid_perp_price', 'spot_tickers', 'retrieve
            'retrieve_hyperliquid_l2_snapshot', 'hyperliquid_mids', 'save_hyperliquid_file', 'HyperliquidDataManager',
            'HyperliquidPerpManager', 'HyperliquidSpotManager', 'HyperliquidFundingManager']
 
-# %% ../nbs/hyperliquid.ipynb #5d9cce2c
+# %% ../nbs/hyperliquid.ipynb #9461e849
 #from nbdev.showdoc import *
 import json
 #from typing import List, Dict, Tuple, Optional, Union, Any, Callable
@@ -25,7 +25,7 @@ from datetime import datetime
 import datetime as dt
 import numpy as np
 
-# %% ../nbs/hyperliquid.ipynb #6c47f971
+# %% ../nbs/hyperliquid.ipynb #ba927309
 def setup(base_url=None, skip_ws=False, perp_dexs=None,config='../config_hyperliquid.json',debug=False):
     # This function is copied from hyperliquid-python-sdk/examples/example_utils.py
     # for setting up the environment in our script.
@@ -54,7 +54,7 @@ def setup(base_url=None, skip_ws=False, perp_dexs=None,config='../config_hyperli
     exchange = Exchange(account, base_url, account_address=address, perp_dexs=perp_dexs)
     return address, info, exchange
 
-# %% ../nbs/hyperliquid.ipynb #6d150392
+# %% ../nbs/hyperliquid.ipynb #b09c8dee
 def retrieve_hyperliquid_perp_price(coin="ETH", interval="1h", 
                                 end_date=datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
                                 start_date=(datetime.now(dt.timezone.utc)-pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -132,7 +132,7 @@ def retrieve_hyperliquid_perp_price(coin="ETH", interval="1h",
         print(f"Error retrieving candles for {coin}: {e}")
         return None
 
-# %% ../nbs/hyperliquid.ipynb #e9328c98
+# %% ../nbs/hyperliquid.ipynb #75e9e9fc
 def spot_tickers(coin="ETH", base='USDC',info=None):
     """
     Retrieves current tickers for a given coin.
@@ -189,7 +189,7 @@ def spot_tickers(coin="ETH", base='USDC',info=None):
             return i['name']
     return None                
 
-# %% ../nbs/hyperliquid.ipynb #d94bce54
+# %% ../nbs/hyperliquid.ipynb #89784415
 def retrieve_hyperliquid_spot_price(coin="ETH", base='USDC',interval="1h", 
                                 end_date=datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
                                 start_date=(datetime.now(dt.timezone.utc)-pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -225,7 +225,7 @@ def retrieve_hyperliquid_spot_price(coin="ETH", base='USDC',interval="1h",
         print(f"Error retrieving price for {coin}: {e}")
         return None
 
-# %% ../nbs/hyperliquid.ipynb #f5cebd10
+# %% ../nbs/hyperliquid.ipynb #5dadf3a4
 def hyperliquid_tokens(info=None,rm_delisted=True):
     if info is None:
         from hyperliquid.info import Info
@@ -242,11 +242,11 @@ def hyperliquid_tokens(info=None,rm_delisted=True):
     df = df.loc[(~df['isDelisted']) & (~df['onlyIsolated'])]
     return df
 
-# %% ../nbs/hyperliquid.ipynb #37f54b2c
+# %% ../nbs/hyperliquid.ipynb #311912f3
 def funding_calc(rate,premium,max_rate=0.0005,min_rate=-0.0005):
     return premium+max(min(rate-premium, max_rate), min_rate)
 
-# %% ../nbs/hyperliquid.ipynb #896b6ab7
+# %% ../nbs/hyperliquid.ipynb #e76d939a
 def retrieve_hyperliquid_funding_history(coin="ETH", 
                                         end_date=datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
                                         start_date=(datetime.now(dt.timezone.utc)-pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -333,7 +333,7 @@ def retrieve_hyperliquid_funding_history(coin="ETH",
         print(f"Error retrieving funding history for {coin}: {e}")
         return None
 
-# %% ../nbs/hyperliquid.ipynb #a61cd77d
+# %% ../nbs/hyperliquid.ipynb #7fb4332f
 def retrieve_hyperliquid_data(ticker="ETH", 
                               data_type="perp",
                               start_date=None,
@@ -463,7 +463,7 @@ def retrieve_hyperliquid_data(ticker="ETH",
         print(f"Error retrieving {data_type} data for {ticker}: {e}")
         return None
 
-# %% ../nbs/hyperliquid.ipynb #bdeba621
+# %% ../nbs/hyperliquid.ipynb #2e034a08
 def retrieve_hyperliquid_l2_snapshot(coin="ETH", info=None):
     """
     Retrieves current L2 order book snapshot from Hyperliquid for a given coin.
@@ -540,7 +540,7 @@ def retrieve_hyperliquid_l2_snapshot(coin="ETH", info=None):
         print(f"Error retrieving L2 snapshot for {coin}: {e}")
         return None
 
-# %% ../nbs/hyperliquid.ipynb #907c8c33
+# %% ../nbs/hyperliquid.ipynb #3d91a3ba
 def hyperliquid_mids(coin=None,info=None,typecast_to_float=True):
     """
     Retrieves current mid prices from Hyperliquid for specified coins or all available coins.
@@ -588,7 +588,7 @@ def hyperliquid_mids(coin=None,info=None,typecast_to_float=True):
         return None
 
 
-# %% ../nbs/hyperliquid.ipynb #b9bc656f
+# %% ../nbs/hyperliquid.ipynb #1c628f71
 def save_hyperliquid_file(df, folder_path, file_name, type="parquet"):
     """
     Save a pandas DataFrame to a file in either CSV or Parquet format.
@@ -614,7 +614,7 @@ def save_hyperliquid_file(df, folder_path, file_name, type="parquet"):
     else:
         raise ValueError(f"Type {type} not supported. Use 'csv' or 'parquet'")
 
-# %% ../nbs/hyperliquid.ipynb #2c0dfb97
+# %% ../nbs/hyperliquid.ipynb #e730130b
 class HyperliquidDataManager:
     """
     Base class for managing Hyperliquid data files.
@@ -844,7 +844,7 @@ class HyperliquidDataManager:
         else:
             raise ValueError("ticker must be None, str, or list")
 
-# %% ../nbs/hyperliquid.ipynb #36e81e6f
+# %% ../nbs/hyperliquid.ipynb #65667df4
 class HyperliquidPerpManager(HyperliquidDataManager):
     """
     Manager for Hyperliquid perpetual futures data.
@@ -1118,7 +1118,7 @@ class HyperliquidPerpManager(HyperliquidDataManager):
         
         return df
 
-# %% ../nbs/hyperliquid.ipynb #89f0e65f
+# %% ../nbs/hyperliquid.ipynb #a479bf41
 class HyperliquidSpotManager(HyperliquidDataManager):
     """
     Manager for Hyperliquid spot market data.
@@ -1385,7 +1385,7 @@ class HyperliquidSpotManager(HyperliquidDataManager):
         
         return df
 
-# %% ../nbs/hyperliquid.ipynb #b738db79
+# %% ../nbs/hyperliquid.ipynb #42407e72
 class HyperliquidFundingManager(HyperliquidDataManager):
     """
     Manager for Hyperliquid funding rate data.

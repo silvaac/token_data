@@ -4,7 +4,7 @@
 __all__ = ['retrieve_coinbase_price', 'coinbase_tokens', 'coinbase_usd_tokens', 'coinbase_price_history', 'save_file',
            'coinbase_to_file', 'coinbase_data_update', 'read_all_files', 'coinbase_price_last_day', 'binance_format']
 
-# %% ../nbs/coinbase.ipynb #273e33b5
+# %% ../nbs/coinbase.ipynb #e5e0f792
 from datetime import datetime
 import pandas as pd
 import requests
@@ -13,7 +13,7 @@ import datetime as dt
 import time
 
 
-# %% ../nbs/coinbase.ipynb #26b5041b
+# %% ../nbs/coinbase.ipynb #236e725e
 def retrieve_coinbase_price(pair="BTC-USD", time_interval=3600,
                           end_date=datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ'),
                           start_date=(datetime.now()-pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ')):
@@ -65,7 +65,7 @@ def retrieve_coinbase_price(pair="BTC-USD", time_interval=3600,
     return df
 
 
-# %% ../nbs/coinbase.ipynb #8f5e2952
+# %% ../nbs/coinbase.ipynb #a13df1f2
 def coinbase_tokens():
     """
     Retrieves all available trading pairs from the Coinbase Exchange API.
@@ -90,7 +90,7 @@ def coinbase_tokens():
     return pd.DataFrame(currencies_data)
 
 
-# %% ../nbs/coinbase.ipynb #1395b06b
+# %% ../nbs/coinbase.ipynb #043f5287
 def coinbase_usd_tokens():
     """
     Retrieves all trading pairs from Coinbase that have USD as the quote currency.
@@ -110,7 +110,7 @@ def coinbase_usd_tokens():
     return tokens[tokens['quote_currency']=='USD']
 
 
-# %% ../nbs/coinbase.ipynb #0969367f
+# %% ../nbs/coinbase.ipynb #e368bf5a
 def coinbase_price_history(pair='BTC-USD', start_date='2024-01-01', end_date='2024-05-01', time_interval=3600, max_pull=250, verbose=False):
     """
     Downloads historical price data for a cryptocurrency pair from Coinbase, handling rate limits.
@@ -171,7 +171,7 @@ def coinbase_price_history(pair='BTC-USD', start_date='2024-01-01', end_date='20
     df = df.drop_duplicates(subset='datetime').reset_index(drop=True)
     return df
 
-# %% ../nbs/coinbase.ipynb #83462db1
+# %% ../nbs/coinbase.ipynb #edcf5bed
 def save_file(df, folder_path, file_name, type="csv"):
     """
     Save a pandas DataFrame to a file in either CSV or Parquet format.
@@ -190,7 +190,7 @@ def save_file(df, folder_path, file_name, type="csv"):
     elif type == "parquet":
         df.to_parquet(f"{folder_path}/{file_name}.parquet")
 
-# %% ../nbs/coinbase.ipynb #34366f22
+# %% ../nbs/coinbase.ipynb #153f736e
 def coinbase_to_file(folder_path="../data/coinbase",token_list=coinbase_usd_tokens()['id'].tolist(),type="csv",
                      interval=3600,all_tokens=True,refresh_24h=False,pause=0):
     """
@@ -273,7 +273,7 @@ def coinbase_to_file(folder_path="../data/coinbase",token_list=coinbase_usd_toke
         if pause > 0:
             time.sleep(pause)
 
-# %% ../nbs/coinbase.ipynb #783d455d
+# %% ../nbs/coinbase.ipynb #b10eaabb
 def coinbase_data_update(folder_path="../data/coinbase",token='AAVE-USD',type="parquet",
                      interval=3600,refresh_24h=True):
     """
@@ -335,7 +335,7 @@ def coinbase_data_update(folder_path="../data/coinbase",token='AAVE-USD',type="p
                                         time_interval=interval)
     return df
 
-# %% ../nbs/coinbase.ipynb #4759194e
+# %% ../nbs/coinbase.ipynb #08e5024a
 def read_all_files(folder_path="../data/coinbase",type="csv"):
     """Read and combine all files from a folder into a single DataFrame.
     
@@ -363,7 +363,7 @@ def read_all_files(folder_path="../data/coinbase",type="csv"):
 
 
 
-# %% ../nbs/coinbase.ipynb #7fe5a267
+# %% ../nbs/coinbase.ipynb #ac13b812
 def coinbase_price_last_day(pair='BTC-USD'):
     """
     Fetch the last day's price for a given Coinbase token.
@@ -382,7 +382,7 @@ def coinbase_price_last_day(pair='BTC-USD'):
     # return the last price
     return data
 
-# %% ../nbs/coinbase.ipynb #00da129e
+# %% ../nbs/coinbase.ipynb #695d6473
 def binance_format(df):
     """
     Convert coinbase dataframe to binance format.
