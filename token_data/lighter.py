@@ -118,6 +118,11 @@ def scrape_candles(market_id, timeframe, since, end=None, max_retries=3, limit=5
     """
     Download candles in pages of `limit` bars between `since` and `end`.
 
+    Lighter's `count_back` parameter returns the most recent N candles before
+    `end_timestamp`, so we paginate **backwards**: after each fetch, we move
+    `end_timestamp` to just before the oldest candle received and repeat until
+    we reach `since` or the API returns no more data.
+
     Args:
         market_id (int): Lighter market ID
         timeframe (str): Candle timeframe (e.g. '1m', '1h', '1d')
@@ -142,21 +147,21 @@ def scrape_candles(market_id, timeframe, since, end=None, max_retries=3, limit=5
         end = int(pd.Timestamp(end, tz='UTC').timestamp())
     end = min(end, now_sec)
     all_candles = []
-    fetch_since = since
-    remain_bars = (end - fetch_since) / tf_sec + 1
-    while fetch_since < end and remain_bars > 0:
-        batch = int(min(limit, remain_bars))
-        if batch < 1:
-            break
-        candles = retry_fetch_candles(market_id, resolution, fetch_since, end,
-                                       count_back=batch, max_retries=max_retries,
+    fetch_end = end
+    while fetch_end > since:
+        candles = retry_fetch_candles(market_id, resolution, since, fetch_end,
+                                       count_back=limit, max_retries=max_retries,
                                        base_url=base_url, verbose=verbose)
         if not candles:
             break
         all_candles.extend(candles)
-        last_t_ms = candles[-1]['t']
-        fetch_since = last_t_ms // 1000 + tf_sec
-        remain_bars = (end - fetch_since) / tf_sec + 1
+        oldest_t_sec = candles[0]['t'] // 1000
+        if oldest_t_sec <= since:
+            break
+        fetch_end = oldest_t_sec - tf_sec
+        if verbose:
+            print(f"  Paginating: {len(all_candles)} candles so far, "
+                  f"next end={pd.Timestamp(fetch_end, unit='s', tz='UTC')}")
         time.sleep(0.1)
     return all_candles
 
