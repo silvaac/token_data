@@ -2,18 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://silvaac.github.io/token_data/coinbase.html</loc>
-    <lastmod>2025-12-05T00:33:28.724Z</lastmod>
+    <lastmod>2026-07-26T23:48:04.925Z</lastmod>
   </url>
   <url>
-    <loc>https://silvaac.github.io/token_data/hyperliquid.html</loc>
-    <lastmod>2025-12-05T00:40:55.134Z</lastmod>
+    <loc>https://silvaac.github.io/token_data/kraken.html</loc>
+    <lastmod>2026-07-26T23:48:04.449Z</lastmod>
+  </url>
+  <url>
+    <loc>https://silvaac.github.io/token_data/kucoin.html</loc>
+    <lastmod>2026-07-26T23:48:04.447Z</lastmod>
   </url>
   <url>
     <loc>https://silvaac.github.io/token_data/hyper_account.html</loc>
-    <lastmod>2025-12-05T00:33:28.498Z</lastmod>
+    <lastmod>2026-07-26T23:42:10.710Z</lastmod>
+  </url>
+  <url>
+    <loc>https://silvaac.github.io/token_data/binance.html</loc>
+    <lastmod>2026-07-26T23:48:04.450Z</lastmod>
+  </url>
+  <url>
+    <loc>https://silvaac.github.io/token_data/hyperliquid.html</loc>
+    <lastmod>2026-07-26T23:42:10.746Z</lastmod>
   </url>
   <url>
     <loc>https://silvaac.github.io/token_data/index.html</loc>
-    <lastmod>2025-12-05T00:33:28.179Z</lastmod>
+    <lastmod>2026-07-26T23:42:10.247Z</lastmod>
+  </url>
+  <url>
+    <loc>https://silvaac.github.io/token_data/lighter.html</loc>
+    <lastmod>2026-07-26T23:48:04.133Z</lastmod>
   </url>
 </urlset>

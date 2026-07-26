@@ -8,6 +8,4 @@ website:
       - hyperliquid.ipynb
       - kraken.ipynb
       - kucoin.ipynb
-      - nbdev.yml
-      - sidebar.yml
-      - styles.css
+      - lighter.ipynb

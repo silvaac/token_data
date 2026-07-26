@@ -16,16 +16,19 @@ Function to list all trades and fills for a given account.
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L13"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L15"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### get_user_fills
 
->  get_user_fills (address, info=None, aggregated=False,
->                      include_hash_oid=False)
+``` python
+def get_user_fills(
+    address, info:NoneType=None, aggregated:bool=False, include_hash_oid:bool=False
+):
+```
 
-\*Retrieves user fill history from Hyperliquid and returns as a
-DataFrame.
+*Retrieves user fill history from Hyperliquid and returns as a
+DataFrame.*
 
 Args: address (str): User’s wallet address info (Info, optional):
 Hyperliquid Info client. If None, creates a new one. aggregated (bool,
@@ -55,7 +58,7 @@ info=info)
 
 Notes: - DataFrame is indexed by datetime (converted from
 milliseconds) - All numeric columns are converted to float for
-calculations - Sorted by datetime in ascending order\*
+calculations - Sorted by datetime in ascending order
 
 ``` python
 fills_df = get_user_fills(address, info=info)
@@ -123,17 +126,20 @@ is what your account is paying or receiving in USDC per hour.
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L118"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L120"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### get_user_funding_history
 
->  get_user_funding_history (address, start_date=None, end_date=None,
->                                lookback=30, info=None,
->                                include_hash_time=False)
+``` python
+def get_user_funding_history(
+    address, start_date:NoneType=None, end_date:NoneType=None, lookback:int=30, info:NoneType=None,
+    include_hash_time:bool=False
+):
+```
 
-\*Retrieves user funding payment history from Hyperliquid and returns as
-a DataFrame.
+*Retrieves user funding payment history from Hyperliquid and returns as
+a DataFrame.*
 
 Args: address (str): User’s wallet address start_date (str, optional):
 Start date as string. Can be: - ISO format: “2024-01-15T10:30:00Z” or
@@ -169,7 +175,7 @@ Notes: - DataFrame is indexed by datetime (converted from
 milliseconds) - Positive usdc values indicate funding received -
 Negative usdc values indicate funding paid - All numeric columns are
 converted to float for calculations - Sorted by datetime in ascending
-order\*
+order
 
 ``` python
 # Get last 30 days of funding payments
@@ -243,16 +249,20 @@ funding_df[funding_df['coin'] == 'ETH']['usdc'].cumsum().plot(figsize=(12, 6), t
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L246"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L248"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### get_user_ledger_updates
 
->  get_user_ledger_updates (address, start_date=None, end_date=None,
->                               lookback=30, info=None, include_hash=False)
+``` python
+def get_user_ledger_updates(
+    address, start_date:NoneType=None, end_date:NoneType=None, lookback:int=30, info:NoneType=None,
+    include_hash:bool=False
+):
+```
 
-\*Retrieves user non-funding ledger updates from Hyperliquid and returns
-as a DataFrame.
+*Retrieves user non-funding ledger updates from Hyperliquid and returns
+as a DataFrame.*
 
 This function captures account events like deposits, withdrawals,
 transfers, and other non-funding related balance changes.
@@ -300,7 +310,7 @@ calculations - Sorted by datetime in ascending order - Does not include
 funding payments (use get_user_funding_history for that) - Common
 transaction types: \* ‘deposit’: Deposits to account \* ‘withdraw’:
 Withdrawals from account \* ‘accountClassTransfer’: Transfers between
-spot and perpetual accounts\*
+spot and perpetual accounts
 
 ``` python
 # Test the function
@@ -447,15 +457,19 @@ Portfolio. Log-in Hyperliquid and navegate to the “Portfolio” page/tab.
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L387"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L389"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### get_account_summary
 
->  get_account_summary (address, info=None, lookback_days=3650)
+``` python
+def get_account_summary(
+    address, info:NoneType=None, lookback_days:int=3650
+):
+```
 
-\*Retrieves a comprehensive account summary including deposits,
-withdrawals, and current value.
+*Retrieves a comprehensive account summary including deposits,
+withdrawals, and current value.*
 
 Args: address (str): User’s wallet address info (Info, optional):
 Hyperliquid Info client. If None, creates a new one. lookback_days (int,
@@ -486,7 +500,7 @@ Notes: - All values are in USDC - P&L includes both realized and
 unrealized gains/losses - Current value = spot balance + perp margin +
 current position values - Uses current market prices from
 info.all_mids() to value positions - Requires access to user_state,
-spot_user_state, and ledger updates\*
+spot_user_state, and ledger updates
 
 Deposit history is correct, same as previous function.
 

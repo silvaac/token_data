@@ -23,12 +23,15 @@ target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### retrieve_coinbase_price
 
->  retrieve_coinbase_price (pair='BTC-USD', time_interval=3600,
->                               end_date='2025-12-04T19:33:28Z',
->                               start_date='2025-12-02T19:33:28Z')
+``` python
+def retrieve_coinbase_price(
+    pair:str='BTC-USD', time_interval:int=3600, end_date:str='2026-07-26T19:48:04Z',
+    start_date:str='2026-07-24T19:48:04Z'
+):
+```
 
-\*Retrieves historical price data from Coinbase for a given trading pair
-and time interval.
+*Retrieves historical price data from Coinbase for a given trading pair
+and time interval.*
 
 Makes a GET request to the Coinbase candles endpoint to fetch OHLCV
 (Open, High, Low, Close, Volume) data for the specified trading pair and
@@ -51,7 +54,7 @@ symbol Returns None if the API request fails or returns no data.
 Notes: - Limited to 300 requests per hour by the Coinbase API - Maximum
 of 200 candles can be retrieved per request - Attempting to exceed these
 limits will result in an error and return None - All datetime values are
-in UTC timezone\*
+in UTC timezone
 
 ------------------------------------------------------------------------
 
@@ -61,9 +64,11 @@ target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### coinbase_tokens
 
->  coinbase_tokens ()
+``` python
+def coinbase_tokens():
+```
 
-\*Retrieves all available trading pairs from the Coinbase Exchange API.
+*Retrieves all available trading pairs from the Coinbase Exchange API.*
 
 Makes a GET request to the Coinbase products endpoint to fetch
 information about all trading pairs available on the exchange.
@@ -75,7 +80,7 @@ quote_currency: The currency used for pricing (e.g. ‘USD’) -
 quote_increment: Minimum price increment - base_increment: Minimum
 quantity increment - display_name: Human readable name of the trading
 pair - status: Trading status of the pair And other metadata columns
-provided by the Coinbase API\*
+provided by the Coinbase API
 
 ------------------------------------------------------------------------
 
@@ -85,10 +90,12 @@ target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### coinbase_usd_tokens
 
->  coinbase_usd_tokens ()
+``` python
+def coinbase_usd_tokens():
+```
 
-\*Retrieves all trading pairs from Coinbase that have USD as the quote
-currency.
+*Retrieves all trading pairs from Coinbase that have USD as the quote
+currency.*
 
 Returns: pandas.DataFrame: DataFrame containing information about USD
 trading pairs with columns: - id: Trading pair ID (e.g. ‘BTC-USD’) -
@@ -97,7 +104,7 @@ quote_currency: Always ‘USD’ for this filtered dataset -
 quote_increment: Minimum price increment - base_increment: Minimum
 quantity increment - display_name: Human readable name of the trading
 pair - status: Trading status of the pair And other metadata columns
-provided by the Coinbase API\*
+provided by the Coinbase API
 
 ------------------------------------------------------------------------
 
@@ -107,12 +114,15 @@ target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### coinbase_price_history
 
->  coinbase_price_history (pair='BTC-USD', start_date='2024-01-01',
->                              end_date='2024-05-01', time_interval=3600,
->                              max_pull=250, verbose=False)
+``` python
+def coinbase_price_history(
+    pair:str='BTC-USD', start_date:str='2024-01-01', end_date:str='2024-05-01', time_interval:int=3600,
+    max_pull:int=250, verbose:bool=False
+):
+```
 
-\*Downloads historical price data for a cryptocurrency pair from
-Coinbase, handling rate limits.
+*Downloads historical price data for a cryptocurrency pair from
+Coinbase, handling rate limits.*
 
 Args: pair (str): Trading pair symbol (e.g. ‘BTC-USD’). Defaults to
 ‘BTC-USD’. start_date (str): Start date in ‘YYYY-MM-DD’ format. Defaults
@@ -133,7 +143,7 @@ Raises: ValueError: If end_date is earlier than start_date
 
 The function handles Coinbase’s API limitations by automatically
 splitting requests into smaller chunks if the date range would exceed
-the maximum allowed candles per request.\*
+the maximum allowed candles per request.
 
 ------------------------------------------------------------------------
 
@@ -143,9 +153,13 @@ target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### save_file
 
->  save_file (df, folder_path, file_name, type='csv')
+``` python
+def save_file(
+    df, folder_path, file_name, type:str='csv'
+):
+```
 
-\*Save a pandas DataFrame to a file in either CSV or Parquet format.
+*Save a pandas DataFrame to a file in either CSV or Parquet format.*
 
 Args: df (pandas.DataFrame): The DataFrame to save folder_path (str):
 Directory path where the file will be saved file_name (str): Name of the
@@ -154,7 +168,7 @@ or “parquet”. Defaults to “csv”
 
 The function saves the DataFrame to the specified path, handling the
 file extension automatically. For CSV files, the index is not saved. For
-Parquet files, default Parquet settings are used.\*
+Parquet files, default Parquet settings are used.
 
 ------------------------------------------------------------------------
 
@@ -164,105 +178,16 @@ target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### coinbase_to_file
 
->  coinbase_to_file (folder_path='../data/coinbase', token_list=['LOOM-USD',
->                        'USELESS-USD', 'BONK-USD', 'TONE-USD', 'SEI-USD',
->                        'MAMO-USD', 'W-USD', 'IOTX-USD', 'JASMY-USD', 'RAI-
->                        USD', 'RNDR-USD', 'ATOM-USD', 'DBR-USD', 'LIT-USD',
->                        'OMNI-USD', 'TRUST-USD', 'MOBILE-USD', 'BCH-USD',
->                        'SWELL-USD', 'CLANKER-USD', 'DYP-USD', 'IO-USD', 'ALT-
->                        USD', 'FAI-USD', 'USDT-USD', 'FLR-USD', 'MSOL-USD',
->                        'WLD-USD', 'NEON-USD', 'WAXL-USD', 'FORTH-USD', 'GLM-
->                        USD', 'BAT-USD', 'SYN-USD', 'REZ-USD', 'NU-USD', 'AAVE-
->                        USD', 'COSMOSDYDX-USD', 'HOME-USD', 'OCEAN-USD', 'SAFE-
->                        USD', 'ORN-USD', 'BADGER-USD', 'GFI-USD', 'XRP-USD',
->                        'NEAR-USD', 'PENDLE-USD', 'WMTX-USD', 'REQ-USD',
->                        'ASTER-USD', 'NEWT-USD', 'XLM-USD', 'QSP-USD', 'BUSD-
->                        USD', 'FLOKI-USD', 'ZRO-USD', 'TIA-USD', 'DOLO-USD',
->                        'ANT-USD', 'AURORA-USD', 'YFI-USD', 'HBAR-USD', 'PRCL-
->                        USD', 'VOXEL-USD', 'XCN-USD', 'DOT-USD', 'TROLL-USD',
->                        'CRPT-USD', 'AERO-USD', 'OSMO-USD', 'BERA-USD', 'POL-
->                        USD', 'OP-USD', 'LA-USD', 'GALA-USD', 'NOM-USD', 'DIA-
->                        USD', 'KMNO-USD', 'SKY-USD', 'PRQ-USD', 'IP-USD',
->                        'G-USD', 'MONA-USD', 'MOVE-USD', 'ALLO-USD', 'BIO-USD',
->                        'DRIFT-USD', 'MINA-USD', 'LRC-USD', 'POND-USD', 'ORCA-
->                        USD', 'TNSR-USD', 'GHST-USD', 'BLAST-USD', 'AIOZ-USD',
->                        'IDEX-USD', 'TURBO-USD', 'GODS-USD', 'GYEN-USD',
->                        'METIS-USD', 'SUP-USD', 'MATIC-USD', 'MKR-USD', 'PYTH-
->                        USD', 'OOKI-USD', 'RARI-USD', 'QUICK-USD', 'FARTCOIN-
->                        USD', 'KAITO-USD', 'MUSD-USD', 'BOBBOB-USD', 'CVX-USD',
->                        'BOND-USD', 'SPK-USD', 'SWFTC-USD', 'PRO-USD', 'AVAX-
->                        USD', 'API3-USD', 'DOGINME-USD', 'XAN-USD', 'ME-USD',
->                        'COTI-USD', 'XTZ-USD', 'LSETH-USD', 'ZETA-USD', 'GNO-
->                        USD', 'ANKR-USD', 'SKL-USD', 'MAGIC-USD', 'NMR-USD',
->                        'SHIB-USD', 'MIR-USD', 'USD1-USD', 'USDS-USD', 'ZRX-
->                        USD', 'JITOSOL-USD', 'RSC-USD', 'S-USD', 'KTA-USD',
->                        'MLN-USD', 'RONIN-USD', 'BNT-USD', 'LINEA-USD', 'ZK-
->                        USD', 'ERA-USD', 'RPL-USD', 'PRIME-USD', 'ERN-USD',
->                        'NKN-USD', 'SEAM-USD', 'YFII-USD', 'AWE-USD', 'POPCAT-
->                        USD', 'AST-USD', 'AMP-USD', 'ARKM-USD', 'DAR-USD',
->                        'ENS-USD', 'SXT-USD', 'RLC-USD', 'LDO-USD', 'MXC-USD',
->                        'JUP-USD', 'WELL-USD', 'POLY-USD', 'MCO2-USD', 'FX-
->                        USD', 'BNB-USD', 'ALCX-USD', 'CORECHAIN-USD', 'LCX-
->                        USD', 'MANTLE-USD', 'LAYER-USD', '1INCH-USD', 'ASM-
->                        USD', 'OMG-USD', 'ZKC-USD', 'CGLD-USD', 'REP-USD',
->                        'BLZ-USD', 'EUL-USD', 'BICO-USD', 'PNG-USD', 'PIRATE-
->                        USD', 'APT-USD', 'SAPIEN-USD', 'BOBA-USD', 'ALEO-USD',
->                        'MPLX-USD', 'CELR-USD', 'QI-USD', 'XPL-USD', 'NEST-
->                        USD', 'CRO-USD', 'UNFI-USD', 'POWR-USD', 'GRT-USD',
->                        'FIDA-USD', 'ZORA-USD', 'MULTI-USD', 'COOKIE-USD',
->                        'COVAL-USD', 'PENGU-USD', 'BTRST-USD', 'TRAC-USD',
->                        'SAND-USD', 'MET-USD', 'BAL-USD', 'AERGO-USD', 'BARD-
->                        USD', 'ONDO-USD', 'SNX-USD', 'CAKE-USD', 'PUNDIX-USD',
->                        'BAND-USD', 'IMX-USD', 'DREP-USD', 'CVC-USD', 'ATH-
->                        USD', 'PNUT-USD', 'FET-USD', 'RLY-USD', 'ATA-USD',
->                        'WLUNA-USD', 'UST-USD', 'NOICE-USD', 'AXL-USD',
->                        '00-USD', 'ZEC-USD', 'AKT-USD', 'EGLD-USD', 'MEDIA-
->                        USD', 'ADA-USD', 'MTL-USD', 'MUSE-USD', 'UMA-USD',
->                        'INJ-USD', 'RLS-USD', 'AGLD-USD', 'RARE-USD', 'CTSI-
->                        USD', 'ENA-USD', '2Z-USD', 'APR-USD', 'EURC-USD', 'ENJ-
->                        USD', 'KITE-USD', 'UNI-USD', 'RAD-USD', 'VARA-USD',
->                        'GST-USD', 'KRL-USD', 'SPELL-USD', 'GIGA-USD', 'MPL-
->                        USD', 'SNT-USD', 'SQD-USD', 'KAVA-USD', 'AUCTION-USD',
->                        'ETC-USD', 'GTC-USD', 'CFG-USD', 'SD-USD', 'WCT-USD',
->                        'PYR-USD', 'SHPING-USD', 'SYLO-USD', 'DESO-USD', 'GUSD-
->                        USD', 'POLS-USD', 'MASK-USD', 'BLUR-USD', 'RGT-USD',
->                        'ARPA-USD', 'CHZ-USD', 'VTHO-USD', 'GAL-USD', 'IRYS-
->                        USD', 'DNT-USD', 'MON-USD', 'COW-USD', 'STX-USD', 'ACX-
->                        USD', 'ACS-USD', 'DEGEN-USD', 'RENDER-USD', 'HIGH-USD',
->                        'LPT-USD', 'MNDE-USD', 'YB-USD', 'FOX-USD', 'KNC-USD',
->                        'ALICE-USD', 'WCFG-USD', 'ARB-USD', 'LTC-USD', 'STORJ-
->                        USD', 'LRDS-USD', 'QNT-USD', 'DEXT-USD', 'KERNEL-USD',
->                        'ZETACHAIN-USD', 'C98-USD', 'APE-USD', 'FLUID-USD',
->                        'LINK-USD', 'VELO-USD', 'REN-USD', 'KSM-USD', 'PYUSD-
->                        USD', 'SYRUP-USD', 'STG-USD', 'ALEPH-USD', 'GMT-USD',
->                        'L3-USD', 'STRK-USD', 'SUSHI-USD', 'CBETH-USD',
->                        'PROMPT-USD', 'FLOW-USD', 'WBTC-USD', 'SUKU-USD', 'DDX-
->                        USD', 'PAXG-USD', 'SHDW-USD', 'PERP-USD', 'BTC-USD',
->                        'SPX-USD', 'TOSHI-USD', 'HOPR-USD', 'NCT-USD',
->                        'B3-USD', 'ZEN-USD', 'T-USD', 'ETHFI-USD', 'ABT-USD',
->                        'EOS-USD', 'A8-USD', 'DAI-USD', 'AVT-USD', 'ALGO-USD',
->                        'MORPHO-USD', 'EIGEN-USD', 'OXT-USD', 'TRIBE-USD',
->                        'TREE-USD', 'SUI-USD', 'BIGTIME-USD', 'EDGE-USD', 'JTO-
->                        USD', 'MANA-USD', 'CLV-USD', 'HONEY-USD', 'TIME-USD',
->                        'TAO-USD', 'BIT-USD', 'SUPER-USD', 'ETH-USD', 'TOWNS-
->                        USD', 'FIS-USD', 'RSR-USD', 'KEYCAT-USD', 'TRUMP-USD',
->                        'OGN-USD', 'MDT-USD', 'DOGE-USD', 'FORT-USD', 'SPA-
->                        USD', 'TON-USD', 'ELA-USD', 'AUDIO-USD', 'VVV-USD',
->                        'PLU-USD', 'PEPE-USD', 'ICP-USD', 'PAX-USD', 'UPI-USD',
->                        'KEEP-USD', 'RBN-USD', 'SOL-USD', 'TVK-USD', 'AVNT-
->                        USD', 'HFT-USD', 'HNT-USD', 'WIF-USD', 'FARM-USD',
->                        'AXS-USD', 'KARRAT-USD', 'FLOCK-USD', 'INV-USD', 'XYO-
->                        USD', 'LQTY-USD', 'BNKR-USD', 'RECALL-USD', 'WAMPL-
->                        USD', 'VET-USD', 'MATH-USD', 'DASH-USD', 'FIL-USD',
->                        'DIMO-USD', 'MOODENG-USD', 'WLFI-USD', 'PROVE-USD',
->                        'CTX-USD', 'CRV-USD', 'INDEX-USD', 'TRU-USD', 'SYND-
->                        USD', 'ACH-USD', 'PLA-USD', 'MOG-USD', 'LOKA-USD',
->                        'ROSE-USD', 'RED-USD', 'PUMP-USD', 'VGX-USD', 'COMP-
->                        USD', 'ILV-USD', 'TRB-USD'], type='csv', interval=3600,
->                        all_tokens=True, refresh_24h=False, pause=0)
+``` python
+def coinbase_to_file(
+    folder_path:str='../data/coinbase',
+    token_list:list=['STX-USD', 'POLS-USD', 'TOSHI-USD', 'SYN-USD', 'BTC-USD', 'DIMO-USD', 'GTC-USD', 'ETHFI-USD', 'TRUMP-USD', 'JUPITER-USD', 'RAI-USD', 'RE-USD', 'KAIO-USD', 'WAL-USD', 'CLV-USD', 'UNFI-USD', 'ALCX-USD', 'DASH-USD', 'MONA-USD', 'SOL-USD', 'BIGTIME-USD', 'DRIFT-USD', 'IMU-USD', 'ACH-USD', 'PRCL-USD', 'REZ-USD', 'NEWT-USD', 'DESO-USD', 'ANT-USD', 'HBAR-USD', 'ARPA-USD', 'OPN-USD', 'MPL-USD', 'INDEX-USD', 'IDEX-USD', 'BERA-USD', 'OMNI-USD', 'BIT-USD', 'SYND-USD', 'RED-USD', 'RAY-USD', 'BOND-USD', 'HONEY-USD', 'YB-USD', 'POND-USD', 'ALLO-USD', 'PYR-USD', 'BICO-USD', 'ETC-USD', 'AVNT-USD', 'SYRUP-USD', 'AIOZ-USD', 'PIRATE-USD', 'LA-USD', 'O-USD', 'API3-USD', 'KMNO-USD', 'SEAM-USD', 'ARB-USD', 'OCEAN-USD', 'RSC-USD', 'VELO-USD', 'CHECK-USD', 'XLM-USD', 'BLEND-USD', 'NOICE-USD', 'FLUID-USD', 'ALT-USD', 'ME-USD', 'TVK-USD', 'GNO-USD', 'BIO-USD', 'MOVE-USD', 'PEPE-USD', 'CELR-USD', 'DEEP-USD', 'JASMY-USD', 'WELL-USD', 'RAD-USD', 'SUP-USD', 'JTO-USD', 'GAL-USD', 'ENA-USD', 'GWEI-USD', 'BUSD-USD', 'ALEO-USD', 'KARRAT-USD', 'SKY-USD', 'VET-USD', 'NEST-USD', 'LAYER-USD', 'BIRB-USD', 'ASM-USD', 'DNT-USD', 'GODS-USD', 'CBETH-USD', 'MOODENG-USD', 'ZETACHAIN-USD', 'CTSI-USD', 'DOGE-USD', 'CHIP-USD', 'PUNDIX-USD', 'AKT-USD', 'POPCAT-USD', 'ABT-USD', 'ATH-USD', 'ZKP-USD', 'ARX-USD', 'XTZ-USD', 'ALICE-USD', 'WIF-USD', 'MEZO-USD', 'UMA-USD', 'IMX-USD', 'SPELL-USD', 'HNT-USD', 'RONIN-USD', 'PLUME-USD', 'FARM-USD', 'CFG-USD', '2Z-USD', 'RLC-USD', 'WMTX-USD', 'CRO-USD', 'BAT-USD', 'ORCA-USD', 'SWFTC-USD', 'RAVE-USD', 'ASTER-USD', 'AVT-USD', 'EIGEN-USD', 'GROVE-USD', 'BTRST-USD', 'BNT-USD', 'MANA-USD', 'MAMO-USD', 'RGT-USD', 'VGX-USD', 'AURORA-USD', 'RLS-USD', 'KRL-USD', 'ACS-USD', 'PUMP-USD', 'KAT-USD', 'LMTS-USD', 'HYPE-USD', 'SYLO-USD', 'OOKI-USD', 'BNB-USD', 'OSMO-USD', 'MSOL-USD', 'GHST-USD', 'ZKC-USD', 'OPG-USD', 'TURBO-USD', 'MEGA-USD', 'PLU-USD', 'S-USD', 'ZK-USD', 'RPL-USD', 'CRV-USD', 'PROS-USD', 'FAI-USD', 'USDS-USD', 'NEON-USD', 'IOTX-USD', 'HYPER-USD', 'SXT-USD', 'EGLD-USD', 'LRDS-USD', 'VARA-USD', 'COOKIE-USD', 'VOXEL-USD', 'INV-USD', 'XYO-USD', 'WET-USD', 'ZORA-USD', 'QNT-USD', 'FOX-USD', 'KTA-USD', 'RARI-USD', 'ALEPH-USD', 'WCFG-USD', 'ZRO-USD', 'REP-USD', 'TRU-USD', 'DYP-USD', 'FUN1-USD', 'ELSA-USD', 'VVV-USD', 'ATA-USD', 'OMG-USD', 'CHZ-USD', 'SHIB-USD', 'XRP-USD', 'ZRX-USD', 'PERP-USD', 'DIEM-USD', 'MIR-USD', 'WCT-USD', 'VTHO-USD', 'ICNT-USD', 'TROLL-USD', 'RSR-USD', 'PAXG-USD', 'DOLO-USD', 'WLUNA-USD', 'MOBILE-USD', 'SD-USD', 'BASED1-USD', 'AUDIO-USD', 'C98-USD', 'BLAST-USD', 'PENGU-USD', 'MXC-USD', 'UNI-USD', 'LCX-USD', 'MNDE-USD', 'LINEA-USD', 'MKR-USD', 'FIL-USD', 'FARTCOIN-USD', 'EURC-USD', 'BONK-USD', 'OGN-USD', 'PRL-USD', 'SUPER-USD', 'ONDO-USD', 'HOME-USD', 'DBR-USD', 'APR-USD', 'NCT-USD', 'WBTC-USD', 'PENDLE-USD', 'WRON-USD', 'BILL-USD', 'COVAL-USD', 'SUKU-USD', 'INJ-USD', 'CTR-USD', 'HIGH-USD', 'SIGN-USD', 'QSP-USD', 'DAR-USD', 'EDGEX-USD', 'TOWNS-USD', 'MLN-USD', 'AUCTION-USD', '00-USD', 'REQ-USD', 'APT-USD', 'AWE-USD', 'USD1-USD', 'LIGHTER-USD', 'POL-USD', 'CTX-USD', 'FIGHT-USD', 'KNC-USD', 'SNX-USD', 'VIRTUAL-USD', 'UPI-USD', 'XPL-USD', 'NEAR-USD', 'WLFI-USD', 'GALA-USD', 'GLM-USD', 'BARD-USD', 'REN-USD', 'COW-USD', 'SAND-USD', 'QI-USD', 'RNDR-USD', 'DIA-USD', 'HOPR-USD', 'GUSD-USD', 'T-USD', 'AI-USD', 'PNUT-USD', 'COMP-USD', 'ATOM-USD', 'DOOD-USD', 'POWR-USD', 'SHPING-USD', 'MAGIC-USD', 'MORPHO-USD', 'TNSR-USD', 'ANKR-USD', 'BNKR-USD', 'LOKA-USD', 'FET-USD', 'SPX-USD', 'TRUST-USD', 'BOBBOB-USD', 'NOM-USD', 'LDO-USD', 'APE-USD', 'THQ-USD', 'CAP-USD', 'BADGER-USD', 'ENJ-USD', 'LRC-USD', 'IP-USD', 'MCO2-USD', 'WAMPL-USD', 'MANTLE-USD', 'MUSE-USD', 'JITOSOL-USD', 'META-USD', 'RBN-USD', 'YFI-USD', 'FIDA-USD', 'AAVE-USD', 'BAL-USD', 'DREP-USD', 'XAN-USD', 'CORECHAIN-USD', 'GIGA-USD', 'JUP-USD', 'ROBO-USD', 'FLOKI-USD', 'LTC-USD', 'CRPT-USD', 'SENT-USD', 'AMP-USD', 'SKL-USD', 'DDX-USD', 'TIME-USD', 'LINK-USD', 'USELESS-USD', 'ZAMA-USD', 'BLZ-USD', 'WAXL-USD', 'NMR-USD', 'FX-USD', 'DOT-USD', 'TAO-USD', 'W-USD', 'SUI-USD', 'COSMOSDYDX-USD', 'DEGEN-USD', 'GYEN-USD', 'MINA-USD', 'TRB-USD', 'FLOW-USD', 'SEI-USD', 'ALGO-USD', 'TON-USD', 'AZTEC-USD', 'HFT-USD', 'CVC-USD', 'SUSHI-USD', 'MET-USD', 'COTI-USD', 'PYUSD-USD', 'B3-USD', 'ACX-USD', 'ERA-USD', 'USDT-USD', 'BOBA-USD', 'EDGE-USD', 'FORT-USD', 'PNG-USD', 'PROVE-USD', 'ZEC-USD', 'L3-USD', 'MTL-USD', 'LQTY-USD', 'GMT-USD', 'BLUR-USD', 'STG-USD', 'PRO-USD', 'YFII-USD', 'POLY-USD', 'STRK-USD', 'NEX-USD', 'UP-USD', 'NKN-USD', 'ADA-USD', 'TRIA-USD', 'DEXT-USD', 'ILV-USD', 'XCN-USD', 'GEOD-USD', 'SNT-USD', 'MON-USD', 'MUSD-USD', 'MATIC-USD', 'EOS-USD', 'WLD-USD', 'EUL-USD', 'MOG-USD', 'ICP-USD', 'NU-USD', 'KEYCAT-USD', 'AXS-USD', 'KAITO-USD', 'AST-USD', 'ERN-USD', 'STORJ-USD', 'GFI-USD', 'MDT-USD', 'MEDIA-USD', 'PROMPT-USD', 'CLANKER-USD', 'MULTI-USD', 'AGLD-USD', 'TRAC-USD', 'BCH-USD', 'BREV-USD', 'FORTH-USD', 'RLY-USD', 'ARKM-USD', 'CVX-USD', 'KSM-USD', 'A8-USD', 'ELA-USD', 'IO-USD', 'SPA-USD', 'INX-USD', 'LPT-USD', 'LOOM-USD', 'KEEP-USD', 'AVAX-USD', 'PAX-USD', 'PYTH-USD', 'G-USD', 'ETH-USD', 'TREE-USD', 'GRT-USD', 'SWELL-USD', 'UST-USD', 'CAKE-USD', 'PRQ-USD', 'PRIME-USD', 'OXT-USD', 'IRYS-USD', 'SPK-USD', 'KITE-USD', 'AERO-USD', 'RENDER-USD', 'TRIBE-USD', 'AXL-USD', 'CGLD-USD', 'SKR-USD', 'KERNEL-USD', 'MATH-USD', '1INCH-USD', 'DRV-USD', 'ZEN-USD', 'SAPIEN-USD', 'TONE-USD', 'RARE-USD', 'ROSE-USD', 'MPLX-USD', 'DAI-USD', 'AERGO-USD', 'FIS-USD', 'ENS-USD', 'QUICK-USD', 'FLR-USD', 'OP-USD', 'GST-USD', 'ESP-USD', 'METIS-USD', 'ORN-USD', 'RNBW-USD', 'DOGINME-USD', 'SAFE-USD', 'ZETA-USD', 'SQD-USD', 'FLOCK-USD', 'LIT-USD', 'MASK-USD', 'BAND-USD', 'TIA-USD', 'PLA-USD', 'SHDW-USD', 'KAVA-USD', 'BEAM-USD', 'RECALL-USD', 'LSETH-USD'],
+    type:str='csv', interval:int=3600, all_tokens:bool=True, refresh_24h:bool=False, pause:int=0
+):
+```
 
-\*Downloads and maintains historical price data for Coinbase tokens,
-saving to files.
+*Downloads and maintains historical price data for Coinbase tokens,
+saving to files.*
 
 Args: folder_path (str): Path where token data files will be stored.
 Defaults to “../data/coinbase” token_list (list): List of token IDs to
@@ -279,7 +204,7 @@ is UTC - For each token, checks if data file exists: - If exists: Loads
 file and appends any new data since last recorded date - If not exists:
 Downloads full history starting from 2016 - Saves data in specified
 format, handling duplicates and sorting by date - For hourly data
-(interval=3600), aligns to hour boundaries\*
+(interval=3600), aligns to hour boundaries
 
 ------------------------------------------------------------------------
 
@@ -289,10 +214,14 @@ target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### coinbase_data_update
 
->  coinbase_data_update (folder_path='../data/coinbase', token='AAVE-USD',
->                            type='parquet', interval=3600, refresh_24h=True)
+``` python
+def coinbase_data_update(
+    folder_path:str='../data/coinbase', token:str='AAVE-USD', type:str='parquet', interval:int=3600,
+    refresh_24h:bool=True
+):
+```
 
-\*Downloads new historical price data for Coinbase tokens… no saving
+*Downloads new historical price data for Coinbase tokens… no saving*
 
 Args: folder_path (str): Path where token data files will be stored.
 Defaults to “../data/coinbase” token (str): token IDs to process type
@@ -306,7 +235,7 @@ Returns: df (pandas.DataFrame): DataFrame of historical price data
 The function: - Date/Time is UTC - For each token, checks if data file
 exists: - If exists: Loads file and appends any new data since last
 recorded date - If not exists: Downloads full history starting from
-2016 - For hourly data (interval=3600), aligns to hour boundaries\*
+2016 - For hourly data (interval=3600), aligns to hour boundaries
 
 ------------------------------------------------------------------------
 
@@ -316,9 +245,13 @@ target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### read_all_files
 
->  read_all_files (folder_path='../data/coinbase', type='csv')
+``` python
+def read_all_files(
+    folder_path:str='../data/coinbase', type:str='csv'
+):
+```
 
-\*Read and combine all files from a folder into a single DataFrame.
+*Read and combine all files from a folder into a single DataFrame.*
 
 Args: folder_path (str): Path to the folder containing the files.
 Defaults to “../data/coinbase”. type (str): File type to read - either
@@ -328,7 +261,7 @@ Returns: pandas.DataFrame: Combined DataFrame containing data from all
 files in the folder.
 
 Raises: ValueError: If file type is not supported (must be “csv” or
-“parquet”).\*
+“parquet”).
 
 ------------------------------------------------------------------------
 
@@ -338,15 +271,19 @@ target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### coinbase_price_last_day
 
->  coinbase_price_last_day (pair='BTC-USD')
+``` python
+def coinbase_price_last_day(
+    pair:str='BTC-USD'
+):
+```
 
-\*Fetch the last day’s price for a given Coinbase token. This fuction is
+*Fetch the last day’s price for a given Coinbase token.* This fuction is
 a helper function around coinbase_price_history().
 
 Args: pair (str): Coinbase token pair, e.g., “BTC-USD”. Defaults to
 “BTC-USD”.
 
-Returns: pandas dataframe: Last 24 hours price data.\*
+Returns: pandas dataframe: Last 24 hours price data.
 
 ------------------------------------------------------------------------
 
@@ -356,13 +293,17 @@ target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### binance_format
 
->  binance_format (df)
+``` python
+def binance_format(
+    df
+):
+```
 
-\*Convert coinbase dataframe to binance format.
+*Convert coinbase dataframe to binance format.*
 
 Args: df (pandas dataframe): Coinbase dataframe.
 
-Returns: pandas dataframe: Binance format dataframe.\*
+Returns: pandas dataframe: Binance format dataframe.
 
 ## Examples
 
@@ -621,7 +562,6 @@ print(df)
 Download the last day’s price for AAVE-USD:
 
 ``` python
-# eval: false
 coinbase_price_last_day(pair='AAVE-USD')
 ```
 

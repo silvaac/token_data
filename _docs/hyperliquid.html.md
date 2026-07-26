@@ -10,19 +10,80 @@
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L27"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L31"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### setup
 
->  setup (base_url=None, skip_ws=False, perp_dexs=None,
->             config='../config_hyperliquid.json', debug=False)
+``` python
+def setup(
+    base_url:NoneType=None, skip_ws:bool=False, perp_dexs:NoneType=None, config:str='../config_hyperliquid.json',
+    debug:bool=False
+):
+```
+
+*Call self as a function.*
 
 ### Example
 
 ``` python
 address, info, exchange = setup(base_url=constants.MAINNET_API_URL, skip_ws=True)
 ```
+
+## HIP-3 / RWA dex support
+
+### Helper functions for resolving builder-dex tickers (e.g. XLE → xyz:XLE)
+
+Hyperliquid hosts third-party perpetual markets on “builder dexes”
+(HIP-3). These tickers use a `dex:COIN` naming convention
+(e.g. `xyz:XLE`). The helpers below let every data-download function
+transparently resolve a plain ticker like `"XLE"` to `"xyz:XLE"` and
+fall back to a raw HTTP request when the Python SDK’s internal name map
+doesn’t know the coin.
+
+------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L78"
+target="_blank" style="float:right; font-size:smaller">source</a>
+
+### resolve_hyperliquid_ticker
+
+``` python
+def resolve_hyperliquid_ticker(
+    coin, info:NoneType=None, base_url:NoneType=None
+):
+```
+
+*Resolve a plain ticker to its dex-prefixed form if needed.*
+
+- If *coin* already contains ‘:’ it is returned as-is.
+- If *coin* exists in the native perp universe it is returned as-is.
+- Otherwise each HIP-3 dex universe is searched for `{dex}:{coin}`.
+- Results are cached so repeated calls are cheap.
+
+Args: coin (str): Ticker such as `"ETH"` or `"XLE"`. info (Info,
+optional): SDK Info client (used for native universe check). base_url
+(str, optional): API base URL override.
+
+Returns: str: Resolved ticker (e.g. `"xyz:XLE"`). Falls back to *coin*
+unchanged if nothing is found.
+
+------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L73"
+target="_blank" style="float:right; font-size:smaller">source</a>
+
+### hyperliquid_perp_dexs
+
+``` python
+def hyperliquid_perp_dexs(
+    base_url:NoneType=None
+):
+```
+
+*Return list of perp dex name strings (’’ = native, ‘xyz’, etc.).*
 
 ## Get historical prerpetual price data
 
@@ -31,20 +92,23 @@ address, info, exchange = setup(base_url=constants.MAINNET_API_URL, skip_ws=True
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L56"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L138"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### retrieve_hyperliquid_perp_price
 
->  retrieve_hyperliquid_perp_price (coin='ETH', interval='1h',
->                                       end_date='2025-12-05T00:40:55Z',
->                                       start_date='2025-12-03T00:40:55Z',
->                                       info=None)
+``` python
+def retrieve_hyperliquid_perp_price(
+    coin:str='ETH', interval:str='1h', end_date:str='2026-07-26T23:42:10Z', start_date:str='2026-07-24T23:42:10Z',
+    info:NoneType=None
+):
+```
 
-\*Retrieves historical candle data from Hyperliquid for a given coin and
-time interval.
+*Retrieves historical candle data from Hyperliquid for a given coin and
+time interval.*
 
-Args: coin (str, optional): Coin symbol (e.g. “ETH”). Defaults to “ETH”.
+Args: coin (str, optional): Coin symbol (e.g. “ETH”, “XLE”). Defaults to
+“ETH”. Plain RWA tickers are auto-resolved (e.g. “XLE” → “xyz:XLE”).
 interval (str, optional): Candle interval (“1m”, “5m”, “15m”, “1h”,
 “4h”, “1d”). Defaults to “1h”. end_date (str, optional): End datetime in
 ISO 8601 format. Defaults to current UTC time. start_date (str,
@@ -60,7 +124,7 @@ interval - volume: Trading volume in the interval - coin: Coin symbol
 Returns None if the API request fails or returns no data.
 
 Notes: - All datetime values are in UTC timezone - Requires Hyperliquid
-Info client to be initialized\*
+Info client to be initialized
 
 ### Example
 
@@ -82,12 +146,12 @@ perp = retrieve_hyperliquid_perp_price(coin="ETH", interval="1h",info=info)
 print(perp.head())
 ```
 
-                 datetime    open    high     low   close      volume coin
-    0 2025-12-03 00:00:00  2994.7  3007.5  2984.3  3001.9  16407.3455  ETH
-    1 2025-12-03 01:00:00  3002.3  3026.6  2998.1  3014.7   7931.4838  ETH
-    2 2025-12-03 02:00:00  3014.6  3046.4  3013.3  3030.1  16840.5078  ETH
-    3 2025-12-03 03:00:00  3029.6  3037.0  3019.8  3029.6  13628.3697  ETH
-    4 2025-12-03 04:00:00  3029.6  3058.8  3028.4  3055.4  15111.4473  ETH
+                 datetime    open    high     low   close     volume coin
+    0 2026-07-24 23:00:00  1858.8  1861.1  1858.1  1861.0  2792.8168  ETH
+    1 2026-07-25 00:00:00  1860.7  1863.7  1856.3  1859.3  4137.4891  ETH
+    2 2026-07-25 01:00:00  1859.3  1862.6  1857.4  1859.3  4557.0876  ETH
+    3 2026-07-25 02:00:00  1859.3  1860.7  1857.3  1858.3  4404.2636  ETH
+    4 2026-07-25 03:00:00  1858.3  1859.5  1854.8  1858.3  4298.4131  ETH
 
 ## List of spot tickers
 
@@ -96,14 +160,18 @@ print(perp.head())
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L134"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L237"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### spot_tickers
 
->  spot_tickers (coin='ETH', base='USDC', info=None)
+``` python
+def spot_tickers(
+    coin:str='ETH', base:str='USDC', info:NoneType=None
+):
+```
 
-\*Retrieves current tickers for a given coin.
+*Retrieves current tickers for a given coin.*
 
 Args: coin (str, optional): Coin symbol (e.g. “ETH”). Defaults to “ETH”.
 base (str, optional): Coin symbol (e.g. “USDC”). Defaults to “USDC”.
@@ -113,7 +181,7 @@ one.
 Returns: spot ticker (non intuitive symbol) Returns None if the API
 request fails or returns no data.
 
-Notes: - Requires Hyperliquid Info client to be initialized\*
+Notes: - Requires Hyperliquid Info client to be initialized
 
 ### Example
 
@@ -131,15 +199,19 @@ print(f'spot ticker for ETH: ', stk)
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L191"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L294"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### retrieve_hyperliquid_spot_price
 
->  retrieve_hyperliquid_spot_price (coin='ETH', base='USDC', interval='1h',
->                                       end_date='2025-12-05T00:40:55Z',
->                                       start_date='2025-12-03T00:40:55Z',
->                                       info=None, recheck=False)
+``` python
+def retrieve_hyperliquid_spot_price(
+    coin:str='ETH', base:str='USDC', interval:str='1h', end_date:str='2026-07-26T23:42:10Z',
+    start_date:str='2026-07-24T23:42:10Z', info:NoneType=None, recheck:bool=False
+):
+```
+
+*Call self as a function.*
 
 ### Example
 
@@ -153,11 +225,11 @@ print(spot.tail())
 ```
 
                   datetime    open    high     low   close    volume coin
-    44 2025-12-04 20:00:00  3120.6  3145.6  3106.6  3143.1  202.4952  ETH
-    45 2025-12-04 21:00:00  3141.0  3154.2  3120.0  3123.9  339.5227  ETH
-    46 2025-12-04 22:00:00  3125.1  3148.6  3124.4  3144.5   44.5737  ETH
-    47 2025-12-04 23:00:00  3141.9  3144.7  3130.9  3133.9   54.7757  ETH
-    48 2025-12-05 00:00:00  3133.9  3156.3  3133.4  3147.9   35.9388  ETH
+    44 2026-07-26 19:00:00  1913.0  1913.8  1910.2  1912.5  336.0437  ETH
+    45 2026-07-26 20:00:00  1912.5  1912.9  1910.2  1912.1  136.4614  ETH
+    46 2026-07-26 21:00:00  1912.8  1927.2  1912.2  1923.9  139.3486  ETH
+    47 2026-07-26 22:00:00  1924.4  1951.0  1924.4  1948.5  461.1441  ETH
+    48 2026-07-26 23:00:00  1951.1  1964.7  1948.5  1959.5  142.2609  ETH
 
 If you want to find out which ticker is used for a given coin, you can
 use the
@@ -178,12 +250,30 @@ print(f'spot ticker for ETH: ', stk)
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L227"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L330"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### hyperliquid_tokens
 
->  hyperliquid_tokens (info=None, rm_delisted=True)
+``` python
+def hyperliquid_tokens(
+    info:NoneType=None, rm_delisted:bool=True, dex:NoneType=None
+):
+```
+
+*List perpetual tokens available on Hyperliquid.*
+
+Args: info (Info, optional): SDK Info client. Created automatically if
+*None*. rm_delisted (bool): Remove delisted and isolated-only tokens
+(default *True*). dex (str, optional): Which perp dex universe to query.
+
+        - ``None`` (default) – native perps only (unchanged legacy behaviour).
+        - A dex name string (e.g. ``"xyz"``) – that builder-dex universe.
+          Returned ``name`` values are already prefixed (e.g. ``"xyz:XLE"``).
+        - ``"all"`` – concatenates native **and** every HIP-3 dex universe.
+
+Returns: pandas.DataFrame with columns `szDecimals`, `name`,
+`maxLeverage`, etc.
 
 ### Example
 
@@ -192,18 +282,18 @@ tokens = hyperliquid_tokens(info)
 print(tokens)
 ```
 
-         szDecimals  name  maxLeverage  marginTableId  isDelisted  onlyIsolated  \
-    0             5   BTC           40             56       False         False   
-    1             4   ETH           25             55       False         False   
-    2             2  ATOM            5              5       False         False   
-    4             1  DYDX            5              5       False         False   
-    5             2   SOL           20             54       False         False   
-    ..          ...   ...          ...            ...         ...           ...   
-    215           0   MON            5              5       False         False   
-    216           0   MET            3              3       False         False   
-    218           0    CC            3              3       False         False   
-    219           1   ICP            5              5       False         False   
-    220           0  AERO            3              3       False         False   
+         szDecimals   name  maxLeverage  marginTableId  isDelisted  onlyIsolated  \
+    0             5    BTC           40             56       False         False   
+    1             4    ETH           25             55       False         False   
+    2             2   ATOM            5              5       False         False   
+    4             1   DYDX            5              5       False         False   
+    5             2    SOL           20             54       False         False   
+    ..          ...    ...          ...            ...         ...           ...   
+    226           2   DASH            5              5       False         False   
+    227           0    SKR            3              3       False         False   
+    228           0  AZTEC            3              3       False         False   
+    229           0   CHIP            3              3       False         False   
+    230           0   GRAM            5              5       False         False   
 
         marginMode  
     0          NaN  
@@ -212,13 +302,13 @@ print(tokens)
     4          NaN  
     5          NaN  
     ..         ...  
-    215        NaN  
-    216        NaN  
-    218        NaN  
-    219        NaN  
-    220        NaN  
+    226        NaN  
+    227        NaN  
+    228        NaN  
+    229        NaN  
+    230        NaN  
 
-    [183 rows x 7 columns]
+    [176 rows x 7 columns]
 
 ## Get funding rate history
 
@@ -227,30 +317,39 @@ print(tokens)
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L244"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L390"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### funding_calc
 
->  funding_calc (rate, premium, max_rate=0.0005, min_rate=-0.0005)
+``` python
+def funding_calc(
+    rate, premium, max_rate:float=0.0005, min_rate:float=-0.0005
+):
+```
+
+*Call self as a function.*
 
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L248"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L394"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### retrieve_hyperliquid_funding_history
 
->  retrieve_hyperliquid_funding_history (coin='ETH',
->                                            end_date='2025-12-05T00:40:55Z',
->                                            start_date='2025-12-03T00:40:55Z',
->                                            info=None, calc=False)
+``` python
+def retrieve_hyperliquid_funding_history(
+    coin:str='ETH', end_date:str='2026-07-26T23:42:10Z', start_date:str='2026-07-24T23:42:10Z', info:NoneType=None,
+    calc:bool=False
+):
+```
 
-\*Retrieves funding rate history from Hyperliquid for a given coin and
-time period.
+*Retrieves funding rate history from Hyperliquid for a given coin and
+time period.*
 
-Args: coin (str, optional): Coin symbol (e.g. “ETH”). Defaults to “ETH”.
+Args: coin (str, optional): Coin symbol (e.g. “ETH”, “XLE”). Defaults to
+“ETH”. Plain RWA tickers are auto-resolved (e.g. “XLE” → “xyz:XLE”).
 end_date (str, optional): End datetime in ISO 8601 format. Defaults to
 current UTC time. start_date (str, optional): Start datetime in ISO 8601
 format. Defaults to 7 days before end_date. info (Info, optional):
@@ -264,7 +363,7 @@ data.
 
 Notes: - All datetime values are in UTC timezone - Funding rates are
 typically updated every hour - Requires Hyperliquid Info client to be
-initialized\*
+initialized
 
 ### Example
 
@@ -274,11 +373,11 @@ print(f_r.tail())
 ```
 
                       datetime  funding_rate   premium coin  fund_calc
-    43 2025-12-04 20:00:00.021      0.000009 -0.000429  ETH   0.000009
-    44 2025-12-04 21:00:00.078      0.000010 -0.000422  ETH   0.000010
-    45 2025-12-04 22:00:00.034      0.000009 -0.000427  ETH   0.000009
-    46 2025-12-04 23:00:00.015      0.000007 -0.000442  ETH   0.000007
-    47 2025-12-05 00:00:00.002      0.000006 -0.000452  ETH   0.000006
+    43 2026-07-26 19:00:00.031      0.000013 -0.000234  ETH   0.000013
+    44 2026-07-26 20:00:00.057      0.000013 -0.000285  ETH   0.000012
+    45 2026-07-26 21:00:00.001      0.000013 -0.000335  ETH   0.000012
+    46 2026-07-26 22:00:00.023      0.000013 -0.000301  ETH   0.000012
+    47 2026-07-26 23:00:00.005      0.000013 -0.000202  ETH   0.000013
 
 ## Unified function for easy data retrieval
 
@@ -287,18 +386,20 @@ print(f_r.tail())
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L335"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L498"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### retrieve_hyperliquid_data
 
->  retrieve_hyperliquid_data (ticker='ETH', data_type='perp',
->                                 start_date=None, end_date=None, lookback=2,
->                                 interval='1h', base='USDC',
->                                 round_to_hour=False, info=None)
+``` python
+def retrieve_hyperliquid_data(
+    ticker:str='ETH', data_type:str='perp', start_date:NoneType=None, end_date:NoneType=None, lookback:int=2,
+    interval:str='1h', base:str='USDC', round_to_hour:bool=False, info:NoneType=None
+):
+```
 
-\*Unified function to retrieve funding rates, perpetual prices, or spot
-prices from Hyperliquid.
+*Unified function to retrieve funding rates, perpetual prices, or spot
+prices from Hyperliquid.*
 
 Args: ticker (str, optional): Coin symbol (e.g. “ETH”, “BTC”). Defaults
 to “ETH”. data_type (str, optional): Type of data to retrieve -
@@ -341,7 +442,7 @@ round_to_hour=True, info=info)
 Notes: - All datetime values are in UTC timezone - Valid data_type
 values: “funding”, “perp”, “spot” - Funding rates are updated hourly, so
 round_to_hour=True is recommended - Requires Hyperliquid Info client to
-be initialized\*
+be initialized
 
 ### Example
 
@@ -358,31 +459,31 @@ print(funding_df.tail())
 ```
 
                    datetime  funding_rate   premium coin  fund_calc
-    163 2025-12-04 20:00:00      0.000009 -0.000429  ETH   0.000009
-    164 2025-12-04 21:00:00      0.000010 -0.000422  ETH   0.000010
-    165 2025-12-04 22:00:00      0.000009 -0.000427  ETH   0.000009
-    166 2025-12-04 23:00:00      0.000007 -0.000442  ETH   0.000007
-    167 2025-12-05 00:00:00      0.000006 -0.000452  ETH   0.000006
+    163 2026-07-26 19:00:00      0.000013 -0.000234  ETH   0.000013
+    164 2026-07-26 20:00:00      0.000013 -0.000285  ETH   0.000013
+    165 2026-07-26 21:00:00      0.000013 -0.000335  ETH   0.000013
+    166 2026-07-26 22:00:00      0.000013 -0.000301  ETH   0.000013
+    167 2026-07-26 23:00:00      0.000013 -0.000202  ETH   0.000013
 
 ``` python
 ## Example 2: Get perpetual prices with specific dates and 4h interval
 perp_df = retrieve_hyperliquid_data(
     ticker="BTC",
     data_type="perp",
-    start_date="2024-01-01",
-    end_date="2024-01-15",
+    start_date="2026-01-01",
+    end_date="2026-01-15",
     interval="4h",
     info=info
 )
 print(perp_df.tail())
 ```
 
-                  datetime     open     high      low    close     volume coin
-    80 2024-01-14 08:00:00  43034.0  43114.0  42786.0  42862.0  158.38267  BTC
-    81 2024-01-14 12:00:00  42858.0  43019.0  42743.0  42936.0  261.86230  BTC
-    82 2024-01-14 16:00:00  42936.0  43035.0  42681.0  42698.0  304.01708  BTC
-    83 2024-01-14 20:00:00  42699.0  42772.0  41762.0  41786.0  721.09226  BTC
-    84 2024-01-15 00:00:00  41779.0  42674.0  41737.0  42612.0  281.41095  BTC
+                  datetime     open     high      low    close       volume coin
+    80 2026-01-14 08:00:00  95182.0  95302.0  94714.0  94773.0   2307.95490  BTC
+    81 2026-01-14 12:00:00  94773.0  97102.0  94647.0  96737.0  13517.53853  BTC
+    82 2026-01-14 16:00:00  96737.0  97765.0  96263.0  97241.0  11110.15613  BTC
+    83 2026-01-14 20:00:00  97241.0  97949.0  96799.0  96917.0   6714.43893  BTC
+    84 2026-01-15 00:00:00  96917.0  96975.0  95747.0  95970.0   5284.50121  BTC
 
 ``` python
 ## Example 3: Get spot prices for last 30 days
@@ -398,11 +499,11 @@ print(spot_df.tail())
 ```
 
                    datetime    open    high     low   close    volume coin
-    716 2025-12-04 20:00:00  3120.6  3145.6  3106.6  3143.1  202.4952  ETH
-    717 2025-12-04 21:00:00  3141.0  3154.2  3120.0  3123.9  339.5227  ETH
-    718 2025-12-04 22:00:00  3125.1  3148.6  3124.4  3144.5   44.5737  ETH
-    719 2025-12-04 23:00:00  3141.9  3144.7  3130.9  3133.9   54.7757  ETH
-    720 2025-12-05 00:00:00  3133.9  3156.3  3133.4  3147.9   35.9388  ETH
+    716 2026-07-26 19:00:00  1913.0  1913.8  1910.2  1912.5  336.0437  ETH
+    717 2026-07-26 20:00:00  1912.5  1912.9  1910.2  1912.1  136.4614  ETH
+    718 2026-07-26 21:00:00  1912.8  1927.2  1912.2  1923.9  139.3486  ETH
+    719 2026-07-26 22:00:00  1924.4  1951.0  1924.4  1948.5  461.1441  ETH
+    720 2026-07-26 23:00:00  1951.1  1964.7  1948.5  1959.5  142.2609  ETH
 
 ``` python
 ## Example 4: Using datetime strings with time information
@@ -417,11 +518,11 @@ print(data_df.tail())
 ```
 
                   datetime    open    high     low   close      volume coin
-    44 2025-12-04 20:00:00  3117.9  3143.8  3104.4  3140.5  15553.2974  ETH
-    45 2025-12-04 21:00:00  3140.2  3150.0  3117.2  3121.8  13448.5987  ETH
-    46 2025-12-04 22:00:00  3122.1  3147.2  3121.5  3142.4  11888.6633  ETH
-    47 2025-12-04 23:00:00  3142.6  3142.6  3127.9  3131.7   4731.0506  ETH
-    48 2025-12-05 00:00:00  3131.8  3156.0  3131.4  3145.2  10706.1671  ETH
+    44 2026-07-26 19:00:00  1914.0  1915.4  1911.5  1913.6   2512.5447  ETH
+    45 2026-07-26 20:00:00  1913.6  1914.0  1910.9  1912.8   2440.3697  ETH
+    46 2026-07-26 21:00:00  1912.7  1929.9  1912.7  1925.3  13779.9050  ETH
+    47 2026-07-26 22:00:00  1925.3  1951.1  1925.3  1949.0  47844.9203  ETH
+    48 2026-07-26 23:00:00  1949.0  1967.9  1949.0  1960.5  20710.9213  ETH
 
 ``` python
 ## Example 5: Get funding rates with date-only strings
@@ -455,8 +556,8 @@ print(funding_df)
 data_df = retrieve_hyperliquid_data(
     ticker="ETH",
     data_type="perp",
-    start_date="2025-06-15T10:30:00",
-    end_date="2025-06-20T15:45:00",
+    start_date="2026-06-15T10:30:00",
+    end_date="2026-06-20T15:45:00",
     interval="1h",
     info=info
 )
@@ -492,52 +593,52 @@ data_df.tail()
 <tbody>
 <tr>
 <td data-quarto-table-cell-role="th">121</td>
-<td>2025-06-20 11:00:00</td>
-<td>2551.4</td>
-<td>2555.0</td>
-<td>2540.1</td>
-<td>2548.2</td>
-<td>27254.2428</td>
+<td>2026-06-20 11:00:00</td>
+<td>1727.5</td>
+<td>1731.1</td>
+<td>1725.9</td>
+<td>1727.1</td>
+<td>2295.1586</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">122</td>
-<td>2025-06-20 12:00:00</td>
-<td>2548.1</td>
-<td>2557.0</td>
-<td>2546.1</td>
-<td>2550.7</td>
-<td>15547.1122</td>
+<td>2026-06-20 12:00:00</td>
+<td>1727.1</td>
+<td>1730.5</td>
+<td>1723.6</td>
+<td>1726.7</td>
+<td>20751.8753</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">123</td>
-<td>2025-06-20 13:00:00</td>
-<td>2550.6</td>
-<td>2558.4</td>
-<td>2527.5</td>
-<td>2534.9</td>
-<td>32702.0042</td>
+<td>2026-06-20 13:00:00</td>
+<td>1726.6</td>
+<td>1726.6</td>
+<td>1712.7</td>
+<td>1717.3</td>
+<td>18955.0975</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">124</td>
-<td>2025-06-20 14:00:00</td>
-<td>2535.0</td>
-<td>2539.6</td>
-<td>2488.1</td>
-<td>2488.5</td>
-<td>49493.5297</td>
+<td>2026-06-20 14:00:00</td>
+<td>1717.4</td>
+<td>1745.5</td>
+<td>1708.0</td>
+<td>1733.1</td>
+<td>21337.8294</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">125</td>
-<td>2025-06-20 15:00:00</td>
-<td>2488.4</td>
-<td>2506.8</td>
-<td>2486.1</td>
-<td>2492.1</td>
-<td>42340.1040</td>
+<td>2026-06-20 15:00:00</td>
+<td>1733.2</td>
+<td>1750.0</td>
+<td>1729.3</td>
+<td>1739.6</td>
+<td>46985.6872</td>
 <td>ETH</td>
 </tr>
 </tbody>
@@ -566,19 +667,24 @@ def unix_to_datetime(t):
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L465"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L628"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### retrieve_hyperliquid_l2_snapshot
 
->  retrieve_hyperliquid_l2_snapshot (coin='ETH', info=None)
+``` python
+def retrieve_hyperliquid_l2_snapshot(
+    coin:str='ETH', info:NoneType=None
+):
+```
 
-\*Retrieves current L2 order book snapshot from Hyperliquid for a given
-coin.
+*Retrieves current L2 order book snapshot from Hyperliquid for a given
+coin.*
 
-Args: coin (str, optional): Coin symbol (e.g. “ETH”, “BTC”). Defaults to
-“ETH”. info (Info, optional): Hyperliquid Info client. If None, creates
-a new one.
+Args: coin (str, optional): Coin symbol (e.g. “ETH”, “BTC”, “XLE”).
+Defaults to “ETH”. Plain RWA tickers are auto-resolved (e.g. “XLE” →
+“xyz:XLE”). info (Info, optional): Hyperliquid Info client. If None,
+creates a new one.
 
 Returns: pandas.DataFrame: DataFrame containing the order book snapshot
 with columns: - datetime: Timestamp of the snapshot (UTC) - side: Order
@@ -589,7 +695,7 @@ None if the API request fails or returns no data.
 Notes: - This is a snapshot at the moment the function is called - All
 datetime values are in UTC timezone - Bids are sorted from highest to
 lowest price - Asks are sorted from lowest to highest price - Requires
-Hyperliquid Info client to be initialized\*
+Hyperliquid Info client to be initialized
 
 ### Example
 
@@ -607,22 +713,22 @@ print(f"Snapshot time: {l2_snapshot['datetime'].iloc[0]}")
 ```
 
                      datetime side   price     size  num_orders
-    0 2025-12-05 00:29:21.230  bid  3145.1  27.1027          10
-    1 2025-12-05 00:29:21.230  bid  3145.0  36.0446           5
-    2 2025-12-05 00:29:21.230  bid  3144.9  35.2263           4
-    3 2025-12-05 00:29:21.230  bid  3144.8  73.4864           7
-    4 2025-12-05 00:29:21.230  bid  3144.7  33.8558           7
+    0 2026-07-26 23:16:41.579  bid  1960.5   4.3721           2
+    1 2026-07-26 23:16:41.579  bid  1960.4  34.3144           4
+    2 2026-07-26 23:16:41.579  bid  1960.3   1.4367           1
+    3 2026-07-26 23:16:41.579  bid  1960.2  16.8822           4
+    4 2026-07-26 23:16:41.579  bid  1960.1  32.5682          10
                       datetime side   price      size  num_orders
-    35 2025-12-05 00:29:21.230  ask  3146.8  227.1072          10
-    36 2025-12-05 00:29:21.230  ask  3146.9   65.8934           5
-    37 2025-12-05 00:29:21.230  ask  3147.0  409.3202          42
-    38 2025-12-05 00:29:21.230  ask  3147.1  360.0039          11
-    39 2025-12-05 00:29:21.230  ask  3147.2   30.0297           3
+    35 2026-07-26 23:16:41.579  ask  1962.1  202.2812          11
+    36 2026-07-26 23:16:41.579  ask  1962.2  224.6602          15
+    37 2026-07-26 23:16:41.579  ask  1962.3  231.3283          11
+    38 2026-07-26 23:16:41.579  ask  1962.4  198.4616          13
+    39 2026-07-26 23:16:41.579  ask  1962.5  265.0086          15
 
     Total levels: 40
     Bids: 20
     Asks: 20
-    Snapshot time: 2025-12-05 00:29:21.230000
+    Snapshot time: 2026-07-26 23:16:41.579000
 
 ## Mid prices
 
@@ -631,20 +737,26 @@ print(f"Snapshot time: {l2_snapshot['datetime'].iloc[0]}")
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L542"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L715"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### hyperliquid_mids
 
->  hyperliquid_mids (coin=None, info=None, typecast_to_float=True)
+``` python
+def hyperliquid_mids(
+    coin:NoneType=None, info:NoneType=None, typecast_to_float:bool=True
+):
+```
 
-\*Retrieves current mid prices from Hyperliquid for specified coins or
-all available coins.
+*Retrieves current mid prices from Hyperliquid for specified coins or
+all available coins.*
 
-Args: coins (list, optional): List of coin symbols (e.g. \[“ETH”,
-“BTC”\]). If None, retrieves mids for all available coins. Defaults to
-None. info (Info, optional): Hyperliquid Info client. If None, creates a
-new one.
+Args: coin (str, optional): Coin symbol (e.g. “ETH”, “BTC”, “XLE”).
+Plain RWA tickers are auto-resolved (e.g. “XLE” → “xyz:XLE”). For
+HIP-3/RWA coins not in the native allMids endpoint the mid is computed
+from the L2 book. If None, retrieves mids for all available coins.
+Defaults to None. info (Info, optional): Hyperliquid Info client. If
+None, creates a new one.
 
 Returns: dictionary: Dictionary containing mid prices with keys as coin
 symbols and values as mid prices Returns None if the API request fails
@@ -655,7 +767,7 @@ hyperliquid_mids(info=info)
 
 Notes: - This is a snapshot at the moment the function is called - Mid
 price is calculated as (best_bid + best_ask) / 2 - Requires Hyperliquid
-Info client to be initialized\*
+Info client to be initialized
 
 ### Example
 
@@ -663,491 +775,951 @@ Info client to be initialized\*
 hyperliquid_mids(coin="ETH",info=info)
 ```
 
-    3145.15
+    1960.55
 
 ``` python
 hyperliquid_mids(info=info)
 ```
 
-    {'0G': 1.1473,
-     '2Z': 0.130635,
-     '@1': 22.784,
-     '@10': 3.05e-05,
-     '@100': 0.004374,
-     '@101': 0.21451,
-     '@102': 0.018967,
-     '@103': 3.534e-05,
-     '@104': 0.064286,
-     '@105': 0.379665,
-     '@106': 0.009938,
-     '@107': 33.4665,
-     '@108': 0.012217,
-     '@109': 0.00028937,
-     '@11': 0.000584,
-     '@110': 0.01078,
-     '@111': 0.044361,
-     '@112': 0.0006262,
-     '@113': 0.0001106,
-     '@114': 0.0002028,
-     '@115': 0.053924,
-     '@116': 2.334e-05,
-     '@117': 0.0011372,
-     '@118': 0.014123,
-     '@119': 0.014502,
-     '@12': 4.55e-05,
-     '@120': 0.016756,
-     '@121': 0.006519,
-     '@122': 0.009554,
-     '@123': 0.084191,
-     '@124': 0.006077,
-     '@125': 0.004406,
-     '@126': 0.085535,
-     '@127': 0.10031,
-     '@128': 0.001006,
-     '@129': 0.010247,
-     '@13': 0.00091893,
-     '@130': 2.2e-05,
-     '@131': 0.07475,
-     '@132': 0.002749,
-     '@133': 0.000261,
-     '@134': 0.000944,
-     '@135': 1.4e-05,
-     '@136': 0.015315,
-     '@137': 1.7e-05,
-     '@138': 0.0009317,
-     '@139': 0.042716,
-     '@14': 7.482e-05,
-     '@140': 0.00026,
-     '@141': 0.031348,
-     '@142': 92361.5,
-     '@143': 0.005822,
-     '@144': 8.3e-05,
-     '@145': 5.1e-05,
-     '@146': 1.2e-05,
-     '@147': 0.004757,
-     '@148': 0.000712,
+    {'#5090': 0.5,
+     '#5091': 0.5,
+     '#5100': 0.783925,
+     '#5101': 0.216075,
+     '#5110': 0.00553,
+     '#5111': 0.99447,
+     '#5120': 0.184345,
+     '#5121': 0.815655,
+     '#9290': 0.980635,
+     '#9291': 0.019365,
+     '#9300': 0.982445,
+     '#9301': 0.017555,
+     '#9310': 0.986455,
+     '#9311': 0.013545,
+     '#9320': 0.894995,
+     '#9321': 0.105005,
+     '#9330': 0.5,
+     '#9331': 0.5,
+     '#9340': 0.020495,
+     '#9341': 0.979505,
+     '#9350': 0.62101,
+     '#9351': 0.37899,
+     '#9360': 0.07873,
+     '#9361': 0.92127,
+     '0G': 0.17671,
+     '2Z': 0.061502,
+     '@1': 18.227,
+     '@10': 7.355e-05,
+     '@100': 0.003556,
+     '@101': 0.126125,
+     '@102': 0.00769,
+     '@103': 5.393e-05,
+     '@104': 0.027789,
+     '@105': 0.1419,
+     '@106': 0.005081,
+     '@107': 59.6785,
+     '@108': 0.028835,
+     '@109': 0.00048383,
+     '@11': 0.000405,
+     '@110': 0.01703,
+     '@111': 0.026029,
+     '@112': 0.0005408,
+     '@113': 0.0002112,
+     '@114': 0.0001255,
+     '@115': 0.039845,
+     '@116': 1.17e-05,
+     '@117': 0.0013545,
+     '@118': 0.015663,
+     '@119': 0.009494,
+     '@12': 4.494e-05,
+     '@120': 0.016848,
+     '@121': 0.0092,
+     '@122': 0.003342,
+     '@123': 0.037503,
+     '@124': 0.011324,
+     '@125': 0.006268,
+     '@126': 0.033636,
+     '@127': 0.022365,
+     '@128': 7.5e-05,
+     '@129': 0.009915,
+     '@13': 0.00055722,
+     '@130': 1.8e-05,
+     '@131': 0.154729,
+     '@132': 0.001258,
+     '@133': 5.1e-05,
+     '@134': 0.000803,
+     '@135': 1.1e-05,
+     '@136': 0.00235,
+     '@137': 1.4e-05,
+     '@138': 0.0003135,
+     '@139': 0.003442,
+     '@14': 7.284e-05,
+     '@140': 6.6e-05,
+     '@141': 0.012876,
+     '@142': 65410.5,
+     '@143': 0.002479,
+     '@144': 0.001061,
+     '@145': 2.2e-05,
+     '@146': 1.1e-05,
+     '@147': 0.000133,
+     '@148': 0.000169,
      '@149': 1.0,
-     '@15': 9.3e-05,
-     '@150': 0.99991,
-     '@151': 3147.35,
-     '@152': 0.98861,
-     '@153': 1.0039,
+     '@15': 0.000113,
+     '@150': 0.9995,
+     '@151': 1959.55,
+     '@152': 0.965045,
+     '@153': 1.00045,
      '@154': 1.0,
-     '@155': 0.000896,
-     '@156': 139.485,
-     '@157': 0.002437,
-     '@158': 0.000127,
-     '@159': 0.572225,
-     '@16': 0.058003,
-     '@160': 0.001255,
-     '@161': 0.053563,
-     '@162': 0.38425,
-     '@163': 0.138515,
-     '@164': 0.001312,
-     '@165': 0.038092,
-     '@166': 1.0004,
+     '@155': 0.000487,
+     '@156': 76.8975,
+     '@157': 0.002404,
+     '@158': 1.1e-05,
+     '@159': 0.51698,
+     '@16': 0.057849,
+     '@160': 0.000814,
+     '@161': 0.007061,
+     '@162': 0.13229,
+     '@163': 0.11495,
+     '@164': 0.001056,
+     '@165': 0.051859,
+     '@166': 0.99902,
      '@167': 1.0,
      '@168': 1.0,
      '@169': 1.0,
-     '@17': 4.37e-05,
-     '@170': 0.00674985,
-     '@171': 0.554965,
-     '@172': 0.005131,
-     '@173': 2729575.0,
-     '@174': 1.1791,
-     '@175': 0.0052104,
-     '@176': 0.000198,
-     '@177': 0.069315,
-     '@178': 1.00015,
-     '@179': 0.212475,
-     '@18': 0.006862,
-     '@180': 1.00065,
+     '@17': 7.243e-05,
+     '@170': 0.0018804,
+     '@171': 1.48,
+     '@172': 0.015453,
+     '@173': 34391.0,
+     '@174': 0.297605,
+     '@175': 0.0095405,
+     '@176': 0.000294,
+     '@177': 0.017361,
+     '@178': 0.215055,
+     '@179': 0.110315,
+     '@18': 0.010165,
+     '@180': 1.015,
      '@181': 1.0,
-     '@182': 4200.05,
-     '@183': 0.025379,
-     '@184': 0.011605,
-     '@185': 0.006139,
+     '@182': 4074.0,
+     '@183': 0.009561,
+     '@184': 0.006348,
+     '@185': 0.003495,
      '@186': 1.0,
-     '@187': 7.1e-05,
-     '@188': 0.00311125,
+     '@187': 8.6e-05,
+     '@188': 0.001991,
      '@189': 620.0,
-     '@19': 0.011539,
-     '@190': 0.005169,
-     '@191': 0.001322,
-     '@192': 0.00067,
-     '@193': 0.68093,
-     '@194': 9.64e-06,
-     '@195': 0.000292,
-     '@196': 0.001213,
+     '@19': 0.0113355,
+     '@190': 0.002346,
+     '@191': 0.000206,
+     '@192': 0.000196,
+     '@193': 0.347365,
+     '@194': 3.1e-06,
+     '@195': 0.000131,
+     '@196': 2.8e-05,
      '@197': 1.0,
-     '@198': 0.012205,
-     '@199': 0.010805,
-     '@2': 4.674e-05,
-     '@20': 0.00014102,
+     '@198': 0.08276,
+     '@199': 0.010185,
+     '@2': 5.088e-05,
+     '@20': 9.273e-05,
      '@200': 1.715,
-     '@201': 3.2e-07,
-     '@202': 0.00079,
+     '@201': 1e-07,
+     '@202': 0.00058,
      '@203': 1.0,
-     '@204': 0.09547,
-     '@205': 1.01605,
-     '@206': 0.285255,
-     '@207': 33.452,
-     '@208': 0.018414,
-     '@209': 4208.8,
-     '@21': 2.48e-05,
-     '@210': 0.188025,
-     '@211': 0.000275,
-     '@212': 14.003,
-     '@213': 14.273,
-     '@214': 1.0589,
-     '@215': 0.0041445,
-     '@216': 0.0742,
-     '@217': 1.39825,
+     '@204': 0.03329,
+     '@205': 1.01495,
+     '@206': 0.090005,
+     '@207': 59.752,
+     '@208': 0.004002,
+     '@209': 3902.6,
+     '@21': 1.65e-05,
+     '@210': 0.0846785,
+     '@211': 0.0003,
+     '@212': 9.3155,
+     '@213': 8.79785,
+     '@214': 0.41557,
+     '@215': 0.002065,
+     '@216': 0.0362,
+     '@217': 0.575,
      '@218': 3.0,
-     '@219': 0.007461,
-     '@22': 0.093143,
+     '@219': 0.018507,
+     '@22': 0.09121,
      '@220': 1.0,
      '@221': 1.0,
      '@222': 1.0,
-     '@223': 0.011619,
+     '@223': 0.00069,
      '@224': 1.75,
-     '@225': 0.013386,
-     '@226': 14.445,
-     '@227': 191.19,
-     '@228': 0.130875,
+     '@225': 0.006405,
+     '@226': 6.742,
+     '@227': 100.315,
+     '@228': 0.061642,
      '@229': 1.0,
-     '@23': 0.42927,
-     '@230': 0.999995,
-     '@231': 0.00165,
-     '@232': 33.4805,
-     '@233': 0.187975,
-     '@234': 92358.0,
-     '@235': 3148.1,
+     '@23': 0.20137,
+     '@230': 0.99766,
+     '@231': 1.2e-05,
+     '@232': 63.129,
+     '@233': 0.082112,
+     '@234': 76644.0,
+     '@235': 2110.1,
      '@236': 0.979385,
-     '@237': 7.6e-05,
-     '@238': 0.37825,
+     '@237': 4.5e-05,
+     '@238': 0.08888,
      '@239': 1.0,
-     '@24': 2.324e-05,
-     '@240': 0.001867,
-     '@241': 0.000538,
-     '@242': 0.02695,
-     '@243': 0.02727,
-     '@244': 0.988605,
-     '@245': 0.002083,
-     '@246': 0.002904,
-     '@247': 0.020417,
-     '@248': 388.86,
-     '@249': 0.015034,
-     '@25': 0.000158,
-     '@250': 33.66,
-     '@251': 0.05785,
-     '@252': 0.11662,
-     '@253': 1.615,
-     '@254': 0.124175,
-     '@255': 33.571,
-     '@256': 0.055729,
-     '@257': 0.100005,
-     '@26': 0.001506,
-     '@27': 1.234e-05,
-     '@28': 0.00016028,
-     '@29': 0.013157,
-     '@3': 0.0104065,
-     '@30': 0.00026,
-     '@31': 1.7e-05,
-     '@32': 9.78e-06,
-     '@33': 7.7e-07,
-     '@34': 0.002486,
-     '@35': 0.097597,
-     '@36': 0.003004,
-     '@37': 9.112e-05,
-     '@38': 0.00072252,
-     '@39': 0.000464,
-     '@4': 2.69995,
-     '@40': 0.00049283,
-     '@41': 0.0113537,
-     '@42': 0.003983,
-     '@43': 2.4e-05,
-     '@44': 0.0004501,
-     '@45': 0.0001984,
-     '@46': 0.000263,
-     '@47': 0.005125,
-     '@48': 0.00021613,
-     '@49': 0.00064,
-     '@5': 0.679745,
-     '@50': 0.0337635,
-     '@51': 0.378705,
-     '@52': 0.037021,
-     '@53': 0.000341,
-     '@54': 0.10196,
-     '@55': 0.025726,
-     '@56': 0.069506,
-     '@57': 0.071159,
-     '@58': 0.075635,
-     '@59': 0.84213,
-     '@6': 0.000128,
-     '@60': 0.036417,
-     '@61': 0.001084,
-     '@62': 0.051087,
-     '@63': 0.055224,
-     '@64': 0.076547,
-     '@65': 0.078403,
-     '@66': 0.000215,
-     '@67': 0.044778,
-     '@68': 0.14041,
-     '@69': 0.43638,
-     '@7': 3.537e-05,
-     '@70': 0.027151,
+     '@24': 2.663e-05,
+     '@240': 0.003145,
+     '@241': 0.000358,
+     '@242': 0.030036,
+     '@243': 0.0215495,
+     '@244': 2.54175,
+     '@245': 0.000919,
+     '@246': 0.002745,
+     '@247': 0.031044,
+     '@248': 352.5,
+     '@249': 0.020637,
+     '@25': 0.000217,
+     '@250': 65.6,
+     '@251': 0.009881,
+     '@252': 0.057843,
+     '@253': 0.760055,
+     '@254': 0.20712,
+     '@255': 59.715,
+     '@256': 0.022787,
+     '@257': 0.1,
+     '@258': 0.038531,
+     '@259': 1.0,
+     '@26': 0.000747,
+     '@260': 355.28,
+     '@261': 0.001704,
+     '@262': 1.0,
+     '@263': 64.1855,
+     '@264': 15161.935,
+     '@265': 53.3855,
+     '@266': 322.995,
+     '@267': 1.11265,
+     '@268': 329.015,
+     '@269': 574.115,
+     '@27': 9.99e-06,
+     '@270': 0.202335,
+     '@271': 93.0595,
+     '@272': 505.2,
+     '@273': 78.0,
+     '@274': 1.7e-07,
+     '@275': 1.3338,
+     '@276': 383.53,
+     '@277': 575.71,
+     '@278': 0.001396,
+     '@279': 743.055,
+     '@28': 0.0001439,
+     '@280': 232.23,
+     '@281': 0.002274,
+     '@282': 0.0007381,
+     '@283': 0.055753,
+     '@284': 0.005019,
+     '@285': 0.014715,
+     '@286': 0.044975,
+     '@287': 601.99,
+     '@288': 692.995,
+     '@289': 395.87,
+     '@29': 0.00915,
+     '@290': 0.59981,
+     '@291': 0.000476,
+     '@292': 0.05877,
+     '@293': 0.217425,
+     '@294': 0.010355,
+     '@295': 0.008365,
+     '@296': 0.066696,
+     '@297': 35.95,
+     '@298': 0.005009,
+     '@299': 0.009031,
+     '@3': 0.00325,
+     '@30': 0.000275,
+     '@300': 0.012795,
+     '@301': 4.0375,
+     '@302': 0.0041739,
+     '@303': 0.56,
+     '@304': 0.000514,
+     '@305': 0.08683,
+     '@306': 6.73595,
+     '@307': 199.335,
+     '@308': 620.0,
+     '@309': 1.0,
+     '@31': 2e-05,
+     '@310': 0.10672,
+     '@311': 0.0001,
+     '@312': 0.99994,
+     '@313': 0.5,
+     '@314': 0.5,
+     '@315': 0.99,
+     '@316': 0.01581,
+     '@317': 0.024,
+     '@318': 0.975,
+     '@319': 1e-05,
+     '@32': 5.97e-06,
+     '@320': 0.99604,
+     '@321': 0.84895,
+     '@322': 0.03,
+     '@323': 0.5,
+     '@324': 0.5,
+     '@325': 0.00382,
+     '@326': 0.9936,
+     '@327': 0.996,
+     '@328': 1e-05,
+     '@329': 1e-05,
+     '@33': 6.8e-07,
+     '@330': 0.9902,
+     '@331': 133.015,
+     '@332': 392.26,
+     '@333': 947.36,
+     '@334': 0.11965,
+     '@335': 0.012926,
+     '@336': 60.9625,
+     '@34': 0.002304,
+     '@35': 0.004009,
+     '@353': 0.00016,
+     '@354': 0.99999,
+     '@355': 0.98,
+     '@356': 0.02001,
+     '@357': 0.96,
+     '@358': 0.01001,
+     '@359': 0.00202,
+     '@36': 0.001155,
+     '@360': 0.86,
+     '@361': 0.5,
+     '@362': 0.5,
+     '@363': 0.01,
+     '@364': 0.87,
+     '@365': 0.989,
+     '@366': 0.012,
+     '@367': 0.000632,
+     '@368': 0.01001,
+     '@369': 0.89,
+     '@37': 6.066e-05,
+     '@370': 0.04449,
+     '@371': 0.0006,
+     '@372': 0.99999,
+     '@373': 0.014,
+     '@374': 0.88304,
+     '@375': 0.962,
+     '@376': 0.0195,
+     '@377': 0.01,
+     '@378': 0.97401,
+     '@379': 0.94501,
+     '@38': 0.00019105,
+     '@380': 0.00352,
+     '@381': 0.01,
+     '@382': 0.9748,
+     '@383': 0.0005,
+     '@384': 0.99662,
+     '@385': 0.0006,
+     '@386': 0.99,
+     '@387': 0.00102,
+     '@388': 0.99997,
+     '@389': 0.00012,
+     '@39': 8.6e-05,
+     '@390': 0.99887,
+     '@391': 0.00022,
+     '@392': 0.5,
+     '@393': 3e-05,
+     '@394': 0.5,
+     '@395': 3e-05,
+     '@396': 0.995,
+     '@397': 0.00123,
+     '@398': 0.98976,
+     '@399': 3e-05,
+     '@4': 2.2995,
+     '@40': 0.00036856,
+     '@400': 0.99774,
+     '@401': 0.00018,
+     '@402': 0.99983,
+     '@403': 0.00099,
+     '@404': 0.99902,
+     '@405': 0.002,
+     '@406': 0.99999,
+     '@407': 0.00075,
+     '@408': 0.998,
+     '@409': 3e-05,
+     '@41': 0.0031202,
+     '@410': 0.997,
+     '@411': 3e-05,
+     '@412': 0.99985,
+     '@413': 3e-05,
+     '@414': 0.5,
+     '@415': 0.001,
+     '@416': 0.999,
+     '@417': 3e-05,
+     '@418': 0.99999,
+     '@419': 3e-05,
+     '@42': 0.002008,
+     '@420': 0.9998,
+     '@421': 9e-05,
+     '@422': 0.99999,
+     '@423': 0.00016,
+     '@424': 0.99998,
+     '@425': 0.00049,
+     '@426': 0.9999,
+     '@427': 3e-05,
+     '@428': 0.995,
+     '@429': 0.0005,
+     '@43': 1.9e-05,
+     '@430': 0.99997,
+     '@431': 0.00506,
+     '@432': 0.93,
+     '@433': 0.00023,
+     '@434': 0.99925,
+     '@435': 1e-05,
+     '@436': 0.9999,
+     '@437': 3e-05,
+     '@438': 0.997,
+     '@439': 3e-05,
+     '@44': 0.00059828,
+     '@440': 0.5,
+     '@441': 3e-05,
+     '@442': 0.5,
+     '@443': 3e-05,
+     '@444': 0.99999,
+     '@445': 6e-05,
+     '@446': 0.995,
+     '@447': 3e-05,
+     '@448': 0.99999,
+     '@449': 0.99995,
+     '@45': 0.00010845,
+     '@450': 5e-05,
+     '@451': 0.00033,
+     '@452': 0.99,
+     '@453': 0.00079,
+     '@454': 0.99933,
+     '@455': 3e-05,
+     '@456': 0.995,
+     '@457': 3e-05,
+     '@458': 0.9955,
+     '@459': 0.00377,
+     '@46': 0.000213,
+     '@460': 0.99995,
+     '@461': 0.00013,
+     '@462': 0.99299,
+     '@463': 3e-05,
+     '@464': 0.995,
+     '@465': 112.735,
+     '@466': 0.98201,
+     '@467': 1e-05,
+     '@468': 0.00015,
+     '@469': 0.99911,
+     '@47': 0.006253,
+     '@470': 0.79753,
+     '@471': 0.49585,
+     '@472': 0.15001,
+     '@473': 0.85,
+     '@474': 0.98201,
+     '@475': 0.01,
+     '@476': 0.5,
+     '@477': 0.5,
+     '@478': 0.02,
+     '@479': 0.99101,
+     '@48': 0.0004054,
+     '@480': 0.99999,
+     '@481': 0.03101,
+     '@482': 0.051,
+     '@483': 0.98,
+     '@484': 0.00902,
+     '@485': 0.97401,
+     '@486': 0.99901,
+     '@487': 0.00098,
+     '@488': 1e-05,
+     '@489': 0.99999,
+     '@49': 0.000408,
+     '@490': 0.9986,
+     '@491': 0.00032,
+     '@492': 0.01101,
+     '@493': 0.98,
+     '@494': 0.54101,
+     '@495': 0.018,
+     '@496': 2.0,
+     '@497': 0.011205,
+     '@498': 0.01,
+     '@499': 0.982,
+     '@5': 0.677715,
+     '@50': 0.0250635,
+     '@500': 0.999,
+     '@501': 0.00204,
+     '@502': 0.00457,
+     '@503': 0.99999,
+     '@504': 0.00014,
+     '@505': 0.99999,
+     '@506': 0.00446,
+     '@507': 0.99111,
+     '@508': 0.99911,
+     '@509': 2e-05,
+     '@51': 0.87668,
+     '@510': 0.06811,
+     '@511': 0.99999,
+     '@512': 0.5,
+     '@513': 0.5,
+     '@514': 0.9999,
+     '@515': 0.00278,
+     '@516': 0.012,
+     '@517': 0.9971,
+     '@518': 0.0001,
+     '@519': 0.99998,
+     '@52': 0.022858,
+     '@520': 0.5,
+     '@521': 0.5,
+     '@522': 1e-05,
+     '@523': 0.97629,
+     '@524': 0.0099,
+     '@525': 0.94998,
+     '@526': 0.99998,
+     '@527': 0.00099,
+     '@528': 0.5,
+     '@529': 0.5,
+     '@53': 0.000235,
+     '@530': 0.99999,
+     '@531': 0.001,
+     '@532': 0.02,
+     '@533': 0.99999,
+     '@534': 0.8,
+     '@535': 0.99999,
+     '@536': 0.5,
+     '@537': 0.5,
+     '@538': 1e-05,
+     '@539': 0.99868,
+     '@54': 0.027137,
+     '@540': 1e-05,
+     '@541': 0.99083,
+     '@542': 0.99911,
+     '@543': 0.00999,
+     '@544': 0.5,
+     '@545': 0.5,
+     '@546': 0.04954,
+     '@547': 0.99037,
+     '@548': 0.99999,
+     '@549': 0.0005,
+     '@55': 0.020243,
+     '@550': 0.02,
+     '@551': 0.98,
+     '@552': 0.5,
+     '@553': 0.5,
+     '@554': 3e-05,
+     '@555': 0.99055,
+     '@556': 0.009,
+     '@557': 0.999,
+     '@558': 0.91777,
+     '@559': 1e-05,
+     '@56': 0.022318,
+     '@560': 0.5,
+     '@561': 0.5,
+     '@562': 0.99999,
+     '@563': 0.00015,
+     '@564': 0.02,
+     '@565': 0.99999,
+     '@566': 0.0018,
+     '@567': 0.99999,
+     '@568': 0.5,
+     '@569': 0.5,
+     '@57': 0.022126,
+     '@570': 0.99999,
+     '@571': 1e-05,
+     '@572': 1e-05,
+     '@573': 0.99998,
+     '@574': 3e-05,
+     '@575': 0.9999,
+     '@58': 0.085068,
+     '@584': 0.5,
+     '@585': 0.5,
+     '@586': 0.99992,
+     '@587': 1e-05,
+     '@588': 0.06025,
+     '@589': 0.99122,
+     '@59': 0.731745,
+     '@590': 115.535,
+     '@591': 3e-07,
+     '@592': 1e-05,
+     '@593': 0.93,
+     '@594': 0.5,
+     '@595': 0.5,
+     '@596': 0.99997,
+     '@597': 3e-05,
+     '@598': 1e-05,
+     '@599': 0.99999,
+     '@6': 8.1e-05,
+     '@60': 0.035984,
+     '@600': 0.00035,
+     '@601': 0.99998,
+     '@602': 0.5,
+     '@603': 0.5,
+     '@604': 0.99911,
+     '@605': 0.001,
+     '@606': 0.001,
+     '@607': 0.996,
+     '@608': 0.00051,
+     '@609': 0.99999,
+     '@61': 0.000749,
+     '@610': 0.5,
+     '@611': 0.5,
+     '@612': 0.99991,
+     '@613': 1e-05,
+     '@614': 0.0001,
+     '@615': 0.99999,
+     '@616': 0.00015,
+     '@617': 0.99999,
+     '@618': 0.5,
+     '@619': 0.5,
+     '@62': 0.04008,
+     '@620': 0.01,
+     '@621': 0.997,
+     '@622': 0.0075,
+     '@623': 0.99215,
+     '@624': 0.99999,
+     '@625': 1e-05,
+     '@626': 0.5,
+     '@627': 0.5,
+     '@628': 0.00048,
+     '@629': 0.99998,
+     '@63': 0.045318,
+     '@630': 0.99999,
+     '@631': 0.0019,
+     '@632': 0.00088,
+     '@633': 0.99855,
+     '@634': 0.5,
+     '@635': 0.5,
+     '@636': 0.0003,
+     '@637': 0.99999,
+     '@638': 0.02,
+     '@639': 0.99905,
+     '@64': 0.064725,
+     '@640': 0.9999,
+     '@641': 1e-05,
+     '@642': 0.5,
+     '@643': 0.5,
+     '@644': 0.999,
+     '@645': 0.00103,
+     '@646': 0.00121,
+     '@647': 0.85,
+     '@648': 0.06175,
+     '@649': 0.98,
+     '@65': 0.047259,
+     '@650': 0.5,
+     '@651': 0.5,
+     '@652': 0.999,
+     '@653': 0.00099,
+     '@654': 1e-05,
+     '@655': 0.9907,
+     '@656': 0.00035,
+     '@657': 0.983,
+     '@658': 0.5,
+     '@659': 0.5,
+     '@66': 0.000224,
+     '@660': 1e-05,
+     '@661': 0.99999,
+     '@662': 0.001,
+     '@663': 0.9267,
+     '@664': 0.99,
+     '@665': 0.0002,
+     '@666': 0.5,
+     '@667': 0.5,
+     '@668': 0.04,
+     '@669': 0.93,
+     '@67': 0.040929,
+     '@670': 0.99999,
+     '@671': 0.00789,
+     '@672': 0.05,
+     '@673': 0.999,
+     '@674': 0.5,
+     '@675': 0.5,
+     '@676': 0.0096,
+     '@677': 0.99999,
+     '@678': 0.99999,
+     '@679': 0.009,
+     '@68': 0.110815,
+     '@680': 0.01,
+     '@681': 0.981,
+     '@682': 0.5,
+     '@683': 0.5,
+     '@684': 0.02,
+     '@685': 0.999,
+     '@686': 1e-05,
+     '@687': 0.99999,
+     '@688': 0.99999,
+     '@689': 0.04,
+     '@69': 0.36052,
+     '@690': 0.5,
+     '@691': 0.5,
+     '@692': 0.01125,
+     '@693': 0.99222,
+     '@694': 0.05507,
+     '@695': 0.99222,
+     '@696': 0.99999,
+     '@697': 0.0718,
+     '@698': 1.0,
+     '@699': 0.18895,
+     '@7': 2.005e-05,
+     '@70': 0.018088,
+     '@700': 0.114775,
+     '@701': 0.20202,
+     '@702': 104.505,
+     '@703': 1.0,
+     '@704': 1.0,
+     '@705': 1.0,
+     '@706': 1.0,
      '@71': 1.0,
-     '@72': 0.699665,
-     '@73': 0.065898,
-     '@74': 0.0001669,
-     '@75': 0.14041,
-     '@76': 0.030233,
-     '@77': 0.005776,
-     '@78': 0.158565,
-     '@79': 0.060325,
-     '@8': 0.0060139,
-     '@80': 0.0003267,
-     '@81': 6.896e-05,
-     '@82': 0.047374,
-     '@83': 0.02064,
-     '@84': 0.055308,
-     '@85': 2.43935,
-     '@86': 0.08885,
-     '@87': 0.096036,
-     '@88': 9.03e-05,
-     '@89': 0.10188,
-     '@9': 0.000739,
-     '@90': 0.010065,
-     '@91': 0.018007,
-     '@92': 0.13382,
-     '@93': 3.164e-05,
-     '@94': 0.084147,
-     '@95': 0.000189,
-     '@96': 0.019614,
-     '@97': 0.159865,
+     '@72': 0.765295,
+     '@73': 0.05934,
+     '@74': 1.17e-05,
+     '@75': 0.15623,
+     '@76': 0.014021,
+     '@77': 0.004812,
+     '@78': 0.066493,
+     '@79': 0.060162,
+     '@8': 0.0034106,
+     '@80': 0.0002485,
+     '@81': 6.241e-05,
+     '@82': 0.036172,
+     '@83': 0.02594,
+     '@84': 0.031208,
+     '@85': 1.8836,
+     '@86': 0.078641,
+     '@87': 0.066241,
+     '@88': 8.608e-05,
+     '@89': 0.083619,
+     '@9': 0.000318,
+     '@90': 0.015454,
+     '@91': 0.010657,
+     '@92': 0.12725,
+     '@93': 1.458e-05,
+     '@94': 0.044592,
+     '@95': 0.000114,
+     '@96': 0.020583,
+     '@97': 0.031703,
      '@98': 1.0,
-     '@99': 0.021791,
-     'AAVE': 191.04,
-     'ACE': 0.2173,
-     'ADA': 0.441165,
-     'AERO': 0.68906,
+     '@99': 0.019688,
+     'AAVE': 100.415,
+     'ACE': 0.0824,
+     'ADA': 0.165965,
+     'AERO': 0.42714,
      'AI': 0.12555,
      'AI16Z': 0.06157,
-     'AIXBT': 0.043323,
-     'ALGO': 0.13887,
-     'ALT': 0.013164,
-     'ANIME': 0.006453,
-     'APE': 0.23706,
-     'APEX': 0.52356,
-     'APT': 1.9389,
-     'AR': 4.1915,
-     'ARB': 0.21634,
-     'ARK': 0.29977,
-     'ASTER': 1.0317,
-     'ATOM': 2.3118,
-     'AVAX': 14.4345,
-     'AVNT': 0.347005,
-     'BABY': 0.01954,
+     'AIXBT': 0.018552,
+     'ALGO': 0.084783,
+     'ALT': 0.006121,
+     'ANIME': 0.00271,
+     'APE': 0.14447,
+     'APEX': 0.275935,
+     'APT': 0.6289,
+     'AR': 1.8827,
+     'ARB': 0.08337,
+     'ARK': 0.10667,
+     'ASTER': 0.628815,
+     'ATOM': 1.3983,
+     'AVAX': 6.7395,
+     'AVNT': 0.092372,
+     'AXS': 0.89404,
+     'AZTEC': 0.014729,
+     'BABY': 0.012642,
      'BADGER': 0.88823,
-     'BANANA': 8.09845,
-     'BCH': 577.7,
-     'BERA': 0.9202,
-     'BIGTIME': 0.023509,
-     'BIO': 0.052041,
-     'BLAST': 0.000904,
-     'BLUR': 0.035961,
+     'BANANA': 3.7327,
+     'BCH': 216.515,
+     'BERA': 0.18157,
+     'BIGTIME': 0.006523,
+     'BIO': 0.026471,
+     'BLAST': 0.000456,
+     'BLUR': 0.015383,
      'BLZ': 0.070043,
-     'BNB': 902.42,
+     'BNB': 575.475,
      'BNT': 0.38287,
-     'BOME': 0.000703,
-     'BRETT': 0.019439,
-     'BSV': 20.8035,
-     'BTC': 92277.5,
-     'CAKE': 2.3492,
+     'BOME': 0.000522,
+     'BRETT': 0.004743,
+     'BSV': 13.679,
+     'BTC': 65445.5,
+     'CAKE': 1.4152,
      'CANTO': 0.066,
+     'CASHCAT': 0.044668,
      'CATI': 0.082821,
-     'CC': 0.070975,
-     'CELO': 0.17258,
-     'CFX': 0.074949,
-     'CHILLGUY': 0.019528,
-     'COMP': 33.9565,
-     'CRV': 0.40604,
+     'CC': 0.12466,
+     'CELO': 0.067653,
+     'CFX': 0.044611,
+     'CHILLGUY': 0.012699,
+     'CHIP': 0.029437,
+     'COMP': 17.5575,
+     'CRV': 0.20981,
      'CYBER': 1.0415,
-     'DOGE': 0.147905,
-     'DOOD': 0.004416,
-     'DOT': 2.27995,
-     'DYDX': 0.23367,
-     'DYM': 0.08836,
-     'EIGEN': 0.5591,
-     'ENA': 0.28491,
-     'ENS': 11.8325,
-     'ETC': 13.7475,
-     'ETH': 3145.15,
-     'ETHFI': 0.81114,
-     'FARTCOIN': 0.38447,
-     'FET': 0.25014,
-     'FIL': 1.55025,
+     'DASH': 32.983,
+     'DOGE': 0.073351,
+     'DOOD': 0.001412,
+     'DOT': 0.82966,
+     'DYDX': 0.12715,
+     'DYM': 0.01492,
+     'EIGEN': 0.2124,
+     'ENA': 0.089994,
+     'ENS': 4.6193,
+     'ETC': 7.1108,
+     'ETH': 1960.55,
+     'ETHFI': 0.43019,
+     'FARTCOIN': 0.13247,
+     'FET': 0.15873,
+     'FIL': 0.74301,
+     'FOGO': 0.008789,
      'FRIEND': 4.72,
      'FTM': 0.71688,
-     'FTT': 0.55741,
-     'FXS': 0.81585,
-     'GALA': 0.007529,
-     'GAS': 2.1698,
-     'GMT': 0.017085,
-     'GMX': 8.7281,
-     'GOAT': 0.039314,
-     'GRASS': 0.30492,
-     'GRIFFAIN': 0.019717,
-     'HBAR': 0.13956,
-     'HEMI': 0.015666,
-     'HMSTR': 0.000221,
+     'FTT': 0.32243,
+     'FXS': 0.65538,
+     'GALA': 0.002003,
+     'GAS': 1.02345,
+     'GMT': 0.007229,
+     'GMX': 6.9587,
+     'GOAT': 0.013107,
+     'GRAM': 1.51595,
+     'GRASS': 0.35096,
+     'GRIFFAIN': 0.008771,
+     'HBAR': 0.070336,
+     'HEMI': 0.004918,
+     'HMSTR': 0.00018,
      'HPOS': 0.041873,
-     'HYPE': 33.4575,
-     'HYPER': 0.137505,
-     'ICP': 3.65485,
+     'HYPE': 59.6725,
+     'HYPER': 0.066243,
+     'ICP': 2.19375,
      'ILV': 12.118,
-     'IMX': 0.30089,
-     'INIT': 0.10439,
-     'INJ': 5.8021,
-     'IO': 0.20212,
-     'IOTA': 0.10113,
-     'IP': 2.34565,
+     'IMX': 0.12814,
+     'INIT': 0.054481,
+     'INJ': 5.0072,
+     'IO': 0.14935,
+     'IOTA': 0.035097,
+     'IP': 0.31703,
      'JELLY': 0.037555,
-     'JTO': 0.456925,
-     'JUP': 0.244035,
-     'KAITO': 0.661285,
-     'KAS': 0.055058,
+     'JTO': 0.591045,
+     'JUP': 0.191965,
+     'KAITO': 1.185,
+     'KAS': 0.029164,
      'LAUNCHCOIN': 0.060367,
-     'LAYER': 0.21187,
-     'LDO': 0.63026,
-     'LINEA': 0.008919,
-     'LINK': 14.2625,
+     'LAYER': 0.066304,
+     'LDO': 0.38046,
+     'LINEA': 0.002472,
+     'LINK': 8.79755,
      'LISTA': 0.12466,
+     'LIT': 2.15085,
      'LOOM': 0.071161,
-     'LTC': 83.601,
-     'MANTA': 0.0959,
+     'LTC': 47.9135,
+     'MANTA': 0.06176,
      'MATIC': 0.37621,
-     'MAV': 0.031605,
-     'MAVIA': 0.05682,
-     'ME': 0.33329,
-     'MEGA': 0.292005,
-     'MELANIA': 0.11686,
-     'MEME': 0.001186,
-     'MERL': 0.37251,
-     'MET': 0.33221,
-     'MEW': 0.001142,
-     'MINA': 0.09892,
+     'MAV': 0.015456,
+     'MAVIA': 0.03725,
+     'ME': 0.0665,
+     'MEGA': 0.043292,
+     'MELANIA': 0.08099,
+     'MEME': 0.000529,
+     'MERL': 0.019427,
+     'MET': 0.175935,
+     'MEW': 0.00064,
+     'MINA': 0.045222,
      'MKR': 1831.5,
-     'MNT': 1.0577,
-     'MON': 0.027248,
-     'MOODENG': 0.076632,
-     'MORPHO': 1.42205,
-     'MOVE': 0.047088,
+     'MNT': 0.41579,
+     'MON': 0.021409,
+     'MOODENG': 0.038173,
+     'MORPHO': 1.9641,
+     'MOVE': 0.009859,
      'MYRO': 0.015813,
-     'NEAR': 1.80955,
+     'NEAR': 1.82695,
      'NEIROETH': 0.01808,
-     'NEO': 4.1928,
+     'NEO': 1.9914,
      'NFTI': 6.5609,
-     'NIL': 0.073664,
-     'NOT': 0.000569,
+     'NIL': 0.038213,
+     'NOT': 0.000363,
      'NTRN': 0.1238,
-     'NXPC': 0.45956,
+     'NXPC': 0.257495,
      'OGN': 0.055683,
-     'OM': 0.07546,
+     'OM': 0.06527,
      'OMNI': 4.1915,
-     'ONDO': 0.49183,
-     'OP': 0.31983,
+     'ONDO': 0.40604,
+     'OP': 0.09507,
      'ORBS': 0.01939,
-     'ORDI': 4.1041,
+     'ORDI': 3.8302,
      'OX': 0.007459,
      'PANDORA': 3026.3,
-     'PAXG': 4209.95,
-     'PENDLE': 2.62,
-     'PENGU': 0.011623,
-     'PEOPLE': 0.010035,
+     'PAXG': 4078.35,
+     'PENDLE': 1.5562,
+     'PENGU': 0.006351,
+     'PEOPLE': 0.006229,
      'PIXEL': 0.024027,
-     'PNUT': 0.08808,
-     'POL': 0.124985,
-     'POLYX': 0.064095,
-     'POPCAT': 0.10536,
-     'PROMPT': 0.05585,
-     'PROVE': 0.46109,
-     'PUMP': 0.003109,
-     'PURR': 0.07889,
-     'PURR/USDC': 0.0787805,
-     'PYTH': 0.071951,
+     'PNUT': 0.04359,
+     'POL': 0.077499,
+     'POLYX': 0.036375,
+     'POPCAT': 0.043598,
+     'PROMPT': 0.03661,
+     'PROVE': 0.19303,
+     'PUMP': 0.001991,
+     'PURR': 0.067527,
+     'PURR/USDC': 0.0672915,
+     'PYTH': 0.043438,
      'RDNT': 0.018328,
-     'RENDER': 1.71795,
+     'RENDER': 1.4837,
      'REQ': 0.15473,
-     'RESOLV': 0.075843,
-     'REZ': 0.006369,
+     'RESOLV': 0.01898,
+     'REZ': 0.002555,
      'RLB': 0.071,
      'RNDR': 6.8952,
-     'RSR': 0.003443,
-     'RUNE': 0.67292,
-     'S': 0.10138,
-     'SAGA': 0.07227,
-     'SAND': 0.148965,
-     'SCR': 0.08969,
-     'SEI': 0.135575,
+     'RSR': 0.00128,
+     'RUNE': 0.43457,
+     'S': 0.023373,
+     'SAGA': 0.01341,
+     'SAND': 0.046273,
+     'SCR': 0.04737,
+     'SEI': 0.044984,
      'SHIA': 0.000621,
-     'SKY': 0.055778,
-     'SNX': 0.53544,
-     'SOL': 139.315,
-     'SOPH': 0.015927,
-     'SPX': 0.68001,
-     'STBL': 0.061303,
+     'SKR': 0.008018,
+     'SKY': 0.058653,
+     'SNX': 0.22203,
+     'SOL': 76.9445,
+     'SOPH': 0.004475,
+     'SPX': 0.34749,
+     'STABLE': 0.03851,
+     'STBL': 0.024923,
      'STG': 0.15387,
      'STRAX': 1.5829,
-     'STRK': 0.1201,
-     'STX': 0.30805,
-     'SUI': 1.66405,
-     'SUPER': 0.254535,
-     'SUSHI': 0.35241,
-     'SYRUP': 0.260175,
-     'TAO': 286.655,
-     'TIA': 0.62484,
-     'TNSR': 0.11572,
-     'TON': 1.59355,
-     'TRB': 22.059,
-     'TRUMP': 5.9367,
-     'TRX': 0.286675,
-     'TST': 0.015281,
-     'TURBO': 0.002351,
-     'UMA': 0.82227,
-     'UNI': 5.98745,
+     'STRK': 0.03129,
+     'STX': 0.146,
+     'SUI': 0.72415,
+     'SUPER': 0.086282,
+     'SUSHI': 0.16517,
+     'SYRUP': 0.17454,
+     'TAO': 199.445,
+     'TIA': 0.35094,
+     'TNSR': 0.03258,
+     'TON': 1.8014,
+     'TRB': 14.6295,
+     'TRUMP': 1.59885,
+     'TRX': 0.331905,
+     'TST': 0.017491,
+     'TURBO': 0.000819,
+     'UMA': 0.36225,
+     'UNI': 3.9013,
      'UNIBOT': 7.636,
-     'USTC': 0.006309,
-     'USUAL': 0.0257,
-     'VINE': 0.029898,
-     'VIRTUAL': 0.91582,
-     'VVV': 1.1099,
-     'W': 0.0426,
-     'WCT': 0.093386,
-     'WIF': 0.383815,
-     'WLD': 0.62089,
-     'WLFI': 0.152755,
-     'XAI': 0.01748,
-     'XLM': 0.25245,
-     'XPL': 0.18826,
-     'XRP': 2.10355,
-     'YGG': 0.075826,
-     'YZY': 0.365245,
-     'ZEC': 388.905,
-     'ZEN': 9.7332,
-     'ZEREBRO': 0.037051,
-     'ZETA': 0.08763,
-     'ZK': 0.037593,
-     'ZORA': 0.049391,
-     'ZRO': 1.40005,
-     'kBONK': 0.009633,
+     'USTC': 0.007534,
+     'USUAL': 0.00862,
+     'VINE': 0.009485,
+     'VIRTUAL': 0.5998,
+     'VVV': 13.8995,
+     'W': 0.00926,
+     'WCT': 0.040317,
+     'WIF': 0.153745,
+     'WLD': 0.35853,
+     'WLFI': 0.05529,
+     'XAI': 0.00693,
+     'XLM': 0.1828,
+     'XMR': 355.775,
+     'XPL': 0.084758,
+     'XRP': 1.11315,
+     'YGG': 0.018476,
+     'YZY': 0.31107,
+     'ZEC': 505.745,
+     'ZEN': 4.1463,
+     'ZEREBRO': 0.032083,
+     'ZETA': 0.03261,
+     'ZK': 0.009404,
+     'ZORA': 0.006451,
+     'ZRO': 0.86478,
+     'kBONK': 0.003106,
      'kDOGS': 0.13659,
-     'kFLOKI': 0.047822,
-     'kLUNC': 0.030713,
-     'kNEIRO': 0.13763,
-     'kPEPE': 0.0048,
-     'kSHIB': 0.00872}
+     'kFLOKI': 0.022409,
+     'kLUNC': 0.05377,
+     'kNEIRO': 0.0622,
+     'kPEPE': 0.002988,
+     'kSHIB': 0.005355}
 
 ## Data management
 
@@ -1160,14 +1732,18 @@ data, it aligns to the hour.
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L590"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L781"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### save_hyperliquid_file
 
->  save_hyperliquid_file (df, folder_path, file_name, type='parquet')
+``` python
+def save_hyperliquid_file(
+    df, folder_path, file_name, type:str='parquet'
+):
+```
 
-\*Save a pandas DataFrame to a file in either CSV or Parquet format.
+*Save a pandas DataFrame to a file in either CSV or Parquet format.*
 
 Args: df (pandas.DataFrame): The DataFrame to save folder_path (str):
 Directory path where the file will be saved file_name (str): Name of the
@@ -1177,22 +1753,25 @@ or “parquet”. Defaults to “parquet”
 The function saves the DataFrame to the specified path, handling the
 file extension automatically. For CSV files, the index is not saved. For
 Parquet files, default Parquet settings are used. Creates the folder if
-it doesn’t exist.\*
+it doesn’t exist.
 
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L616"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L807"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### HyperliquidDataManager
 
->  HyperliquidDataManager (ticker=None, data_dir='../data/hyperliquid',
->                              interval='1h', file_type='parquet', update=False,
->                              save=False, refresh_hours=24, info=None,
->                              verbose=True, data_type=None)
+``` python
+def HyperliquidDataManager(
+    ticker:NoneType=None, data_dir:str='../data/hyperliquid', interval:str='1h', file_type:str='parquet',
+    update:bool=False, save:bool=False, refresh_hours:int=24, info:NoneType=None, verbose:bool=True,
+    data_type:NoneType=None
+):
+```
 
-\*Base class for managing Hyperliquid data files.
+*Base class for managing Hyperliquid data files.*
 
 Handles reading, updating, and saving data for different data types
 (perp, spot, funding). Data is stored in organized folders by data type,
@@ -1213,24 +1792,26 @@ optional): If True, prints progress messages. Defaults to True
 
 Attributes: data_type (str): Type of data managed by this instance
 (“perp”, “spot”, “funding”) data (dict): Dictionary mapping tickers to
-their DataFrames\*
+their DataFrames
 
 ### HyperliquidPerpManager derived class
 
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L846"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L1038"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### HyperliquidPerpManager
 
->  HyperliquidPerpManager (ticker=None, data_dir='../data/hyperliquid',
->                              interval='1h', file_type='parquet', update=False,
->                              save=False, refresh_hours=24, info=None,
->                              verbose=True)
+``` python
+def HyperliquidPerpManager(
+    ticker:NoneType=None, data_dir:str='../data/hyperliquid', interval:str='1h', file_type:str='parquet',
+    update:bool=False, save:bool=False, refresh_hours:int=24, info:NoneType=None, verbose:bool=True
+):
+```
 
-\*Manager for Hyperliquid perpetual futures data.
+*Manager for Hyperliquid perpetual futures data.*
 
 Handles reading, updating, and saving perpetual price data (OHLCV). Data
 is stored in the ‘perp’ subfolder with files named as
@@ -1264,7 +1845,7 @@ HyperliquidPerpManager(ticker=“ETH”, interval=“1h”, info=info) eth_data
     )
 
     # Load all available perp tokens
-    manager = HyperliquidPerpManager(update=True, save=True, info=info)*
+    manager = HyperliquidPerpManager(update=True, save=True, info=info)
 
 #### Example
 
@@ -1284,25 +1865,38 @@ print(eth_data)
 
     Processing 1 perpetual tokens...
     Warning: Processing 1 perpetual tokens exceeds the maximum number of requests per minute. Adjusting waiting time to 2 seconds.
-    Loaded 5888 rows for ETH from ../data/hyperliquid/perp/ETH_1h.parquet
-    Updating ETH from 2025-11-18T22:00:00Z
-    Retrieved 387 new rows for ETH
-    Added 362 new rows for ETH
-    Saved 6250 rows for ETH
-                    datetime    open    high     low   close      volume coin
-    0    2025-03-19 15:00:00  2030.7  2056.7  2026.0  2048.7  30206.2723  ETH
-    1    2025-03-19 16:00:00  2048.7  2049.2  2035.3  2047.4  22198.4803  ETH
-    2    2025-03-19 17:00:00  2047.4  2048.9  2014.3  2026.1  35909.8007  ETH
-    3    2025-03-19 18:00:00  2026.1  2059.9  1998.0  2045.0  84148.3569  ETH
-    4    2025-03-19 19:00:00  2045.1  2052.1  2020.1  2029.7  38921.5619  ETH
-    ...                  ...     ...     ...     ...     ...         ...  ...
-    6245 2025-12-04 20:00:00  3117.9  3143.8  3104.4  3140.5  15553.2974  ETH
-    6246 2025-12-04 21:00:00  3140.2  3150.0  3117.2  3121.8  13448.5987  ETH
-    6247 2025-12-04 22:00:00  3122.1  3147.2  3121.5  3142.4  11888.6633  ETH
-    6248 2025-12-04 23:00:00  3142.6  3142.6  3127.9  3131.7   4731.0506  ETH
-    6249 2025-12-05 00:00:00  3131.8  3156.0  3131.4  3145.2  10706.1961  ETH
-
-    [6250 rows x 7 columns]
+    Loaded 26 rows for ETH from ../data/hyperliquid/perp/ETH_1h.parquet
+    Updating ETH from 2026-07-25T23:00:00Z
+    Retrieved 25 new rows for ETH
+    Added 0 new rows for ETH
+    Saved 26 rows for ETH
+                  datetime    open    high     low   close      volume coin
+    0  2026-07-25 22:00:00  1871.8  1876.0  1871.6  1875.2   2288.8254  ETH
+    1  2026-07-25 23:00:00  1875.2  1875.6  1872.6  1874.3   1635.3091  ETH
+    2  2026-07-26 00:00:00  1874.3  1880.5  1873.5  1880.0   5964.0359  ETH
+    3  2026-07-26 01:00:00  1880.1  1881.0  1877.4  1877.5   1205.5172  ETH
+    4  2026-07-26 02:00:00  1877.6  1880.5  1876.5  1880.2    925.1730  ETH
+    5  2026-07-26 03:00:00  1880.2  1883.4  1878.2  1881.0   2411.0634  ETH
+    6  2026-07-26 04:00:00  1881.4  1888.8  1879.6  1885.7   6799.9422  ETH
+    7  2026-07-26 05:00:00  1885.7  1886.4  1882.0  1882.3   3010.1127  ETH
+    8  2026-07-26 06:00:00  1882.4  1884.3  1877.6  1884.0   5390.1696  ETH
+    9  2026-07-26 07:00:00  1884.0  1885.5  1879.8  1880.5   1183.0028  ETH
+    10 2026-07-26 08:00:00  1880.8  1881.9  1878.6  1880.8   1571.2824  ETH
+    11 2026-07-26 09:00:00  1880.9  1885.3  1880.8  1883.6   9075.2604  ETH
+    12 2026-07-26 10:00:00  1883.4  1886.6  1881.9  1885.2   2746.1060  ETH
+    13 2026-07-26 11:00:00  1885.2  1887.5  1884.3  1885.1   7237.6449  ETH
+    14 2026-07-26 12:00:00  1885.1  1892.8  1885.0  1886.0   8435.9535  ETH
+    15 2026-07-26 13:00:00  1885.9  1887.9  1881.2  1885.9   8546.9140  ETH
+    16 2026-07-26 14:00:00  1885.9  1899.1  1885.9  1897.8  19169.9635  ETH
+    17 2026-07-26 15:00:00  1897.9  1916.1  1897.3  1914.0  19426.2555  ETH
+    18 2026-07-26 16:00:00  1914.0  1927.6  1907.9  1916.1  34021.2927  ETH
+    19 2026-07-26 17:00:00  1916.1  1917.2  1910.4  1910.7   6543.2145  ETH
+    20 2026-07-26 18:00:00  1910.6  1915.5  1910.5  1914.0   3640.1133  ETH
+    21 2026-07-26 19:00:00  1914.0  1915.4  1911.5  1913.6   2512.5447  ETH
+    22 2026-07-26 20:00:00  1913.6  1914.0  1910.9  1912.8   2440.3697  ETH
+    23 2026-07-26 21:00:00  1912.7  1929.9  1912.7  1925.3  13779.9050  ETH
+    24 2026-07-26 22:00:00  1925.3  1951.1  1925.3  1949.0  47844.9203  ETH
+    25 2026-07-26 23:00:00  1949.0  1967.9  1949.0  1960.1  20785.6275  ETH
 
 ``` python
 manager = HyperliquidPerpManager(
@@ -1314,50 +1908,40 @@ df = manager.get_data()
 print(df)
 ```
 
-                          datetime     open     high      low    close    volume  \
-    0    2025-10-30 19:00:00+00:00  0.24613  0.24678  0.24364  0.24403   33184.0   
-    1    2025-10-30 20:00:00+00:00  0.24454  0.24729  0.24406  0.24718   13245.0   
-    2    2025-10-30 21:00:00+00:00  0.24716  0.24958  0.24716  0.24886   11172.0   
-    3    2025-10-30 22:00:00+00:00  0.24922  0.25149  0.24905  0.25148    5984.0   
-    4    2025-10-30 23:00:00+00:00  0.25177  0.25497  0.25089  0.25467    5767.0   
-    ...                        ...      ...      ...      ...      ...       ...   
-    5885 2025-11-19 18:00:00+00:00  0.33057  0.34508  0.32577  0.33751  952658.5   
-    5886 2025-11-19 19:00:00+00:00  0.33635  0.35653  0.33635  0.35555  120968.8   
-    5887 2025-11-19 20:00:00+00:00  0.35623  0.37132  0.35614  0.36231  289579.7   
-    5888 2025-11-19 21:00:00+00:00  0.36306  0.38125  0.36249  0.37841  361439.4   
-    5889 2025-11-19 22:00:00+00:00  0.37841  0.38556  0.37205  0.38395  131409.8   
+                          datetime    open    high     low   close    volume coin
+    0    2025-03-19 13:00:00+00:00  1.3062  1.3101  1.2951  1.2974   1788.20  FTT
+    1    2025-03-19 14:00:00+00:00  1.2989  1.3067  1.2944  1.2976   1557.00  FTT
+    2    2025-03-19 15:00:00+00:00  1.2988  1.3105  1.2958  1.3088   2618.00  FTT
+    3    2025-03-19 16:00:00+00:00  1.3070  1.3134  1.3009  1.3026   1967.90  FTT
+    4    2025-03-19 17:00:00+00:00  1.3029  1.3029  1.2845  1.2895   1485.00  FTT
+    ...                        ...     ...     ...     ...     ...       ...  ...
+    5669 2025-11-19 18:00:00+00:00  0.2272  0.2291  0.2224  0.2238  63048.07  ACE
+    5670 2025-11-19 19:00:00+00:00  0.2245  0.2275  0.2238  0.2265  57691.48  ACE
+    5671 2025-11-19 20:00:00+00:00  0.2264  0.2313  0.2261  0.2308  78869.60  ACE
+    5672 2025-11-19 21:00:00+00:00  0.2312  0.2373  0.2312  0.2371  44765.71  ACE
+    5673 2025-11-19 22:00:00+00:00  0.2369  0.2369  0.2345  0.2360  19050.64  ACE
 
-           coin  
-    0     LAYER  
-    1     LAYER  
-    2     LAYER  
-    3     LAYER  
-    4     LAYER  
-    ...     ...  
-    5885  GRASS  
-    5886  GRASS  
-    5887  GRASS  
-    5888  GRASS  
-    5889  GRASS  
-
-    [860444 rows x 7 columns]
+    [854220 rows x 7 columns]
 
 ### HyperliquidSpotManager derived class
 
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L1120"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L1317"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### HyperliquidSpotManager
 
->  HyperliquidSpotManager (ticker=None, base='USDC',
->                              data_dir='../data/hyperliquid', interval='1h',
->                              file_type='parquet', update=False, save=False,
->                              refresh_hours=24, info=None, verbose=True)
+``` python
+def HyperliquidSpotManager(
+    ticker:NoneType=None, base:str='USDC', data_dir:str='../data/hyperliquid', interval:str='1h',
+    file_type:str='parquet', update:bool=False, save:bool=False, refresh_hours:int=24, info:NoneType=None,
+    verbose:bool=True
+):
+```
 
-\*Manager for Hyperliquid spot market data.
+*Manager for Hyperliquid spot market data.*
 
 Handles reading, updating, and saving spot price data (OHLCV). Data is
 stored in the ‘spot’ subfolder with files named as
@@ -1393,7 +1977,7 @@ info=info) eth_data = manager.data\[“ETH”\]
     )
 
     # Load all available spot tokens
-    manager = HyperliquidSpotManager(base="USDC", update=True, save=True, info=info)*
+    manager = HyperliquidSpotManager(base="USDC", update=True, save=True, info=info)
 
 #### Example
 
@@ -1415,26 +1999,39 @@ if "ETH" in manager1.data:
 ```
 
     Example 1: Load existing ETH/USDC spot data
-    Loaded 5487 rows for ETH from ../data/hyperliquid/spot/ETH_USDC_1h.parquet
-    Updating ETH/USDC from 2025-11-18T22:00:00Z
-    Retrieved 387 new rows for ETH/USDC
-    Added 362 new rows for ETH/USDC
-    Saved 5849 rows for ETH/USDC
-    Loaded 5849 records for ETH
-                    datetime    open    high     low   close    volume coin
-    0    2025-04-05 08:00:00  1812.3  1813.9  1809.7  1812.7    1.7000  ETH
-    1    2025-04-05 09:00:00  1814.0  1821.0  1814.0  1819.9   19.6808  ETH
-    2    2025-04-05 10:00:00  1820.2  1820.2  1816.2  1817.4   12.5505  ETH
-    3    2025-04-05 11:00:00  1818.4  1818.5  1806.6  1806.8   63.9187  ETH
-    4    2025-04-05 12:00:00  1806.8  1806.9  1793.0  1796.5   45.5064  ETH
-    ...                  ...     ...     ...     ...     ...       ...  ...
-    5844 2025-12-04 20:00:00  3120.6  3145.6  3106.6  3143.1  202.4952  ETH
-    5845 2025-12-04 21:00:00  3141.0  3154.2  3120.0  3123.9  339.5227  ETH
-    5846 2025-12-04 22:00:00  3125.1  3148.6  3124.4  3144.5   44.5737  ETH
-    5847 2025-12-04 23:00:00  3141.9  3144.7  3130.9  3133.9   54.7757  ETH
-    5848 2025-12-05 00:00:00  3133.9  3156.3  3133.4  3147.6   35.9591  ETH
-
-    [5849 rows x 7 columns]
+    Loaded 26 rows for ETH from ../data/hyperliquid/spot/ETH_USDC_1h.parquet
+    Updating ETH/USDC from 2026-07-25T23:00:00Z
+    Retrieved 25 new rows for ETH/USDC
+    Added 0 new rows for ETH/USDC
+    Saved 26 rows for ETH/USDC
+    Loaded 26 records for ETH
+                  datetime    open    high     low   close    volume coin
+    0  2026-07-25 22:00:00  1872.5  1875.3  1872.4  1875.3   16.5510  ETH
+    1  2026-07-25 23:00:00  1874.4  1874.8  1872.2  1873.3   59.5098  ETH
+    2  2026-07-26 00:00:00  1873.5  1879.4  1872.9  1879.4   52.7933  ETH
+    3  2026-07-26 01:00:00  1880.1  1880.1  1876.5  1876.9   54.5726  ETH
+    4  2026-07-26 02:00:00  1877.3  1880.2  1876.0  1879.5   45.9965  ETH
+    5  2026-07-26 03:00:00  1879.5  1882.5  1877.8  1880.6   46.6177  ETH
+    6  2026-07-26 04:00:00  1881.1  1887.2  1879.1  1884.0  600.0430  ETH
+    7  2026-07-26 05:00:00  1884.7  1885.4  1881.9  1881.9   30.9801  ETH
+    8  2026-07-26 06:00:00  1881.8  1883.8  1877.3  1883.2  214.0866  ETH
+    9  2026-07-26 07:00:00  1883.9  1884.7  1879.2  1879.9  200.7441  ETH
+    10 2026-07-26 08:00:00  1880.1  1880.7  1877.9  1879.8  141.9597  ETH
+    11 2026-07-26 09:00:00  1879.7  1884.0  1879.6  1882.0   95.8968  ETH
+    12 2026-07-26 10:00:00  1882.2  1886.0  1880.6  1884.3  259.5814  ETH
+    13 2026-07-26 11:00:00  1883.9  1886.1  1883.3  1884.3   61.0424  ETH
+    14 2026-07-26 12:00:00  1884.8  1891.4  1883.9  1884.8  273.4435  ETH
+    15 2026-07-26 13:00:00  1884.9  1887.2  1880.6  1885.3   85.9766  ETH
+    16 2026-07-26 14:00:00  1885.6  1897.6  1885.3  1896.6  616.8220  ETH
+    17 2026-07-26 15:00:00  1897.1  1914.5  1896.1  1913.1  193.2810  ETH
+    18 2026-07-26 16:00:00  1913.2  1925.0  1907.3  1914.9  262.7336  ETH
+    19 2026-07-26 17:00:00  1914.1  1916.1  1909.6  1909.7   42.9093  ETH
+    20 2026-07-26 18:00:00  1910.0  1914.6  1910.0  1913.1   99.7249  ETH
+    21 2026-07-26 19:00:00  1913.0  1913.8  1910.2  1912.5  336.0437  ETH
+    22 2026-07-26 20:00:00  1912.5  1912.9  1910.2  1912.1  136.4614  ETH
+    23 2026-07-26 21:00:00  1912.8  1927.2  1912.2  1923.9  139.3486  ETH
+    24 2026-07-26 22:00:00  1924.4  1951.0  1924.4  1948.5  461.1441  ETH
+    25 2026-07-26 23:00:00  1951.1  1964.7  1948.5  1959.4  142.3266  ETH
 
 ``` python
 # Example 2: Update and save data for multiple tokens
@@ -1459,30 +2056,30 @@ for ticker in ["ETH", "BTC", "SOL"]:
 
 
     Example 2: Update and save multiple tokens
-    Loaded 5849 rows for ETH from ../data/hyperliquid/spot/ETH_USDC_1h.parquet
-    Updating ETH/USDC from 2025-12-04T00:00:00Z
+    Loaded 26 rows for ETH from ../data/hyperliquid/spot/ETH_USDC_1h.parquet
+    Updating ETH/USDC from 2026-07-25T23:00:00Z
     Retrieved 25 new rows for ETH/USDC
     Added 0 new rows for ETH/USDC
-    Saved 5849 rows for ETH/USDC
-    Loaded 5487 rows for BTC from ../data/hyperliquid/spot/BTC_USDC_1h.parquet
-    Updating BTC/USDC from 2025-11-18T22:00:00Z
-    Retrieved 387 new rows for BTC/USDC
-    Added 362 new rows for BTC/USDC
-    Saved 5849 rows for BTC/USDC
-    Loaded 4647 rows for SOL from ../data/hyperliquid/spot/SOL_USDC_1h.parquet
-    Updating SOL/USDC from 2025-11-18T22:00:00Z
-    Retrieved 387 new rows for SOL/USDC
-    Added 362 new rows for SOL/USDC
-    Saved 5009 rows for SOL/USDC
+    Saved 26 rows for ETH/USDC
+    Loaded 26 rows for BTC from ../data/hyperliquid/spot/BTC_USDC_1h.parquet
+    Updating BTC/USDC from 2026-07-25T23:00:00Z
+    Retrieved 25 new rows for BTC/USDC
+    Added 0 new rows for BTC/USDC
+    Saved 26 rows for BTC/USDC
+    Loaded 26 rows for SOL from ../data/hyperliquid/spot/SOL_USDC_1h.parquet
+    Updating SOL/USDC from 2026-07-25T23:00:00Z
+    Retrieved 25 new rows for SOL/USDC
+    Added 0 new rows for SOL/USDC
+    Saved 26 rows for SOL/USDC
 
-    ETH data shape: (5849, 7)
-    Latest ETH price: $3147.60
+    ETH data shape: (26, 7)
+    Latest ETH price: $1959.40
 
-    BTC data shape: (5849, 7)
-    Latest BTC price: $92361.00
+    BTC data shape: (26, 7)
+    Latest BTC price: $65393.00
 
-    SOL data shape: (5009, 7)
-    Latest SOL price: $139.50
+    SOL data shape: (26, 7)
+    Latest SOL price: $76.90
 
 ``` python
 # Example 3: Load all available spot tokens with USDC base
@@ -1503,39 +2100,41 @@ print(f"Available tokens: {list(manager3.data.keys())}")
 
     Example 3: Load all available spot tokens
     Found 7 spot tokens for USDC
-    Loaded 105 rows for BTC from ../data/hyperliquid/spot/BTC_USDC_4h.parquet
-    Updating BTC/USDC from 2025-11-14T20:00:00Z
-    Retrieved 122 new rows for BTC/USDC
-    Added 115 new rows for BTC/USDC
-    Saved 220 rows for BTC/USDC
-    Loaded 105 rows for ETH from ../data/hyperliquid/spot/ETH_USDC_4h.parquet
-    Updating ETH/USDC from 2025-11-14T20:00:00Z
-    Retrieved 122 new rows for ETH/USDC
-    Added 115 new rows for ETH/USDC
-    Saved 220 rows for ETH/USDC
-    Loaded 105 rows for SOL from ../data/hyperliquid/spot/SOL_USDC_4h.parquet
-    Updating SOL/USDC from 2025-11-14T20:00:00Z
-    Retrieved 122 new rows for SOL/USDC
-    Added 115 new rows for SOL/USDC
-    Saved 220 rows for SOL/USDC
-    Loaded 105 rows for HYPE from ../data/hyperliquid/spot/HYPE_USDC_4h.parquet
-    Updating HYPE/USDC from 2025-11-14T20:00:00Z
-    Retrieved 122 new rows for HYPE/USDC
-    Added 115 new rows for HYPE/USDC
-    Saved 220 rows for HYPE/USDC
-    Loaded 43 rows for TRUMP from ../data/hyperliquid/spot/TRUMP_USDC_4h.parquet
-    Updating TRUMP/USDC from 2025-11-03T12:00:00Z
-    Retrieved 153 new rows for TRUMP/USDC
-    Added 146 new rows for TRUMP/USDC
-    Saved 189 rows for TRUMP/USDC
-    No existing data for BERA/USDC, fetching initial data
+    Loaded 7 rows for BTC from ../data/hyperliquid/spot/BTC_USDC_4h.parquet
+    Updating BTC/USDC from 2026-07-25T20:00:00Z
+    Retrieved 7 new rows for BTC/USDC
+    Added 0 new rows for BTC/USDC
+    Saved 7 rows for BTC/USDC
+    Loaded 7 rows for ETH from ../data/hyperliquid/spot/ETH_USDC_4h.parquet
+    Updating ETH/USDC from 2026-07-25T20:00:00Z
+    Retrieved 7 new rows for ETH/USDC
+    Added 0 new rows for ETH/USDC
+    Saved 7 rows for ETH/USDC
+    Loaded 7 rows for SOL from ../data/hyperliquid/spot/SOL_USDC_4h.parquet
+    Updating SOL/USDC from 2026-07-25T20:00:00Z
+    Retrieved 7 new rows for SOL/USDC
+    Added 0 new rows for SOL/USDC
+    Saved 7 rows for SOL/USDC
+    Loaded 7 rows for HYPE from ../data/hyperliquid/spot/HYPE_USDC_4h.parquet
+    Updating HYPE/USDC from 2026-07-25T20:00:00Z
+    Retrieved 7 new rows for HYPE/USDC
+    Added 0 new rows for HYPE/USDC
+    Saved 7 rows for HYPE/USDC
+    Loaded 1621 rows for TRUMP from ../data/hyperliquid/spot/TRUMP_USDC_4h.parquet
+    Updating TRUMP/USDC from 2026-07-24T12:00:00Z
+    Retrieved 7 new rows for TRUMP/USDC
+    Added 0 new rows for TRUMP/USDC
+    Saved 1621 rows for TRUMP/USDC
+    Loaded 7 rows for BERA from ../data/hyperliquid/spot/BERA_USDC_4h.parquet
+    Updating BERA/USDC from 2026-07-25T08:00:00Z
     Retrieved 7 new rows for BERA/USDC
+    Added 0 new rows for BERA/USDC
     Saved 7 rows for BERA/USDC
-    Loaded 108 rows for PUMP from ../data/hyperliquid/spot/PUMP_USDC_4h.parquet
-    Updating PUMP/USDC from 2025-11-14T20:00:00Z
-    Retrieved 118 new rows for PUMP/USDC
-    Added 111 new rows for PUMP/USDC
-    Saved 219 rows for PUMP/USDC
+    Loaded 1612 rows for PUMP from ../data/hyperliquid/spot/PUMP_USDC_4h.parquet
+    Updating PUMP/USDC from 2026-07-23T12:00:00Z
+    Retrieved 7 new rows for PUMP/USDC
+    Added 0 new rows for PUMP/USDC
+    Saved 1612 rows for PUMP/USDC
 
     Loaded 7 spot tokens
     Available tokens: ['BTC', 'ETH', 'SOL', 'HYPE', 'TRUMP', 'BERA', 'PUMP']
@@ -1573,28 +2172,28 @@ for ticker in ["ETH", "BTC"]:
 
 
     Example 5: Analyze spot data
-    Loaded 5849 rows for ETH from ../data/hyperliquid/spot/ETH_USDC_1h.parquet
-    Updating ETH/USDC from 2025-12-04T00:00:00Z
+    Loaded 26 rows for ETH from ../data/hyperliquid/spot/ETH_USDC_1h.parquet
+    Updating ETH/USDC from 2026-07-25T23:00:00Z
     Retrieved 25 new rows for ETH/USDC
     Added 0 new rows for ETH/USDC
-    Loaded 5849 rows for BTC from ../data/hyperliquid/spot/BTC_USDC_1h.parquet
-    Updating BTC/USDC from 2025-12-04T00:00:00Z
+    Loaded 26 rows for BTC from ../data/hyperliquid/spot/BTC_USDC_1h.parquet
+    Updating BTC/USDC from 2026-07-25T23:00:00Z
     Retrieved 25 new rows for BTC/USDC
     Added 0 new rows for BTC/USDC
 
     ETH/USDC:
-      Current Price: $3147.60
-      24h Change: -1.75%
-      24h High: $3239.80
-      24h Low: $3069.80
-      24h Volume: 5202.40
+      Current Price: $1958.30
+      24h Change: +4.20%
+      24h High: $1964.70
+      24h Low: $1872.90
+      24h Volume: 4595.75
 
     BTC/USDC:
-      Current Price: $92361.00
-      24h Change: -0.91%
-      24h High: $94081.00
-      24h Low: $90852.00
-      24h Volume: 587.53
+      Current Price: $65346.00
+      24h Change: +1.42%
+      24h High: $65494.00
+      24h Low: $64230.00
+      24h Volume: 140.47
 
 ``` python
 mananger6 = HyperliquidSpotManager(
@@ -1608,9 +2207,9 @@ mananger6.get_data()
 ```
 
     Found 7 spot tokens for USDC
-    Loaded 5849 rows for BTC from ../data/hyperliquid/spot/BTC_USDC_1h.parquet
-    Loaded 5849 rows for ETH from ../data/hyperliquid/spot/ETH_USDC_1h.parquet
-    Loaded 5009 rows for SOL from ../data/hyperliquid/spot/SOL_USDC_1h.parquet
+    Loaded 26 rows for BTC from ../data/hyperliquid/spot/BTC_USDC_1h.parquet
+    Loaded 26 rows for ETH from ../data/hyperliquid/spot/ETH_USDC_1h.parquet
+    Loaded 26 rows for SOL from ../data/hyperliquid/spot/SOL_USDC_1h.parquet
     Loaded 484 rows for HYPE from ../data/hyperliquid/spot/HYPE_USDC_1h.parquet
     Loaded 36 rows for TRUMP from ../data/hyperliquid/spot/TRUMP_USDC_1h.parquet
     Loaded 25 rows for BERA from ../data/hyperliquid/spot/BERA_USDC_1h.parquet
@@ -1645,52 +2244,52 @@ mananger6.get_data()
 <tbody>
 <tr>
 <td data-quarto-table-cell-role="th">0</td>
-<td>2025-04-05 08:00:00+00:00</td>
-<td>83511.000000</td>
-<td>83623.000000</td>
-<td>83361.000000</td>
-<td>83482.000000</td>
-<td>2.416920e+00</td>
+<td>2026-07-25 22:00:00+00:00</td>
+<td>64303.000000</td>
+<td>64356.000000</td>
+<td>64290.000000</td>
+<td>64350.000000</td>
+<td>2.847586e+01</td>
 <td>BTC</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">1</td>
-<td>2025-04-05 09:00:00+00:00</td>
-<td>83486.000000</td>
-<td>83854.000000</td>
-<td>83486.000000</td>
-<td>83848.000000</td>
-<td>6.817760e+00</td>
+<td>2026-07-25 23:00:00+00:00</td>
+<td>64351.000000</td>
+<td>64363.000000</td>
+<td>64300.000000</td>
+<td>64305.000000</td>
+<td>1.306880e+00</td>
 <td>BTC</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">2</td>
-<td>2025-04-05 10:00:00+00:00</td>
-<td>83855.000000</td>
-<td>83901.000000</td>
-<td>83600.000000</td>
-<td>83642.000000</td>
-<td>6.209230e+00</td>
+<td>2026-07-26 00:00:00+00:00</td>
+<td>64304.000000</td>
+<td>64433.000000</td>
+<td>64300.000000</td>
+<td>64433.000000</td>
+<td>5.077590e+00</td>
 <td>BTC</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">3</td>
-<td>2025-04-05 11:00:00+00:00</td>
-<td>83642.000000</td>
-<td>83688.000000</td>
-<td>83402.000000</td>
-<td>83430.000000</td>
-<td>9.042830e+00</td>
+<td>2026-07-26 01:00:00+00:00</td>
+<td>64437.000000</td>
+<td>64481.000000</td>
+<td>64399.000000</td>
+<td>64402.000000</td>
+<td>3.229600e+00</td>
 <td>BTC</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">4</td>
-<td>2025-04-05 12:00:00+00:00</td>
-<td>83441.000000</td>
-<td>83517.000000</td>
-<td>83112.000000</td>
-<td>83243.000000</td>
-<td>6.552230e+00</td>
+<td>2026-07-26 02:00:00+00:00</td>
+<td>64407.000000</td>
+<td>64470.000000</td>
+<td>64373.000000</td>
+<td>64468.000000</td>
+<td>1.359620e+00</td>
 <td>BTC</td>
 </tr>
 <tr>
@@ -1756,7 +2355,7 @@ mananger6.get_data()
 </tbody>
 </table>
 
-<p>17732 rows × 7 columns</p>
+<p>1103 rows × 7 columns</p>
 </div>
 
 ### HyperliquidFundingManager derived class
@@ -1764,17 +2363,19 @@ mananger6.get_data()
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L1387"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L1584"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### HyperliquidFundingManager
 
->  HyperliquidFundingManager (ticker=None, data_dir='../data/hyperliquid',
->                                 file_type='parquet', update=False, save=False,
->                                 refresh_hours=24, round_to_hour=True,
->                                 info=None, verbose=True)
+``` python
+def HyperliquidFundingManager(
+    ticker:NoneType=None, data_dir:str='../data/hyperliquid', file_type:str='parquet', update:bool=False,
+    save:bool=False, refresh_hours:int=24, round_to_hour:bool=True, info:NoneType=None, verbose:bool=True
+):
+```
 
-\*Manager for Hyperliquid funding rate data.
+*Manager for Hyperliquid funding rate data.*
 
 Handles reading, updating, and saving funding rate data. Data is stored
 in the ‘funding’ subfolder with files named as {ticker}.{file_type}
@@ -1806,7 +2407,7 @@ manager.data\[“ETH”\]
     )
 
     # Load all available tokens
-    manager = HyperliquidFundingManager(update=True, save=True, info=info)*
+    manager = HyperliquidFundingManager(update=True, save=True, info=info)
 
 #### Example
 
@@ -1865,42 +2466,42 @@ manager.get_data()
 <tr>
 <td data-quarto-table-cell-role="th">0</td>
 <td>2025-10-03 21:00:00+00:00</td>
-<td>1.250000e-05</td>
-<td>-0.000022</td>
-<td>LAYER</td>
-<td>1.250000e-05</td>
+<td>-0.000013</td>
+<td>-0.000606</td>
+<td>FTT</td>
+<td>-0.000013</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">1</td>
 <td>2025-10-03 22:00:00+00:00</td>
-<td>1.250000e-05</td>
-<td>-0.000036</td>
-<td>LAYER</td>
-<td>1.250000e-05</td>
+<td>0.000013</td>
+<td>-0.000313</td>
+<td>FTT</td>
+<td>0.000013</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">2</td>
 <td>2025-10-03 23:00:00+00:00</td>
-<td>1.250000e-05</td>
-<td>-0.000078</td>
-<td>LAYER</td>
-<td>1.250000e-05</td>
+<td>0.000013</td>
+<td>-0.000128</td>
+<td>FTT</td>
+<td>0.000013</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">3</td>
 <td>2025-10-04 00:00:00+00:00</td>
-<td>1.250000e-05</td>
-<td>-0.000011</td>
-<td>LAYER</td>
-<td>1.250000e-05</td>
+<td>0.000013</td>
+<td>-0.000041</td>
+<td>FTT</td>
+<td>0.000013</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">4</td>
 <td>2025-10-04 01:00:00+00:00</td>
-<td>1.250000e-05</td>
-<td>-0.000026</td>
-<td>LAYER</td>
-<td>1.250000e-05</td>
+<td>0.000013</td>
+<td>-0.000069</td>
+<td>FTT</td>
+<td>0.000013</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">...</td>
@@ -1911,44 +2512,44 @@ manager.get_data()
 <td>...</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1114</td>
+<td data-quarto-table-cell-role="th">733</td>
 <td>2025-11-19 07:00:00+00:00</td>
-<td>-1.590130e-05</td>
-<td>-0.000627</td>
-<td>GRASS</td>
-<td>-1.590130e-05</td>
+<td>0.000013</td>
+<td>-0.000111</td>
+<td>ACE</td>
+<td>0.000013</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1115</td>
+<td data-quarto-table-cell-role="th">734</td>
 <td>2025-11-19 08:00:00+00:00</td>
-<td>-4.340640e-05</td>
-<td>-0.000847</td>
-<td>GRASS</td>
-<td>-4.340640e-05</td>
+<td>0.000013</td>
+<td>-0.000264</td>
+<td>ACE</td>
+<td>0.000013</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1116</td>
+<td data-quarto-table-cell-role="th">735</td>
 <td>2025-11-19 09:00:00+00:00</td>
-<td>-2.114020e-05</td>
-<td>-0.000669</td>
-<td>GRASS</td>
-<td>-2.114020e-05</td>
+<td>0.000013</td>
+<td>-0.000378</td>
+<td>ACE</td>
+<td>0.000013</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1117</td>
+<td data-quarto-table-cell-role="th">736</td>
 <td>2025-11-19 10:00:00+00:00</td>
-<td>-1.030000e-08</td>
-<td>-0.000500</td>
-<td>GRASS</td>
-<td>-1.030000e-08</td>
+<td>0.000013</td>
+<td>-0.000113</td>
+<td>ACE</td>
+<td>0.000013</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1118</td>
+<td data-quarto-table-cell-role="th">737</td>
 <td>2025-11-19 11:00:00+00:00</td>
-<td>-1.991900e-05</td>
-<td>-0.000659</td>
-<td>GRASS</td>
-<td>-1.991900e-05</td>
+<td>0.000013</td>
+<td>-0.000185</td>
+<td>ACE</td>
+<td>0.000013</td>
 </tr>
 </tbody>
 </table>
@@ -2008,42 +2609,42 @@ manager.get_data()
 <tr>
 <td data-quarto-table-cell-role="th">0</td>
 <td>2025-10-03 21:00:00+00:00</td>
-<td>1.250000e-05</td>
-<td>-0.000022</td>
-<td>LAYER</td>
-<td>1.250000e-05</td>
+<td>-0.000013</td>
+<td>-0.000606</td>
+<td>FTT</td>
+<td>-0.000013</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">1</td>
 <td>2025-10-03 22:00:00+00:00</td>
-<td>1.250000e-05</td>
-<td>-0.000036</td>
-<td>LAYER</td>
-<td>1.250000e-05</td>
+<td>0.000013</td>
+<td>-0.000313</td>
+<td>FTT</td>
+<td>0.000013</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">2</td>
 <td>2025-10-03 23:00:00+00:00</td>
-<td>1.250000e-05</td>
-<td>-0.000078</td>
-<td>LAYER</td>
-<td>1.250000e-05</td>
+<td>0.000013</td>
+<td>-0.000128</td>
+<td>FTT</td>
+<td>0.000013</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">3</td>
 <td>2025-10-04 00:00:00+00:00</td>
-<td>1.250000e-05</td>
-<td>-0.000011</td>
-<td>LAYER</td>
-<td>1.250000e-05</td>
+<td>0.000013</td>
+<td>-0.000041</td>
+<td>FTT</td>
+<td>0.000013</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">4</td>
 <td>2025-10-04 01:00:00+00:00</td>
-<td>1.250000e-05</td>
-<td>-0.000026</td>
-<td>LAYER</td>
-<td>1.250000e-05</td>
+<td>0.000013</td>
+<td>-0.000069</td>
+<td>FTT</td>
+<td>0.000013</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">...</td>
@@ -2054,44 +2655,44 @@ manager.get_data()
 <td>...</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1114</td>
+<td data-quarto-table-cell-role="th">733</td>
 <td>2025-11-19 07:00:00+00:00</td>
-<td>-1.590130e-05</td>
-<td>-0.000627</td>
-<td>GRASS</td>
-<td>-1.590130e-05</td>
+<td>0.000013</td>
+<td>-0.000111</td>
+<td>ACE</td>
+<td>0.000013</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1115</td>
+<td data-quarto-table-cell-role="th">734</td>
 <td>2025-11-19 08:00:00+00:00</td>
-<td>-4.340640e-05</td>
-<td>-0.000847</td>
-<td>GRASS</td>
-<td>-4.340640e-05</td>
+<td>0.000013</td>
+<td>-0.000264</td>
+<td>ACE</td>
+<td>0.000013</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1116</td>
+<td data-quarto-table-cell-role="th">735</td>
 <td>2025-11-19 09:00:00+00:00</td>
-<td>-2.114020e-05</td>
-<td>-0.000669</td>
-<td>GRASS</td>
-<td>-2.114020e-05</td>
+<td>0.000013</td>
+<td>-0.000378</td>
+<td>ACE</td>
+<td>0.000013</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1117</td>
+<td data-quarto-table-cell-role="th">736</td>
 <td>2025-11-19 10:00:00+00:00</td>
-<td>-1.030000e-08</td>
-<td>-0.000500</td>
-<td>GRASS</td>
-<td>-1.030000e-08</td>
+<td>0.000013</td>
+<td>-0.000113</td>
+<td>ACE</td>
+<td>0.000013</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1118</td>
+<td data-quarto-table-cell-role="th">737</td>
 <td>2025-11-19 11:00:00+00:00</td>
-<td>-1.991900e-05</td>
-<td>-0.000659</td>
-<td>GRASS</td>
-<td>-1.991900e-05</td>
+<td>0.000013</td>
+<td>-0.000185</td>
+<td>ACE</td>
+<td>0.000013</td>
 </tr>
 </tbody>
 </table>
@@ -2140,52 +2741,52 @@ manager.get_data()
 <tbody>
 <tr>
 <td data-quarto-table-cell-role="th">0</td>
-<td>2025-04-05 08:00:00+00:00</td>
-<td>83511.000000</td>
-<td>83623.000000</td>
-<td>83361.000000</td>
-<td>83482.000000</td>
-<td>2.416920e+00</td>
+<td>2026-07-25 22:00:00+00:00</td>
+<td>64303.000000</td>
+<td>64356.000000</td>
+<td>64290.000000</td>
+<td>64350.000000</td>
+<td>2.847586e+01</td>
 <td>BTC</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">1</td>
-<td>2025-04-05 09:00:00+00:00</td>
-<td>83486.000000</td>
-<td>83854.000000</td>
-<td>83486.000000</td>
-<td>83848.000000</td>
-<td>6.817760e+00</td>
+<td>2026-07-25 23:00:00+00:00</td>
+<td>64351.000000</td>
+<td>64363.000000</td>
+<td>64300.000000</td>
+<td>64305.000000</td>
+<td>1.306880e+00</td>
 <td>BTC</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">2</td>
-<td>2025-04-05 10:00:00+00:00</td>
-<td>83855.000000</td>
-<td>83901.000000</td>
-<td>83600.000000</td>
-<td>83642.000000</td>
-<td>6.209230e+00</td>
+<td>2026-07-26 00:00:00+00:00</td>
+<td>64304.000000</td>
+<td>64433.000000</td>
+<td>64300.000000</td>
+<td>64433.000000</td>
+<td>5.077590e+00</td>
 <td>BTC</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">3</td>
-<td>2025-04-05 11:00:00+00:00</td>
-<td>83642.000000</td>
-<td>83688.000000</td>
-<td>83402.000000</td>
-<td>83430.000000</td>
-<td>9.042830e+00</td>
+<td>2026-07-26 01:00:00+00:00</td>
+<td>64437.000000</td>
+<td>64481.000000</td>
+<td>64399.000000</td>
+<td>64402.000000</td>
+<td>3.229600e+00</td>
 <td>BTC</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">4</td>
-<td>2025-04-05 12:00:00+00:00</td>
-<td>83441.000000</td>
-<td>83517.000000</td>
-<td>83112.000000</td>
-<td>83243.000000</td>
-<td>6.552230e+00</td>
+<td>2026-07-26 02:00:00+00:00</td>
+<td>64407.000000</td>
+<td>64470.000000</td>
+<td>64373.000000</td>
+<td>64468.000000</td>
+<td>1.359620e+00</td>
 <td>BTC</td>
 </tr>
 <tr>
@@ -2251,7 +2852,7 @@ manager.get_data()
 </tbody>
 </table>
 
-<p>17732 rows × 7 columns</p>
+<p>1103 rows × 7 columns</p>
 </div>
 
 Next example loads perpetual prices already stored in the data directory
@@ -2293,53 +2894,53 @@ manager.get_data()
 <tbody>
 <tr>
 <td data-quarto-table-cell-role="th">0</td>
-<td>2025-10-30 19:00:00+00:00</td>
-<td>0.24613</td>
-<td>0.24678</td>
-<td>0.24364</td>
-<td>0.24403</td>
-<td>33184.0</td>
-<td>LAYER</td>
+<td>2025-03-19 13:00:00+00:00</td>
+<td>1.3062</td>
+<td>1.3101</td>
+<td>1.2951</td>
+<td>1.2974</td>
+<td>1788.20</td>
+<td>FTT</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">1</td>
-<td>2025-10-30 20:00:00+00:00</td>
-<td>0.24454</td>
-<td>0.24729</td>
-<td>0.24406</td>
-<td>0.24718</td>
-<td>13245.0</td>
-<td>LAYER</td>
+<td>2025-03-19 14:00:00+00:00</td>
+<td>1.2989</td>
+<td>1.3067</td>
+<td>1.2944</td>
+<td>1.2976</td>
+<td>1557.00</td>
+<td>FTT</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">2</td>
-<td>2025-10-30 21:00:00+00:00</td>
-<td>0.24716</td>
-<td>0.24958</td>
-<td>0.24716</td>
-<td>0.24886</td>
-<td>11172.0</td>
-<td>LAYER</td>
+<td>2025-03-19 15:00:00+00:00</td>
+<td>1.2988</td>
+<td>1.3105</td>
+<td>1.2958</td>
+<td>1.3088</td>
+<td>2618.00</td>
+<td>FTT</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">3</td>
-<td>2025-10-30 22:00:00+00:00</td>
-<td>0.24922</td>
-<td>0.25149</td>
-<td>0.24905</td>
-<td>0.25148</td>
-<td>5984.0</td>
-<td>LAYER</td>
+<td>2025-03-19 16:00:00+00:00</td>
+<td>1.3070</td>
+<td>1.3134</td>
+<td>1.3009</td>
+<td>1.3026</td>
+<td>1967.90</td>
+<td>FTT</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">4</td>
-<td>2025-10-30 23:00:00+00:00</td>
-<td>0.25177</td>
-<td>0.25497</td>
-<td>0.25089</td>
-<td>0.25467</td>
-<td>5767.0</td>
-<td>LAYER</td>
+<td>2025-03-19 17:00:00+00:00</td>
+<td>1.3029</td>
+<td>1.3029</td>
+<td>1.2845</td>
+<td>1.2895</td>
+<td>1485.00</td>
+<td>FTT</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">...</td>
@@ -2352,59 +2953,59 @@ manager.get_data()
 <td>...</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">5885</td>
+<td data-quarto-table-cell-role="th">5669</td>
 <td>2025-11-19 18:00:00+00:00</td>
-<td>0.33057</td>
-<td>0.34508</td>
-<td>0.32577</td>
-<td>0.33751</td>
-<td>952658.5</td>
-<td>GRASS</td>
+<td>0.2272</td>
+<td>0.2291</td>
+<td>0.2224</td>
+<td>0.2238</td>
+<td>63048.07</td>
+<td>ACE</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">5886</td>
+<td data-quarto-table-cell-role="th">5670</td>
 <td>2025-11-19 19:00:00+00:00</td>
-<td>0.33635</td>
-<td>0.35653</td>
-<td>0.33635</td>
-<td>0.35555</td>
-<td>120968.8</td>
-<td>GRASS</td>
+<td>0.2245</td>
+<td>0.2275</td>
+<td>0.2238</td>
+<td>0.2265</td>
+<td>57691.48</td>
+<td>ACE</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">5887</td>
+<td data-quarto-table-cell-role="th">5671</td>
 <td>2025-11-19 20:00:00+00:00</td>
-<td>0.35623</td>
-<td>0.37132</td>
-<td>0.35614</td>
-<td>0.36231</td>
-<td>289579.7</td>
-<td>GRASS</td>
+<td>0.2264</td>
+<td>0.2313</td>
+<td>0.2261</td>
+<td>0.2308</td>
+<td>78869.60</td>
+<td>ACE</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">5888</td>
+<td data-quarto-table-cell-role="th">5672</td>
 <td>2025-11-19 21:00:00+00:00</td>
-<td>0.36306</td>
-<td>0.38125</td>
-<td>0.36249</td>
-<td>0.37841</td>
-<td>361439.4</td>
-<td>GRASS</td>
+<td>0.2312</td>
+<td>0.2373</td>
+<td>0.2312</td>
+<td>0.2371</td>
+<td>44765.71</td>
+<td>ACE</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">5889</td>
+<td data-quarto-table-cell-role="th">5673</td>
 <td>2025-11-19 22:00:00+00:00</td>
-<td>0.37841</td>
-<td>0.38556</td>
-<td>0.37205</td>
-<td>0.38395</td>
-<td>131409.8</td>
-<td>GRASS</td>
+<td>0.2369</td>
+<td>0.2369</td>
+<td>0.2345</td>
+<td>0.2360</td>
+<td>19050.64</td>
+<td>ACE</td>
 </tr>
 </tbody>
 </table>
 
-<p>860444 rows × 7 columns</p>
+<p>854220 rows × 7 columns</p>
 </div>
 
 Next example loads only “ETH” perpetual prices already stored in the
@@ -2417,7 +3018,7 @@ manager.get_data()
 ```
 
     Processing 1 perpetual tokens...
-    Loaded 6250 rows for ETH from ../data/hyperliquid/perp/ETH_1h.parquet
+    Loaded 26 rows for ETH from ../data/hyperliquid/perp/ETH_1h.parquet
 
 <div>
 <style scoped>
@@ -2448,118 +3049,267 @@ manager.get_data()
 <tbody>
 <tr>
 <td data-quarto-table-cell-role="th">0</td>
-<td>2025-03-19 15:00:00+00:00</td>
-<td>2030.7</td>
-<td>2056.7</td>
-<td>2026.0</td>
-<td>2048.7</td>
-<td>30206.2723</td>
+<td>2026-07-25 22:00:00+00:00</td>
+<td>1871.8</td>
+<td>1876.0</td>
+<td>1871.6</td>
+<td>1875.2</td>
+<td>2288.8254</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">1</td>
-<td>2025-03-19 16:00:00+00:00</td>
-<td>2048.7</td>
-<td>2049.2</td>
-<td>2035.3</td>
-<td>2047.4</td>
-<td>22198.4803</td>
+<td>2026-07-25 23:00:00+00:00</td>
+<td>1875.2</td>
+<td>1875.6</td>
+<td>1872.6</td>
+<td>1874.3</td>
+<td>1635.3091</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">2</td>
-<td>2025-03-19 17:00:00+00:00</td>
-<td>2047.4</td>
-<td>2048.9</td>
-<td>2014.3</td>
-<td>2026.1</td>
-<td>35909.8007</td>
+<td>2026-07-26 00:00:00+00:00</td>
+<td>1874.3</td>
+<td>1880.5</td>
+<td>1873.5</td>
+<td>1880.0</td>
+<td>5964.0359</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">3</td>
-<td>2025-03-19 18:00:00+00:00</td>
-<td>2026.1</td>
-<td>2059.9</td>
-<td>1998.0</td>
-<td>2045.0</td>
-<td>84148.3569</td>
+<td>2026-07-26 01:00:00+00:00</td>
+<td>1880.1</td>
+<td>1881.0</td>
+<td>1877.4</td>
+<td>1877.5</td>
+<td>1205.5172</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">4</td>
-<td>2025-03-19 19:00:00+00:00</td>
-<td>2045.1</td>
-<td>2052.1</td>
-<td>2020.1</td>
-<td>2029.7</td>
-<td>38921.5619</td>
+<td>2026-07-26 02:00:00+00:00</td>
+<td>1877.6</td>
+<td>1880.5</td>
+<td>1876.5</td>
+<td>1880.2</td>
+<td>925.1730</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr>
-<td data-quarto-table-cell-role="th">6245</td>
-<td>2025-12-04 20:00:00+00:00</td>
-<td>3117.9</td>
-<td>3143.8</td>
-<td>3104.4</td>
-<td>3140.5</td>
-<td>15553.2974</td>
+<td data-quarto-table-cell-role="th">5</td>
+<td>2026-07-26 03:00:00+00:00</td>
+<td>1880.2</td>
+<td>1883.4</td>
+<td>1878.2</td>
+<td>1881.0</td>
+<td>2411.0634</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">6246</td>
-<td>2025-12-04 21:00:00+00:00</td>
-<td>3140.2</td>
-<td>3150.0</td>
-<td>3117.2</td>
-<td>3121.8</td>
-<td>13448.5987</td>
+<td data-quarto-table-cell-role="th">6</td>
+<td>2026-07-26 04:00:00+00:00</td>
+<td>1881.4</td>
+<td>1888.8</td>
+<td>1879.6</td>
+<td>1885.7</td>
+<td>6799.9422</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">6247</td>
-<td>2025-12-04 22:00:00+00:00</td>
-<td>3122.1</td>
-<td>3147.2</td>
-<td>3121.5</td>
-<td>3142.4</td>
-<td>11888.6633</td>
+<td data-quarto-table-cell-role="th">7</td>
+<td>2026-07-26 05:00:00+00:00</td>
+<td>1885.7</td>
+<td>1886.4</td>
+<td>1882.0</td>
+<td>1882.3</td>
+<td>3010.1127</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">6248</td>
-<td>2025-12-04 23:00:00+00:00</td>
-<td>3142.6</td>
-<td>3142.6</td>
-<td>3127.9</td>
-<td>3131.7</td>
-<td>4731.0506</td>
+<td data-quarto-table-cell-role="th">8</td>
+<td>2026-07-26 06:00:00+00:00</td>
+<td>1882.4</td>
+<td>1884.3</td>
+<td>1877.6</td>
+<td>1884.0</td>
+<td>5390.1696</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">6249</td>
-<td>2025-12-05 00:00:00+00:00</td>
-<td>3131.8</td>
-<td>3156.0</td>
-<td>3131.4</td>
-<td>3145.2</td>
-<td>10706.1961</td>
+<td data-quarto-table-cell-role="th">9</td>
+<td>2026-07-26 07:00:00+00:00</td>
+<td>1884.0</td>
+<td>1885.5</td>
+<td>1879.8</td>
+<td>1880.5</td>
+<td>1183.0028</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">10</td>
+<td>2026-07-26 08:00:00+00:00</td>
+<td>1880.8</td>
+<td>1881.9</td>
+<td>1878.6</td>
+<td>1880.8</td>
+<td>1571.2824</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">11</td>
+<td>2026-07-26 09:00:00+00:00</td>
+<td>1880.9</td>
+<td>1885.3</td>
+<td>1880.8</td>
+<td>1883.6</td>
+<td>9075.2604</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">12</td>
+<td>2026-07-26 10:00:00+00:00</td>
+<td>1883.4</td>
+<td>1886.6</td>
+<td>1881.9</td>
+<td>1885.2</td>
+<td>2746.1060</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">13</td>
+<td>2026-07-26 11:00:00+00:00</td>
+<td>1885.2</td>
+<td>1887.5</td>
+<td>1884.3</td>
+<td>1885.1</td>
+<td>7237.6449</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">14</td>
+<td>2026-07-26 12:00:00+00:00</td>
+<td>1885.1</td>
+<td>1892.8</td>
+<td>1885.0</td>
+<td>1886.0</td>
+<td>8435.9535</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">15</td>
+<td>2026-07-26 13:00:00+00:00</td>
+<td>1885.9</td>
+<td>1887.9</td>
+<td>1881.2</td>
+<td>1885.9</td>
+<td>8546.9140</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">16</td>
+<td>2026-07-26 14:00:00+00:00</td>
+<td>1885.9</td>
+<td>1899.1</td>
+<td>1885.9</td>
+<td>1897.8</td>
+<td>19169.9635</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">17</td>
+<td>2026-07-26 15:00:00+00:00</td>
+<td>1897.9</td>
+<td>1916.1</td>
+<td>1897.3</td>
+<td>1914.0</td>
+<td>19426.2555</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">18</td>
+<td>2026-07-26 16:00:00+00:00</td>
+<td>1914.0</td>
+<td>1927.6</td>
+<td>1907.9</td>
+<td>1916.1</td>
+<td>34021.2927</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">19</td>
+<td>2026-07-26 17:00:00+00:00</td>
+<td>1916.1</td>
+<td>1917.2</td>
+<td>1910.4</td>
+<td>1910.7</td>
+<td>6543.2145</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">20</td>
+<td>2026-07-26 18:00:00+00:00</td>
+<td>1910.6</td>
+<td>1915.5</td>
+<td>1910.5</td>
+<td>1914.0</td>
+<td>3640.1133</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">21</td>
+<td>2026-07-26 19:00:00+00:00</td>
+<td>1914.0</td>
+<td>1915.4</td>
+<td>1911.5</td>
+<td>1913.6</td>
+<td>2512.5447</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">22</td>
+<td>2026-07-26 20:00:00+00:00</td>
+<td>1913.6</td>
+<td>1914.0</td>
+<td>1910.9</td>
+<td>1912.8</td>
+<td>2440.3697</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">23</td>
+<td>2026-07-26 21:00:00+00:00</td>
+<td>1912.7</td>
+<td>1929.9</td>
+<td>1912.7</td>
+<td>1925.3</td>
+<td>13779.9050</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">24</td>
+<td>2026-07-26 22:00:00+00:00</td>
+<td>1925.3</td>
+<td>1951.1</td>
+<td>1925.3</td>
+<td>1949.0</td>
+<td>47844.9203</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">25</td>
+<td>2026-07-26 23:00:00+00:00</td>
+<td>1949.0</td>
+<td>1967.9</td>
+<td>1949.0</td>
+<td>1960.1</td>
+<td>20785.6275</td>
 <td>ETH</td>
 </tr>
 </tbody>
 </table>
 
-<p>6250 rows × 7 columns</p>
 </div>
 
 If you want to make sure you are featching the most recent data, use the
@@ -2575,8 +3325,8 @@ manager.get_data()
 
     Processing 1 perpetual tokens...
     Warning: Processing 1 perpetual tokens exceeds the maximum number of requests per minute. Adjusting waiting time to 2 seconds.
-    Loaded 6250 rows for ETH from ../data/hyperliquid/perp/ETH_1h.parquet
-    Updating ETH from 2025-12-04T00:00:00Z
+    Loaded 26 rows for ETH from ../data/hyperliquid/perp/ETH_1h.parquet
+    Updating ETH from 2026-07-25T23:00:00Z
     Retrieved 25 new rows for ETH
     Added 0 new rows for ETH
 
@@ -2609,118 +3359,267 @@ manager.get_data()
 <tbody>
 <tr>
 <td data-quarto-table-cell-role="th">0</td>
-<td>2025-03-19 15:00:00</td>
-<td>2030.7</td>
-<td>2056.7</td>
-<td>2026.0</td>
-<td>2048.7</td>
-<td>30206.2723</td>
+<td>2026-07-25 22:00:00</td>
+<td>1871.8</td>
+<td>1876.0</td>
+<td>1871.6</td>
+<td>1875.2</td>
+<td>2288.8254</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">1</td>
-<td>2025-03-19 16:00:00</td>
-<td>2048.7</td>
-<td>2049.2</td>
-<td>2035.3</td>
-<td>2047.4</td>
-<td>22198.4803</td>
+<td>2026-07-25 23:00:00</td>
+<td>1875.2</td>
+<td>1875.6</td>
+<td>1872.6</td>
+<td>1874.3</td>
+<td>1635.3091</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">2</td>
-<td>2025-03-19 17:00:00</td>
-<td>2047.4</td>
-<td>2048.9</td>
-<td>2014.3</td>
-<td>2026.1</td>
-<td>35909.8007</td>
+<td>2026-07-26 00:00:00</td>
+<td>1874.3</td>
+<td>1880.5</td>
+<td>1873.5</td>
+<td>1880.0</td>
+<td>5964.0359</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">3</td>
-<td>2025-03-19 18:00:00</td>
-<td>2026.1</td>
-<td>2059.9</td>
-<td>1998.0</td>
-<td>2045.0</td>
-<td>84148.3569</td>
+<td>2026-07-26 01:00:00</td>
+<td>1880.1</td>
+<td>1881.0</td>
+<td>1877.4</td>
+<td>1877.5</td>
+<td>1205.5172</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">4</td>
-<td>2025-03-19 19:00:00</td>
-<td>2045.1</td>
-<td>2052.1</td>
-<td>2020.1</td>
-<td>2029.7</td>
-<td>38921.5619</td>
+<td>2026-07-26 02:00:00</td>
+<td>1877.6</td>
+<td>1880.5</td>
+<td>1876.5</td>
+<td>1880.2</td>
+<td>925.1730</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr>
-<td data-quarto-table-cell-role="th">6245</td>
-<td>2025-12-04 20:00:00</td>
-<td>3117.9</td>
-<td>3143.8</td>
-<td>3104.4</td>
-<td>3140.5</td>
-<td>15553.2974</td>
+<td data-quarto-table-cell-role="th">5</td>
+<td>2026-07-26 03:00:00</td>
+<td>1880.2</td>
+<td>1883.4</td>
+<td>1878.2</td>
+<td>1881.0</td>
+<td>2411.0634</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">6246</td>
-<td>2025-12-04 21:00:00</td>
-<td>3140.2</td>
-<td>3150.0</td>
-<td>3117.2</td>
-<td>3121.8</td>
-<td>13448.5987</td>
+<td data-quarto-table-cell-role="th">6</td>
+<td>2026-07-26 04:00:00</td>
+<td>1881.4</td>
+<td>1888.8</td>
+<td>1879.6</td>
+<td>1885.7</td>
+<td>6799.9422</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">6247</td>
-<td>2025-12-04 22:00:00</td>
-<td>3122.1</td>
-<td>3147.2</td>
-<td>3121.5</td>
-<td>3142.4</td>
-<td>11888.6633</td>
+<td data-quarto-table-cell-role="th">7</td>
+<td>2026-07-26 05:00:00</td>
+<td>1885.7</td>
+<td>1886.4</td>
+<td>1882.0</td>
+<td>1882.3</td>
+<td>3010.1127</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">6248</td>
-<td>2025-12-04 23:00:00</td>
-<td>3142.6</td>
-<td>3142.6</td>
-<td>3127.9</td>
-<td>3131.7</td>
-<td>4731.0506</td>
+<td data-quarto-table-cell-role="th">8</td>
+<td>2026-07-26 06:00:00</td>
+<td>1882.4</td>
+<td>1884.3</td>
+<td>1877.6</td>
+<td>1884.0</td>
+<td>5390.1696</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">6249</td>
-<td>2025-12-05 00:00:00</td>
-<td>3131.8</td>
-<td>3156.0</td>
-<td>3131.4</td>
-<td>3148.8</td>
-<td>12063.6015</td>
+<td data-quarto-table-cell-role="th">9</td>
+<td>2026-07-26 07:00:00</td>
+<td>1884.0</td>
+<td>1885.5</td>
+<td>1879.8</td>
+<td>1880.5</td>
+<td>1183.0028</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">10</td>
+<td>2026-07-26 08:00:00</td>
+<td>1880.8</td>
+<td>1881.9</td>
+<td>1878.6</td>
+<td>1880.8</td>
+<td>1571.2824</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">11</td>
+<td>2026-07-26 09:00:00</td>
+<td>1880.9</td>
+<td>1885.3</td>
+<td>1880.8</td>
+<td>1883.6</td>
+<td>9075.2604</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">12</td>
+<td>2026-07-26 10:00:00</td>
+<td>1883.4</td>
+<td>1886.6</td>
+<td>1881.9</td>
+<td>1885.2</td>
+<td>2746.1060</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">13</td>
+<td>2026-07-26 11:00:00</td>
+<td>1885.2</td>
+<td>1887.5</td>
+<td>1884.3</td>
+<td>1885.1</td>
+<td>7237.6449</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">14</td>
+<td>2026-07-26 12:00:00</td>
+<td>1885.1</td>
+<td>1892.8</td>
+<td>1885.0</td>
+<td>1886.0</td>
+<td>8435.9535</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">15</td>
+<td>2026-07-26 13:00:00</td>
+<td>1885.9</td>
+<td>1887.9</td>
+<td>1881.2</td>
+<td>1885.9</td>
+<td>8546.9140</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">16</td>
+<td>2026-07-26 14:00:00</td>
+<td>1885.9</td>
+<td>1899.1</td>
+<td>1885.9</td>
+<td>1897.8</td>
+<td>19169.9635</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">17</td>
+<td>2026-07-26 15:00:00</td>
+<td>1897.9</td>
+<td>1916.1</td>
+<td>1897.3</td>
+<td>1914.0</td>
+<td>19426.2555</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">18</td>
+<td>2026-07-26 16:00:00</td>
+<td>1914.0</td>
+<td>1927.6</td>
+<td>1907.9</td>
+<td>1916.1</td>
+<td>34021.2927</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">19</td>
+<td>2026-07-26 17:00:00</td>
+<td>1916.1</td>
+<td>1917.2</td>
+<td>1910.4</td>
+<td>1910.7</td>
+<td>6543.2145</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">20</td>
+<td>2026-07-26 18:00:00</td>
+<td>1910.6</td>
+<td>1915.5</td>
+<td>1910.5</td>
+<td>1914.0</td>
+<td>3640.1133</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">21</td>
+<td>2026-07-26 19:00:00</td>
+<td>1914.0</td>
+<td>1915.4</td>
+<td>1911.5</td>
+<td>1913.6</td>
+<td>2512.5447</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">22</td>
+<td>2026-07-26 20:00:00</td>
+<td>1913.6</td>
+<td>1914.0</td>
+<td>1910.9</td>
+<td>1912.8</td>
+<td>2440.3697</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">23</td>
+<td>2026-07-26 21:00:00</td>
+<td>1912.7</td>
+<td>1929.9</td>
+<td>1912.7</td>
+<td>1925.3</td>
+<td>13779.9050</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">24</td>
+<td>2026-07-26 22:00:00</td>
+<td>1925.3</td>
+<td>1951.1</td>
+<td>1925.3</td>
+<td>1949.0</td>
+<td>47844.9203</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">25</td>
+<td>2026-07-26 23:00:00</td>
+<td>1949.0</td>
+<td>1967.9</td>
+<td>1949.0</td>
+<td>1957.9</td>
+<td>21185.4436</td>
 <td>ETH</td>
 </tr>
 </tbody>
 </table>
 
-<p>6250 rows × 7 columns</p>
 </div>
 
 The same goes for the other data items. Such as spot prices and funding
@@ -2732,8 +3631,8 @@ manager = HyperliquidSpotManager(ticker='ETH',update=True, save=False, verbose=T
 manager.get_data()
 ```
 
-    Loaded 5849 rows for ETH from ../data/hyperliquid/spot/ETH_USDC_1h.parquet
-    Updating ETH/USDC from 2025-12-04T00:00:00Z
+    Loaded 26 rows for ETH from ../data/hyperliquid/spot/ETH_USDC_1h.parquet
+    Updating ETH/USDC from 2026-07-25T23:00:00Z
     Retrieved 25 new rows for ETH/USDC
     Added 0 new rows for ETH/USDC
 
@@ -2766,118 +3665,267 @@ manager.get_data()
 <tbody>
 <tr>
 <td data-quarto-table-cell-role="th">0</td>
-<td>2025-04-05 08:00:00</td>
-<td>1812.3</td>
-<td>1813.9</td>
-<td>1809.7</td>
-<td>1812.7</td>
-<td>1.7000</td>
+<td>2026-07-25 22:00:00</td>
+<td>1872.5</td>
+<td>1875.3</td>
+<td>1872.4</td>
+<td>1875.3</td>
+<td>16.5510</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">1</td>
-<td>2025-04-05 09:00:00</td>
-<td>1814.0</td>
-<td>1821.0</td>
-<td>1814.0</td>
-<td>1819.9</td>
-<td>19.6808</td>
+<td>2026-07-25 23:00:00</td>
+<td>1874.4</td>
+<td>1874.8</td>
+<td>1872.2</td>
+<td>1873.3</td>
+<td>59.5098</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">2</td>
-<td>2025-04-05 10:00:00</td>
-<td>1820.2</td>
-<td>1820.2</td>
-<td>1816.2</td>
-<td>1817.4</td>
-<td>12.5505</td>
+<td>2026-07-26 00:00:00</td>
+<td>1873.5</td>
+<td>1879.4</td>
+<td>1872.9</td>
+<td>1879.4</td>
+<td>52.7933</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">3</td>
-<td>2025-04-05 11:00:00</td>
-<td>1818.4</td>
-<td>1818.5</td>
-<td>1806.6</td>
-<td>1806.8</td>
-<td>63.9187</td>
+<td>2026-07-26 01:00:00</td>
+<td>1880.1</td>
+<td>1880.1</td>
+<td>1876.5</td>
+<td>1876.9</td>
+<td>54.5726</td>
 <td>ETH</td>
 </tr>
 <tr>
 <td data-quarto-table-cell-role="th">4</td>
-<td>2025-04-05 12:00:00</td>
-<td>1806.8</td>
-<td>1806.9</td>
-<td>1793.0</td>
-<td>1796.5</td>
-<td>45.5064</td>
+<td>2026-07-26 02:00:00</td>
+<td>1877.3</td>
+<td>1880.2</td>
+<td>1876.0</td>
+<td>1879.5</td>
+<td>45.9965</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr>
-<td data-quarto-table-cell-role="th">5844</td>
-<td>2025-12-04 20:00:00</td>
-<td>3120.6</td>
-<td>3145.6</td>
-<td>3106.6</td>
-<td>3143.1</td>
-<td>202.4952</td>
+<td data-quarto-table-cell-role="th">5</td>
+<td>2026-07-26 03:00:00</td>
+<td>1879.5</td>
+<td>1882.5</td>
+<td>1877.8</td>
+<td>1880.6</td>
+<td>46.6177</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">5845</td>
-<td>2025-12-04 21:00:00</td>
-<td>3141.0</td>
-<td>3154.2</td>
-<td>3120.0</td>
-<td>3123.9</td>
-<td>339.5227</td>
+<td data-quarto-table-cell-role="th">6</td>
+<td>2026-07-26 04:00:00</td>
+<td>1881.1</td>
+<td>1887.2</td>
+<td>1879.1</td>
+<td>1884.0</td>
+<td>600.0430</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">5846</td>
-<td>2025-12-04 22:00:00</td>
-<td>3125.1</td>
-<td>3148.6</td>
-<td>3124.4</td>
-<td>3144.5</td>
-<td>44.5737</td>
+<td data-quarto-table-cell-role="th">7</td>
+<td>2026-07-26 05:00:00</td>
+<td>1884.7</td>
+<td>1885.4</td>
+<td>1881.9</td>
+<td>1881.9</td>
+<td>30.9801</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">5847</td>
-<td>2025-12-04 23:00:00</td>
-<td>3141.9</td>
-<td>3144.7</td>
-<td>3130.9</td>
-<td>3133.9</td>
-<td>54.7757</td>
+<td data-quarto-table-cell-role="th">8</td>
+<td>2026-07-26 06:00:00</td>
+<td>1881.8</td>
+<td>1883.8</td>
+<td>1877.3</td>
+<td>1883.2</td>
+<td>214.0866</td>
 <td>ETH</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">5848</td>
-<td>2025-12-05 00:00:00</td>
-<td>3133.9</td>
-<td>3156.3</td>
-<td>3133.4</td>
-<td>3147.6</td>
-<td>35.9591</td>
+<td data-quarto-table-cell-role="th">9</td>
+<td>2026-07-26 07:00:00</td>
+<td>1883.9</td>
+<td>1884.7</td>
+<td>1879.2</td>
+<td>1879.9</td>
+<td>200.7441</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">10</td>
+<td>2026-07-26 08:00:00</td>
+<td>1880.1</td>
+<td>1880.7</td>
+<td>1877.9</td>
+<td>1879.8</td>
+<td>141.9597</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">11</td>
+<td>2026-07-26 09:00:00</td>
+<td>1879.7</td>
+<td>1884.0</td>
+<td>1879.6</td>
+<td>1882.0</td>
+<td>95.8968</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">12</td>
+<td>2026-07-26 10:00:00</td>
+<td>1882.2</td>
+<td>1886.0</td>
+<td>1880.6</td>
+<td>1884.3</td>
+<td>259.5814</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">13</td>
+<td>2026-07-26 11:00:00</td>
+<td>1883.9</td>
+<td>1886.1</td>
+<td>1883.3</td>
+<td>1884.3</td>
+<td>61.0424</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">14</td>
+<td>2026-07-26 12:00:00</td>
+<td>1884.8</td>
+<td>1891.4</td>
+<td>1883.9</td>
+<td>1884.8</td>
+<td>273.4435</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">15</td>
+<td>2026-07-26 13:00:00</td>
+<td>1884.9</td>
+<td>1887.2</td>
+<td>1880.6</td>
+<td>1885.3</td>
+<td>85.9766</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">16</td>
+<td>2026-07-26 14:00:00</td>
+<td>1885.6</td>
+<td>1897.6</td>
+<td>1885.3</td>
+<td>1896.6</td>
+<td>616.8220</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">17</td>
+<td>2026-07-26 15:00:00</td>
+<td>1897.1</td>
+<td>1914.5</td>
+<td>1896.1</td>
+<td>1913.1</td>
+<td>193.2810</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">18</td>
+<td>2026-07-26 16:00:00</td>
+<td>1913.2</td>
+<td>1925.0</td>
+<td>1907.3</td>
+<td>1914.9</td>
+<td>262.7336</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">19</td>
+<td>2026-07-26 17:00:00</td>
+<td>1914.1</td>
+<td>1916.1</td>
+<td>1909.6</td>
+<td>1909.7</td>
+<td>42.9093</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">20</td>
+<td>2026-07-26 18:00:00</td>
+<td>1910.0</td>
+<td>1914.6</td>
+<td>1910.0</td>
+<td>1913.1</td>
+<td>99.7249</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">21</td>
+<td>2026-07-26 19:00:00</td>
+<td>1913.0</td>
+<td>1913.8</td>
+<td>1910.2</td>
+<td>1912.5</td>
+<td>336.0437</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">22</td>
+<td>2026-07-26 20:00:00</td>
+<td>1912.5</td>
+<td>1912.9</td>
+<td>1910.2</td>
+<td>1912.1</td>
+<td>136.4614</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">23</td>
+<td>2026-07-26 21:00:00</td>
+<td>1912.8</td>
+<td>1927.2</td>
+<td>1912.2</td>
+<td>1923.9</td>
+<td>139.3486</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">24</td>
+<td>2026-07-26 22:00:00</td>
+<td>1924.4</td>
+<td>1951.0</td>
+<td>1924.4</td>
+<td>1948.5</td>
+<td>461.1441</td>
+<td>ETH</td>
+</tr>
+<tr>
+<td data-quarto-table-cell-role="th">25</td>
+<td>2026-07-26 23:00:00</td>
+<td>1951.1</td>
+<td>1964.7</td>
+<td>1948.5</td>
+<td>1957.4</td>
+<td>144.5130</td>
 <td>ETH</td>
 </tr>
 </tbody>
 </table>
 
-<p>5849 rows × 7 columns</p>
 </div>
 
 If you want to update the funding rate, do the following:
@@ -2890,8 +3938,8 @@ manager.get_data()
     Warning: Processing 1 perpetual tokens exceeds the maximum number of requests per minute. Adjusting waiting time to 2 seconds.
     Loaded 738 rows for ETH from ../data/hyperliquid/funding/ETH.parquet
     Updating ETH from 2025-11-18T11:00:00Z
-    Retrieved 398 new rows for ETH
-    Added 373 new rows for ETH
+    Retrieved 500 new rows for ETH
+    Added 475 new rows for ETH
 
 <div>
 <style scoped>
@@ -2967,47 +4015,172 @@ manager.get_data()
 <td>...</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1106</td>
-<td>2025-12-04 20:00:00</td>
-<td>0.000009</td>
-<td>-0.000429</td>
+<td data-quarto-table-cell-role="th">1208</td>
+<td>2025-12-09 02:00:00</td>
+<td>0.000013</td>
+<td>0.000120</td>
 <td>ETH</td>
-<td>0.000009</td>
+<td>0.000013</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1107</td>
-<td>2025-12-04 21:00:00</td>
-<td>0.000010</td>
-<td>-0.000422</td>
+<td data-quarto-table-cell-role="th">1209</td>
+<td>2025-12-09 03:00:00</td>
+<td>0.000013</td>
+<td>0.000032</td>
 <td>ETH</td>
-<td>0.000010</td>
+<td>0.000013</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1108</td>
-<td>2025-12-04 22:00:00</td>
-<td>0.000009</td>
-<td>-0.000427</td>
+<td data-quarto-table-cell-role="th">1210</td>
+<td>2025-12-09 04:00:00</td>
+<td>0.000013</td>
+<td>0.000102</td>
 <td>ETH</td>
-<td>0.000009</td>
+<td>0.000013</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1109</td>
-<td>2025-12-04 23:00:00</td>
-<td>0.000007</td>
-<td>-0.000442</td>
+<td data-quarto-table-cell-role="th">1211</td>
+<td>2025-12-09 05:00:00</td>
+<td>0.000013</td>
+<td>0.000196</td>
 <td>ETH</td>
-<td>0.000007</td>
+<td>0.000013</td>
 </tr>
 <tr>
-<td data-quarto-table-cell-role="th">1110</td>
-<td>2025-12-05 00:00:00</td>
-<td>0.000006</td>
-<td>-0.000452</td>
+<td data-quarto-table-cell-role="th">1212</td>
+<td>2025-12-09 06:00:00</td>
+<td>0.000013</td>
+<td>0.000168</td>
 <td>ETH</td>
-<td>0.000006</td>
+<td>0.000013</td>
 </tr>
 </tbody>
 </table>
 
-<p>1111 rows × 5 columns</p>
+<p>1213 rows × 5 columns</p>
 </div>
+
+## RWA / HIP-3 examples
+
+The cells below demonstrate the auto-resolution of RWA tickers
+(e.g. `XLE` → `xyz:XLE`).
+
+``` python
+# Resolve ticker
+print("resolve_hyperliquid_ticker('ETH') ->", resolve_hyperliquid_ticker("ETH"))
+print("resolve_hyperliquid_ticker('XLE') ->", resolve_hyperliquid_ticker("XLE"))
+print("resolve_hyperliquid_ticker('xyz:XLE') ->", resolve_hyperliquid_ticker("xyz:XLE"))
+```
+
+    resolve_hyperliquid_ticker('ETH') -> ETH
+    resolve_hyperliquid_ticker('XLE') -> xyz:XLE
+    resolve_hyperliquid_ticker('xyz:XLE') -> xyz:XLE
+
+``` python
+# RWA perp price
+xle_perp = retrieve_hyperliquid_perp_price(coin="XLE", interval="1h", info=info)
+print("XLE perp price:")
+print(xle_perp.head())
+print(f"Columns: {list(xle_perp.columns)}")
+print(f"coin value: {xle_perp['coin'].iloc[0]}")
+```
+
+    XLE perp price:
+                 datetime    open    high     low   close  volume coin
+    0 2026-07-24 23:00:00  59.789  59.793  59.789  59.793    3.59  XLE
+    1 2026-07-25 00:00:00  59.960  59.960  59.559  59.642   46.08  XLE
+    2 2026-07-25 01:00:00  59.601  59.712  59.453  59.671  334.74  XLE
+    3 2026-07-25 02:00:00  59.742  59.835  59.692  59.834   68.50  XLE
+    4 2026-07-25 03:00:00  59.859  59.859  59.859  59.859    1.67  XLE
+    Columns: ['datetime', 'open', 'high', 'low', 'close', 'volume', 'coin']
+    coin value: XLE
+
+``` python
+# RWA funding history
+xle_funding = retrieve_hyperliquid_funding_history(coin="XLE", info=info)
+print("XLE funding history:")
+print(xle_funding.head())
+```
+
+    XLE funding history:
+                     datetime  funding_rate   premium coin  fund_calc
+    0 2026-07-25 00:00:00.066      0.000006  0.000206  XLE   0.000006
+    1 2026-07-25 01:00:00.036      0.000006 -0.000030  XLE   0.000006
+    2 2026-07-25 02:00:00.050     -0.000025 -0.000703  XLE  -0.000025
+    3 2026-07-25 03:00:00.016      0.000027  0.000731  XLE   0.000027
+    4 2026-07-25 04:00:00.036      0.000058  0.001233  XLE   0.000058
+
+``` python
+# RWA mid price
+xle_mid = hyperliquid_mids(coin="XLE", info=info)
+print(f"XLE mid price: {xle_mid}")
+```
+
+    XLE mid price: 58.78
+
+``` python
+# RWA L2 snapshot
+xle_l2 = retrieve_hyperliquid_l2_snapshot(coin="XLE", info=info)
+print("XLE L2 snapshot:")
+print(xle_l2.head())
+```
+
+    XLE L2 snapshot:
+                     datetime side   price    size  num_orders
+    0 2026-07-26 23:17:56.011  bid  58.735   17.03           1
+    1 2026-07-26 23:17:56.011  bid  58.734   54.97           1
+    2 2026-07-26 23:17:56.011  bid  58.733   17.03           1
+    3 2026-07-26 23:17:56.011  bid  58.732  855.76           2
+    4 2026-07-26 23:17:56.011  bid  58.731   39.28           1
+
+``` python
+# List HIP-3 dex tokens
+rwa_tokens = hyperliquid_tokens(info=info, dex="xyz")
+print("xyz dex tokens:")
+print(rwa_tokens.head(10))
+```
+
+    xyz dex tokens:
+        szDecimals        name  maxLeverage  marginTableId growthMode  \
+    0            4  xyz:XYZ100           30             30    enabled   
+    1            3    xyz:TSLA           20             20    enabled   
+    2            3    xyz:NVDA           20             20    enabled   
+    3            4    xyz:GOLD           25             25        NaN   
+    8            3    xyz:META           20             20    enabled   
+    9            3    xyz:AAPL           20             20    enabled   
+    10           3    xyz:MSFT           20             20    enabled   
+    12           3   xyz:GOOGL           20             20    enabled   
+    13           3    xyz:AMZN           20             20    enabled   
+    15           3      xyz:MU           10             10    enabled   
+
+             lastGrowthModeChangeTime  onlyIsolated marginMode  isDelisted  
+    0   2025-11-23T17:37:10.033211662         False        NaN       False  
+    1   2025-11-23T17:37:10.033211662         False        NaN       False  
+    2   2025-11-23T17:37:10.033211662         False        NaN       False  
+    3                             NaN         False        NaN       False  
+    8   2025-11-23T17:37:10.033211662         False        NaN       False  
+    9   2025-11-23T17:37:10.033211662         False        NaN       False  
+    10  2025-11-23T17:37:10.033211662         False        NaN       False  
+    12  2025-11-23T17:37:10.033211662         False        NaN       False  
+    13  2025-11-23T17:37:10.033211662         False        NaN       False  
+    15  2025-11-23T17:37:10.033211662         False        NaN       False  
+
+``` python
+# Regression check: ETH still works
+eth_perp = retrieve_hyperliquid_perp_price(coin="ETH", interval="1h", info=info)
+eth_funding = retrieve_hyperliquid_funding_history(coin="ETH", info=info)
+print(f"ETH perp rows: {len(eth_perp)}, columns: {list(eth_perp.columns)}")
+print(f"ETH funding rows: {len(eth_funding)}, columns: {list(eth_funding.columns)}")
+print("ETH perp head:")
+print(eth_perp.head())
+```
+
+    ETH perp rows: 49, columns: ['datetime', 'open', 'high', 'low', 'close', 'volume', 'coin']
+    ETH funding rows: 48, columns: ['datetime', 'funding_rate', 'premium', 'coin', 'fund_calc']
+    ETH perp head:
+                 datetime    open    high     low   close     volume coin
+    0 2026-07-24 23:00:00  1858.8  1861.1  1858.1  1861.0  2792.8168  ETH
+    1 2026-07-25 00:00:00  1860.7  1863.7  1856.3  1859.3  4137.4891  ETH
+    2 2026-07-25 01:00:00  1859.3  1862.6  1857.4  1859.3  4557.0876  ETH
+    3 2026-07-25 02:00:00  1859.3  1860.7  1857.3  1858.3  4404.2636  ETH
+    4 2026-07-25 03:00:00  1858.3  1859.5  1854.8  1858.3  4298.4131  ETH

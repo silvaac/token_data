@@ -9,6 +9,3 @@ website:
       - kraken.ipynb
       - kucoin.ipynb
       - lighter.ipynb
-      - nbdev.yml
-      - sidebar.yml
-      - styles.css

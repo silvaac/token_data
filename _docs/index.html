@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>token_data</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -58,7 +61,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -71,10 +74,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-9344fb9851b4da3cab95007ef9d770dc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8c38fd85d21bfe44b50360969156fb14.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -102,7 +105,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
@@ -157,6 +160,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./binance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Binance</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./coinbase.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Coinbase</span></a>
   </div>
@@ -171,6 +180,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="./hyperliquid.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Hyperliquid</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kraken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Kraken</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kucoin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">KuCoin</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lighter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lighter</span></a>
   </div>
 </li>
     </ul>
@@ -224,14 +251,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If you are new to using <code>nbdev</code> here are some useful pointers to get you started.</p>
 <section id="install-token_data-in-development-mode" class="level3">
 <h3 class="anchored" data-anchor-id="install-token_data-in-development-mode">Install token_data in Development mode</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure token_data package is installed in development mode</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure token_data package is installed in development mode</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pip install <span class="at">-e</span> .</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make changes under nbs/ directory</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># compile to have changes apply to token_data</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> nbdev_prepare</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> nbdev_prepare</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="usage" class="level2">
@@ -239,9 +266,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="installation" class="level3">
 <h3 class="anchored" data-anchor-id="installation">Installation</h3>
 <p>Install latest from the GitHub <a href="https://github.com/silvaac/token_data">repository</a>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pip install git+https://github.com/silvaac/token_data.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pip install git+https://github.com/silvaac/token_data.git</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>or from <a href="https://pypi.org/project/token_data/">pypi</a></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pip install token_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> pip install token_data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="documentation" class="level3">
 <h3 class="anchored" data-anchor-id="documentation">Documentation</h3>
@@ -251,12 +278,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="how-to-use" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-use">How to use</h2>
 <p>Simple example to pull ETH perpetual price history from Hyperliquid. See documents for more complex use cases.</p>
-<div id="cell-13" class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> token_data.hyperliquid <span class="im">import</span> <span class="op">*</span></span>
+<div id="8b3a348e" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> token_data.hyperliquid <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hyperliquid.utils <span class="im">import</span> constants</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>address, info, exchange <span class="op">=</span> setup(base_url<span class="op">=</span>constants.MAINNET_API_URL, skip_ws<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>manager <span class="op">=</span> HyperliquidPerpManager(ticker<span class="op">=</span><span class="st">'ETH'</span>,update<span class="op">=</span><span class="va">True</span>, save<span class="op">=</span><span class="va">False</span>, verbose<span class="op">=</span><span class="va">True</span>,info<span class="op">=</span>info)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>manager.get_data()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>manager.get_data()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Processing 1 perpetual tokens...
 Warning: Processing 1 perpetual tokens exceeds the maximum number of requests per minute. Adjusting waiting time to 2 seconds.
@@ -269,7 +296,7 @@ Added 0 new rows for ETH</code></pre>
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -284,7 +311,7 @@ Added 0 new rows for ETH</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>2025-03-19 15:00:00</td>
 <td>2030.7</td>
 <td>2056.7</td>
@@ -294,7 +321,7 @@ Added 0 new rows for ETH</code></pre>
 <td>ETH</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>2025-03-19 16:00:00</td>
 <td>2048.7</td>
 <td>2049.2</td>
@@ -304,7 +331,7 @@ Added 0 new rows for ETH</code></pre>
 <td>ETH</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
+<th data-quarto-table-cell-role="th">2</th>
 <td>2025-03-19 17:00:00</td>
 <td>2047.4</td>
 <td>2048.9</td>
@@ -314,7 +341,7 @@ Added 0 new rows for ETH</code></pre>
 <td>ETH</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
+<th data-quarto-table-cell-role="th">3</th>
 <td>2025-03-19 18:00:00</td>
 <td>2026.1</td>
 <td>2059.9</td>
@@ -324,7 +351,7 @@ Added 0 new rows for ETH</code></pre>
 <td>ETH</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
+<th data-quarto-table-cell-role="th">4</th>
 <td>2025-03-19 19:00:00</td>
 <td>2045.1</td>
 <td>2052.1</td>
@@ -334,7 +361,7 @@ Added 0 new rows for ETH</code></pre>
 <td>ETH</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
+<th data-quarto-table-cell-role="th">...</th>
 <td>...</td>
 <td>...</td>
 <td>...</td>
@@ -344,7 +371,7 @@ Added 0 new rows for ETH</code></pre>
 <td>...</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">6245</td>
+<th data-quarto-table-cell-role="th">6245</th>
 <td>2025-12-04 20:00:00</td>
 <td>3117.9</td>
 <td>3143.8</td>
@@ -354,7 +381,7 @@ Added 0 new rows for ETH</code></pre>
 <td>ETH</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">6246</td>
+<th data-quarto-table-cell-role="th">6246</th>
 <td>2025-12-04 21:00:00</td>
 <td>3140.2</td>
 <td>3150.0</td>
@@ -364,7 +391,7 @@ Added 0 new rows for ETH</code></pre>
 <td>ETH</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">6247</td>
+<th data-quarto-table-cell-role="th">6247</th>
 <td>2025-12-04 22:00:00</td>
 <td>3122.1</td>
 <td>3147.2</td>
@@ -374,7 +401,7 @@ Added 0 new rows for ETH</code></pre>
 <td>ETH</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">6248</td>
+<th data-quarto-table-cell-role="th">6248</th>
 <td>2025-12-04 23:00:00</td>
 <td>3142.6</td>
 <td>3142.6</td>
@@ -384,7 +411,7 @@ Added 0 new rows for ETH</code></pre>
 <td>ETH</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">6249</td>
+<th data-quarto-table-cell-role="th">6249</th>
 <td>2025-12-05 00:00:00</td>
 <td>3131.8</td>
 <td>3156.0</td>
@@ -401,10 +428,10 @@ Added 0 new rows for ETH</code></pre>
 </div>
 </div>
 <p>For coinbase data (only spot prices are supported):</p>
-<div id="cell-15" class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> token_data.coinbase <span class="im">import</span> <span class="op">*</span></span>
+<div id="6969f81e" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> token_data.coinbase <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull data from coinbase and save it to "./data/coinbase" folder. See function for details.</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>coinbase_to_file(token_list<span class="op">=</span>[<span class="st">'OP-USD'</span>],<span class="bu">type</span><span class="op">=</span><span class="st">"parquet"</span>,all_tokens<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>coinbase_to_file(token_list<span class="op">=</span>[<span class="st">'OP-USD'</span>],<span class="bu">type</span><span class="op">=</span><span class="st">"parquet"</span>,all_tokens<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Processing OP-USD
 2025-11-17 09:00:00+00:00
@@ -468,13 +495,14 @@ OP-USD is not listed.</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
