@@ -15,6 +15,13 @@ tags
 config_hyperliquid.json
 config_hyperliquid_old.json
 .pypirc
+run.py
+run1.py
+run2.py
+run3.py
+run_binance.py
+run_kukoin.py
+run_lighter.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
