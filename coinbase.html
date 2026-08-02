@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>coinbase – token_data</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-2b6a17fde00b5ccb222bcc6fbf188e31.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="token_data">
+<meta property="og:description" content="Token data from a series of sources">
+<meta property="og:site_name" content="token_data">
+<meta name="twitter:title" content="token_data">
+<meta name="twitter:description" content="Token data from a series of sources">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">token_data</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./coinbase.html">Coinbase</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">token_data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./binance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Binance</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./coinbase.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Coinbase</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hyper_account.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hyperliquid Account Information</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hyperliquid.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hyperliquid</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kraken.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Kraken</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./kucoin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">KuCoin</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lighter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lighter</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#coinbase" id="toc-coinbase" class="nav-link active" data-scroll-target="#coinbase">Coinbase</a>
+  <ul class="collapse">
+  <li><a href="#retrieve_coinbase_price" id="toc-retrieve_coinbase_price" class="nav-link" data-scroll-target="#retrieve_coinbase_price">retrieve_coinbase_price</a></li>
+  <li><a href="#coinbase_tokens" id="toc-coinbase_tokens" class="nav-link" data-scroll-target="#coinbase_tokens">coinbase_tokens</a></li>
+  <li><a href="#coinbase_usd_tokens" id="toc-coinbase_usd_tokens" class="nav-link" data-scroll-target="#coinbase_usd_tokens">coinbase_usd_tokens</a></li>
+  <li><a href="#coinbase_price_history" id="toc-coinbase_price_history" class="nav-link" data-scroll-target="#coinbase_price_history">coinbase_price_history</a></li>
+  <li><a href="#save_file" id="toc-save_file" class="nav-link" data-scroll-target="#save_file">save_file</a></li>
+  <li><a href="#coinbase_to_file" id="toc-coinbase_to_file" class="nav-link" data-scroll-target="#coinbase_to_file">coinbase_to_file</a></li>
+  <li><a href="#coinbase_data_update" id="toc-coinbase_data_update" class="nav-link" data-scroll-target="#coinbase_data_update">coinbase_data_update</a></li>
+  <li><a href="#read_all_files" id="toc-read_all_files" class="nav-link" data-scroll-target="#read_all_files">read_all_files</a></li>
+  <li><a href="#coinbase_price_last_day" id="toc-coinbase_price_last_day" class="nav-link" data-scroll-target="#coinbase_price_last_day">coinbase_price_last_day</a></li>
+  <li><a href="#binance_format" id="toc-binance_format" class="nav-link" data-scroll-target="#binance_format">binance_format</a></li>
+  </ul></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a>
+  <ul class="collapse">
+  <li><a href="#list-the-available-tokens-on-coinbase" id="toc-list-the-available-tokens-on-coinbase" class="nav-link" data-scroll-target="#list-the-available-tokens-on-coinbase">List the available tokens on Coinbase</a></li>
+  <li><a href="#data-pull-examples" id="toc-data-pull-examples" class="nav-link" data-scroll-target="#data-pull-examples">Data pull examples</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/silvaac/token_data/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="coinbase.md"><i class="bi bi-file-code"></i>Markdown</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="coinbase" class="level2">
+<h2 class="anchored" data-anchor-id="coinbase">Coinbase</h2>
+<p>Manages the coinbase data download and processing. It is important to note that the Coinbase API might change from time to time, and the functions might need to be updated. You can find the documentation here: https://docs.cdp.coinbase.com/exchange/reference/exchangerestapi_getproductcandles.</p>
+<p>Notice also that there are limits of what one can download. See the documentation for more details. In particular: https://docs.cdp.coinbase.com/exchange/docs/rest-rate-limits</p>
+<p>** Finally, datetime columns are in UTC. **</p>
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L17" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="retrieve_coinbase_price" class="level3">
+<h3 class="anchored" data-anchor-id="retrieve_coinbase_price">retrieve_coinbase_price</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> retrieve_coinbase_price(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    pair:<span class="bu">str</span><span class="op">=</span><span class="st">'BTC-USD'</span>, time_interval:<span class="bu">int</span><span class="op">=</span><span class="dv">3600</span>, end_date:<span class="bu">str</span><span class="op">=</span><span class="st">'2026-08-02T20:35:42Z'</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    start_date:<span class="bu">str</span><span class="op">=</span><span class="st">'2026-07-31T20:35:42Z'</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><em>Retrieves historical price data from Coinbase for a given trading pair and time interval.</em></p>
+<p>Makes a GET request to the Coinbase candles endpoint to fetch OHLCV (Open, High, Low, Close, Volume) data for the specified trading pair and time period.</p>
+<p>Args: pair (str, optional): Trading pair symbol (e.g.&nbsp;“BTC-USD”). Defaults to “BTC-USD”. time_interval (int, optional): Candle interval in seconds. Defaults to 3600 (1 hour). end_date (str, optional): End datetime in ISO 8601 format. Defaults to current UTC time. start_date (str, optional): Start datetime in ISO 8601 format. Defaults to 2 days before end_date.</p>
+<p>Returns: pandas.DataFrame: DataFrame containing the OHLCV data with columns: - datetime: Timestamp for the candle (UTC) - low: Lowest traded price in the interval - high: Highest traded price in the interval<br>
+- open: Opening price of the interval - close: Closing price of the interval - volume: Trading volume in the interval - pair: Trading pair symbol Returns None if the API request fails or returns no data.</p>
+<p>Notes: - Limited to 300 requests per hour by the Coinbase API - Maximum of 200 candles can be retrieved per request - Attempting to exceed these limits will result in an error and return None - All datetime values are in UTC timezone</p>
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L69" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="coinbase_tokens" class="level3">
+<h3 class="anchored" data-anchor-id="coinbase_tokens">coinbase_tokens</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> coinbase_tokens():</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><em>Retrieves all available trading pairs from the Coinbase Exchange API.</em></p>
+<p>Makes a GET request to the Coinbase products endpoint to fetch information about all trading pairs available on the exchange.</p>
+<p>Returns: pandas.DataFrame: DataFrame containing information about all trading pairs with columns: - id: Trading pair ID (e.g.&nbsp;‘BTC-USD’) - base_currency: The cryptocurrency being traded (e.g.&nbsp;‘BTC’) - quote_currency: The currency used for pricing (e.g.&nbsp;‘USD’) - quote_increment: Minimum price increment - base_increment: Minimum quantity increment - display_name: Human readable name of the trading pair - status: Trading status of the pair And other metadata columns provided by the Coinbase API</p>
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L94" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="coinbase_usd_tokens" class="level3">
+<h3 class="anchored" data-anchor-id="coinbase_usd_tokens">coinbase_usd_tokens</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> coinbase_usd_tokens():</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><em>Retrieves all trading pairs from Coinbase that have USD as the quote currency.</em></p>
+<p>Returns: pandas.DataFrame: DataFrame containing information about USD trading pairs with columns: - id: Trading pair ID (e.g.&nbsp;‘BTC-USD’) - base_currency: The cryptocurrency being traded (e.g.&nbsp;‘BTC’) - quote_currency: Always ‘USD’ for this filtered dataset - quote_increment: Minimum price increment - base_increment: Minimum quantity increment - display_name: Human readable name of the trading pair - status: Trading status of the pair And other metadata columns provided by the Coinbase API</p>
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L114" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="coinbase_price_history" class="level3">
+<h3 class="anchored" data-anchor-id="coinbase_price_history">coinbase_price_history</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> coinbase_price_history(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    pair:<span class="bu">str</span><span class="op">=</span><span class="st">'BTC-USD'</span>, start_date:<span class="bu">str</span><span class="op">=</span><span class="st">'2024-01-01'</span>, end_date:<span class="bu">str</span><span class="op">=</span><span class="st">'2024-05-01'</span>, time_interval:<span class="bu">int</span><span class="op">=</span><span class="dv">3600</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    max_pull:<span class="bu">int</span><span class="op">=</span><span class="dv">250</span>, verbose:<span class="bu">bool</span><span class="op">=</span><span class="va">False</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><em>Downloads historical price data for a cryptocurrency pair from Coinbase, handling rate limits.</em></p>
+<p>Args: pair (str): Trading pair symbol (e.g.&nbsp;‘BTC-USD’). Defaults to ‘BTC-USD’. start_date (str): Start date in ‘YYYY-MM-DD’ format. Defaults to ‘2024-01-01’. end_date (str): End date in ‘YYYY-MM-DD’ format. Defaults to ‘2024-05-01’. time_interval (int): Time interval between candles in seconds. Defaults to 3600 (1 hour). max_pull (int): Maximum number of candles per API request. Defaults to 250. verbose (bool): If True, prints progress messages. Defaults to False.</p>
+<p>Returns: pandas.DataFrame: DataFrame containing price history with columns: - datetime: Timestamp of the candle - low: Lowest price during the interval - high: Highest price during the interval<br>
+- open: Opening price of the interval - close: Closing price of the interval - volume: Trading volume during the interval - pair: Trading pair symbol</p>
+<p>Raises: ValueError: If end_date is earlier than start_date</p>
+<p>The function handles Coinbase’s API limitations by automatically splitting requests into smaller chunks if the date range would exceed the maximum allowed candles per request.</p>
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L199" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="save_file" class="level3">
+<h3 class="anchored" data-anchor-id="save_file">save_file</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_file(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    df, folder_path, file_name, <span class="bu">type</span>:<span class="bu">str</span><span class="op">=</span><span class="st">'csv'</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><em>Save a pandas DataFrame to a file in either CSV or Parquet format.</em></p>
+<p>Args: df (pandas.DataFrame): The DataFrame to save folder_path (str): Directory path where the file will be saved file_name (str): Name of the file without extension type (str, optional): File format - either “csv” or “parquet”. Defaults to “csv”</p>
+<p>The function saves the DataFrame to the specified path, handling the file extension automatically. For CSV files, the index is not saved. For Parquet files, default Parquet settings are used.</p>
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L194" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="coinbase_to_file" class="level3">
+<h3 class="anchored" data-anchor-id="coinbase_to_file">coinbase_to_file</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> coinbase_to_file(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    folder_path:<span class="bu">str</span><span class="op">=</span><span class="st">'../data/coinbase'</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    token_list:<span class="bu">list</span><span class="op">=</span>[<span class="st">'BEAM-USD'</span>, <span class="st">'LCX-USD'</span>, <span class="st">'CFG-USD'</span>, <span class="st">'FX-USD'</span>, <span class="st">'SD-USD'</span>, <span class="st">'MINA-USD'</span>, <span class="st">'ZRO-USD'</span>, <span class="st">'MORPHO-USD'</span>, <span class="st">'OSMO-USD'</span>, <span class="st">'KITE-USD'</span>, <span class="st">'SAPIEN-USD'</span>, <span class="st">'FIGHT-USD'</span>, <span class="st">'UST-USD'</span>, <span class="st">'S-USD'</span>, <span class="st">'T-USD'</span>, <span class="st">'BIT-USD'</span>, <span class="st">'USD1-USD'</span>, <span class="st">'DEGEN-USD'</span>, <span class="st">'STRK-USD'</span>, <span class="st">'AAVE-USD'</span>, <span class="st">'HONEY-USD'</span>, <span class="st">'BLUR-USD'</span>, <span class="st">'GYEN-USD'</span>, <span class="st">'WMTX-USD'</span>, <span class="st">'AERO-USD'</span>, <span class="st">'SWELL-USD'</span>, <span class="st">'SUI-USD'</span>, <span class="st">'ATH-USD'</span>, <span class="st">'MNDE-USD'</span>, <span class="st">'MULTI-USD'</span>, <span class="st">'RSC-USD'</span>, <span class="st">'BASED1-USD'</span>, <span class="st">'XPL-USD'</span>, <span class="st">'FLOW-USD'</span>, <span class="st">'PRQ-USD'</span>, <span class="st">'ALT-USD'</span>, <span class="st">'VGX-USD'</span>, <span class="st">'FLUID-USD'</span>, <span class="st">'IO-USD'</span>, <span class="st">'OXT-USD'</span>, <span class="st">'LPT-USD'</span>, <span class="st">'BARD-USD'</span>, <span class="st">'ACS-USD'</span>, <span class="st">'TRAC-USD'</span>, <span class="st">'SAFE-USD'</span>, <span class="st">'TRIBE-USD'</span>, <span class="st">'ME-USD'</span>, <span class="st">'YFI-USD'</span>, <span class="st">'CLANKER-USD'</span>, <span class="st">'RAD-USD'</span>, <span class="st">'MAGIC-USD'</span>, <span class="st">'WELL-USD'</span>, <span class="st">'SKL-USD'</span>, <span class="st">'VET-USD'</span>, <span class="st">'AI-USD'</span>, <span class="st">'SAND-USD'</span>, <span class="st">'SWFTC-USD'</span>, <span class="st">'RAVE-USD'</span>, <span class="st">'LOKA-USD'</span>, <span class="st">'SOL-USD'</span>, <span class="st">'FET-USD'</span>, <span class="st">'NOM-USD'</span>, <span class="st">'LA-USD'</span>, <span class="st">'BREV-USD'</span>, <span class="st">'L3-USD'</span>, <span class="st">'ARPA-USD'</span>, <span class="st">'SUP-USD'</span>, <span class="st">'RLY-USD'</span>, <span class="st">'AXL-USD'</span>, <span class="st">'ASM-USD'</span>, <span class="st">'REN-USD'</span>, <span class="st">'VARA-USD'</span>, <span class="st">'ALICE-USD'</span>, <span class="st">'OMNI-USD'</span>, <span class="st">'PLUME-USD'</span>, <span class="st">'SHPING-USD'</span>, <span class="st">'PAXG-USD'</span>, <span class="st">'CVC-USD'</span>, <span class="st">'LRC-USD'</span>, <span class="st">'DRIFT-USD'</span>, <span class="st">'NEON-USD'</span>, <span class="st">'METIS-USD'</span>, <span class="st">'B3-USD'</span>, <span class="st">'HFT-USD'</span>, <span class="st">'OMG-USD'</span>, <span class="st">'GNO-USD'</span>, <span class="st">'BAND-USD'</span>, <span class="st">'CAP-USD'</span>, <span class="st">'OPN-USD'</span>, <span class="st">'GALA-USD'</span>, <span class="st">'QI-USD'</span>, <span class="st">'ZETACHAIN-USD'</span>, <span class="st">'ZKC-USD'</span>, <span class="st">'DASH-USD'</span>, <span class="st">'POWR-USD'</span>, <span class="st">'EDGE-USD'</span>, <span class="st">'GEOD-USD'</span>, <span class="st">'BLZ-USD'</span>, <span class="st">'EOS-USD'</span>, <span class="st">'SUSHI-USD'</span>, <span class="st">'AKT-USD'</span>, <span class="st">'PROS-USD'</span>, <span class="st">'MUSD-USD'</span>, <span class="st">'ARX-USD'</span>, <span class="st">'PYUSD-USD'</span>, <span class="st">'NKN-USD'</span>, <span class="st">'AIOZ-USD'</span>, <span class="st">'MASK-USD'</span>, <span class="st">'MDT-USD'</span>, <span class="st">'PYR-USD'</span>, <span class="st">'ENJ-USD'</span>, <span class="st">'VELO-USD'</span>, <span class="st">'CAKE-USD'</span>, <span class="st">'C98-USD'</span>, <span class="st">'ELSA-USD'</span>, <span class="st">'VTHO-USD'</span>, <span class="st">'WRON-USD'</span>, <span class="st">'KAITO-USD'</span>, <span class="st">'RAY-USD'</span>, <span class="st">'GRVT-USD'</span>, <span class="st">'ZK-USD'</span>, <span class="st">'ETHFI-USD'</span>, <span class="st">'DAR-USD'</span>, <span class="st">'AUCTION-USD'</span>, <span class="st">'BILL-USD'</span>, <span class="st">'ABT-USD'</span>, <span class="st">'APE-USD'</span>, <span class="st">'ATA-USD'</span>, <span class="st">'INX-USD'</span>, <span class="st">'DDX-USD'</span>, <span class="st">'FUN1-USD'</span>, <span class="st">'AERGO-USD'</span>, <span class="st">'INJ-USD'</span>, <span class="st">'QNT-USD'</span>, <span class="st">'COMP-USD'</span>, <span class="st">'O-USD'</span>, <span class="st">'A8-USD'</span>, <span class="st">'KARRAT-USD'</span>, <span class="st">'ADA-USD'</span>, <span class="st">'ETC-USD'</span>, <span class="st">'MPLX-USD'</span>, <span class="st">'TRIA-USD'</span>, <span class="st">'PNG-USD'</span>, <span class="st">'SPK-USD'</span>, <span class="st">'UNFI-USD'</span>, <span class="st">'HIGH-USD'</span>, <span class="st">'BNB-USD'</span>, <span class="st">'AXS-USD'</span>, <span class="st">'RAI-USD'</span>, <span class="st">'SNX-USD'</span>, <span class="st">'EUL-USD'</span>, <span class="st">'ERA-USD'</span>, <span class="st">'SYRUP-USD'</span>, <span class="st">'POL-USD'</span>, <span class="st">'KSM-USD'</span>, <span class="st">'RLS-USD'</span>, <span class="st">'FLOCK-USD'</span>, <span class="st">'IP-USD'</span>, <span class="st">'AGLD-USD'</span>, <span class="st">'ROBO-USD'</span>, <span class="st">'SUKU-USD'</span>, <span class="st">'TAO-USD'</span>, <span class="st">'XTZ-USD'</span>, <span class="st">'QSP-USD'</span>, <span class="st">'ZKP-USD'</span>, <span class="st">'SIGN-USD'</span>, <span class="st">'RENDER-USD'</span>, <span class="st">'MIR-USD'</span>, <span class="st">'KTA-USD'</span>, <span class="st">'FARTCOIN-USD'</span>, <span class="st">'SYND-USD'</span>, <span class="st">'TVK-USD'</span>, <span class="st">'XCN-USD'</span>, <span class="st">'AVNT-USD'</span>, <span class="st">'PUMP-USD'</span>, <span class="st">'BLAST-USD'</span>, <span class="st">'BAL-USD'</span>, <span class="st">'ALGO-USD'</span>, <span class="st">'CBETH-USD'</span>, <span class="st">'SNT-USD'</span>, <span class="st">'PEPE-USD'</span>, <span class="st">'TROLL-USD'</span>, <span class="st">'BCH-USD'</span>, <span class="st">'ANKR-USD'</span>, <span class="st">'VVV-USD'</span>, <span class="st">'LMTS-USD'</span>, <span class="st">'DOOD-USD'</span>, <span class="st">'COTI-USD'</span>, <span class="st">'MEDIA-USD'</span>, <span class="st">'NEST-USD'</span>, <span class="st">'MONA-USD'</span>, <span class="st">'DNT-USD'</span>, <span class="st">'ARB-USD'</span>, <span class="st">'REP-USD'</span>, <span class="st">'CTSI-USD'</span>, <span class="st">'1INCH-USD'</span>, <span class="st">'DOGINME-USD'</span>, <span class="st">'KAT-USD'</span>, <span class="st">'OGN-USD'</span>, <span class="st">'00-USD'</span>, <span class="st">'TONE-USD'</span>, <span class="st">'INV-USD'</span>, <span class="st">'MANTLE-USD'</span>, <span class="st">'WBTC-USD'</span>, <span class="st">'TRUST-USD'</span>, <span class="st">'CRO-USD'</span>, <span class="st">'ETH-USD'</span>, <span class="st">'RARE-USD'</span>, <span class="st">'MATIC-USD'</span>, <span class="st">'PROVE-USD'</span>, <span class="st">'MKR-USD'</span>, <span class="st">'UNI-USD'</span>, <span class="st">'ILV-USD'</span>, <span class="st">'BNT-USD'</span>, <span class="st">'HOME-USD'</span>, <span class="st">'GODS-USD'</span>, <span class="st">'ENS-USD'</span>, <span class="st">'KAVA-USD'</span>, <span class="st">'USDT-USD'</span>, <span class="st">'ALLO-USD'</span>, <span class="st">'IDEX-USD'</span>, <span class="st">'LINEA-USD'</span>, <span class="st">'OPG-USD'</span>, <span class="st">'PLA-USD'</span>, <span class="st">'SYLO-USD'</span>, <span class="st">'BICO-USD'</span>, <span class="st">'ZEC-USD'</span>, <span class="st">'ORCA-USD'</span>, <span class="st">'GHST-USD'</span>, <span class="st">'HNT-USD'</span>, <span class="st">'ICNT-USD'</span>, <span class="st">'UP-USD'</span>, <span class="st">'MAMO-USD'</span>, <span class="st">'LSETH-USD'</span>, <span class="st">'POPCAT-USD'</span>, <span class="st">'WIF-USD'</span>, <span class="st">'WCFG-USD'</span>, <span class="st">'WLFI-USD'</span>, <span class="st">'ICP-USD'</span>, <span class="st">'WAXL-USD'</span>, <span class="st">'STX-USD'</span>, <span class="st">'PYTH-USD'</span>, <span class="st">'ALCX-USD'</span>, <span class="st">'GMT-USD'</span>, <span class="st">'2Z-USD'</span>, <span class="st">'G-USD'</span>, <span class="st">'UPI-USD'</span>, <span class="st">'ZEN-USD'</span>, <span class="st">'RONIN-USD'</span>, <span class="st">'DEEP-USD'</span>, <span class="st">'IRYS-USD'</span>, <span class="st">'EGLD-USD'</span>, <span class="st">'W-USD'</span>, <span class="st">'GST-USD'</span>, <span class="st">'EURC-USD'</span>, <span class="st">'APR-USD'</span>, <span class="st">'CTX-USD'</span>, <span class="st">'NCT-USD'</span>, <span class="st">'AST-USD'</span>, <span class="st">'BNKR-USD'</span>, <span class="st">'MATH-USD'</span>, <span class="st">'DREP-USD'</span>, <span class="st">'KMNO-USD'</span>, <span class="st">'GIGA-USD'</span>, <span class="st">'RBN-USD'</span>, <span class="st">'SXT-USD'</span>, <span class="st">'CHECK-USD'</span>, <span class="st">'LINK-USD'</span>, <span class="st">'RECALL-USD'</span>, <span class="st">'CGLD-USD'</span>, <span class="st">'LQTY-USD'</span>, <span class="st">'ENA-USD'</span>, <span class="st">'PLU-USD'</span>, <span class="st">'MOODENG-USD'</span>, <span class="st">'MEGA-USD'</span>, <span class="st">'PRL-USD'</span>, <span class="st">'ACH-USD'</span>, <span class="st">'LAYER-USD'</span>, <span class="st">'SUPER-USD'</span>, <span class="st">'FLR-USD'</span>, <span class="st">'ARKM-USD'</span>, <span class="st">'HYPE-USD'</span>, <span class="st">'CRPT-USD'</span>, <span class="st">'AMP-USD'</span>, <span class="st">'SPELL-USD'</span>, <span class="st">'YFII-USD'</span>, <span class="st">'XAN-USD'</span>, <span class="st">'BLEND-USD'</span>, <span class="st">'ONDO-USD'</span>, <span class="st">'WAMPL-USD'</span>, <span class="st">'BIGTIME-USD'</span>, <span class="st">'ZAMA-USD'</span>, <span class="st">'GLM-USD'</span>, <span class="st">'PUNDIX-USD'</span>, <span class="st">'SQD-USD'</span>, <span class="st">'PRIME-USD'</span>, <span class="st">'SPX-USD'</span>, <span class="st">'OCEAN-USD'</span>, <span class="st">'MANA-USD'</span>, <span class="st">'PRO-USD'</span>, <span class="st">'SENT-USD'</span>, <span class="st">'LTC-USD'</span>, <span class="st">'TRUMP-USD'</span>, <span class="st">'TNSR-USD'</span>, <span class="st">'UMA-USD'</span>, <span class="st">'BOND-USD'</span>, <span class="st">'BADGER-USD'</span>, <span class="st">'USDS-USD'</span>, <span class="st">'TIME-USD'</span>, <span class="st">'FORT-USD'</span>, <span class="st">'GAL-USD'</span>, <span class="st">'ACX-USD'</span>, <span class="st">'POND-USD'</span>, <span class="st">'ANT-USD'</span>, <span class="st">'OP-USD'</span>, <span class="st">'DOLO-USD'</span>, <span class="st">'KERNEL-USD'</span>, <span class="st">'CHZ-USD'</span>, <span class="st">'WAL-USD'</span>, <span class="st">'MLN-USD'</span>, <span class="st">'GUSD-USD'</span>, <span class="st">'JASMY-USD'</span>, <span class="st">'PERP-USD'</span>, <span class="st">'THQ-USD'</span>, <span class="st">'TRB-USD'</span>, <span class="st">'ESP-USD'</span>, <span class="st">'NU-USD'</span>, <span class="st">'WCT-USD'</span>, <span class="st">'QUICK-USD'</span>, <span class="st">'ZETA-USD'</span>, <span class="st">'APT-USD'</span>, <span class="st">'RNBW-USD'</span>, <span class="st">'TIA-USD'</span>, <span class="st">'DIMO-USD'</span>, <span class="st">'GRT-USD'</span>, <span class="st">'TOWNS-USD'</span>, <span class="st">'LIGHTER-USD'</span>, <span class="st">'AWE-USD'</span>, <span class="st">'SYN-USD'</span>, <span class="st">'ROSE-USD'</span>, <span class="st">'AZTEC-USD'</span>, <span class="st">'NOICE-USD'</span>, <span class="st">'RARI-USD'</span>, <span class="st">'CRV-USD'</span>, <span class="st">'EIGEN-USD'</span>, <span class="st">'DEXT-USD'</span>, <span class="st">'RLC-USD'</span>, <span class="st">'POLY-USD'</span>, <span class="st">'FIS-USD'</span>, <span class="st">'ALEPH-USD'</span>, <span class="st">'FIL-USD'</span>, <span class="st">'CLV-USD'</span>, <span class="st">'MXC-USD'</span>, <span class="st">'FARM-USD'</span>, <span class="st">'BOBBOB-USD'</span>, <span class="st">'OOKI-USD'</span>, <span class="st">'ALEO-USD'</span>, <span class="st">'CVX-USD'</span>, <span class="st">'PAX-USD'</span>, <span class="st">'LIT-USD'</span>, <span class="st">'JITOSOL-USD'</span>, <span class="st">'PROMPT-USD'</span>, <span class="st">'KRL-USD'</span>, <span class="st">'CTR-USD'</span>, <span class="st">'MTL-USD'</span>, <span class="st">'RPL-USD'</span>, <span class="st">'FORTH-USD'</span>, <span class="st">'STG-USD'</span>, <span class="st">'LRDS-USD'</span>, <span class="st">'CELR-USD'</span>, <span class="st">'JUP-USD'</span>, <span class="st">'RGT-USD'</span>, <span class="st">'USELESS-USD'</span>, <span class="st">'NEAR-USD'</span>, <span class="st">'PIRATE-USD'</span>, <span class="st">'DIEM-USD'</span>, <span class="st">'DRV-USD'</span>, <span class="st">'IMU-USD'</span>, <span class="st">'BONK-USD'</span>, <span class="st">'HBAR-USD'</span>, <span class="st">'AVT-USD'</span>, <span class="st">'BIO-USD'</span>, <span class="st">'XLM-USD'</span>, <span class="st">'WLUNA-USD'</span>, <span class="st">'STORJ-USD'</span>, <span class="st">'TON-USD'</span>, <span class="st">'RNDR-USD'</span>, <span class="st">'GTC-USD'</span>, <span class="st">'DAI-USD'</span>, <span class="st">'KNC-USD'</span>, <span class="st">'FAI-USD'</span>, <span class="st">'KAIO-USD'</span>, <span class="st">'META-USD'</span>, <span class="st">'WET-USD'</span>, <span class="st">'BERA-USD'</span>, <span class="st">'HYPER-USD'</span>, <span class="st">'GWEI-USD'</span>, <span class="st">'KEYCAT-USD'</span>, <span class="st">'FLOKI-USD'</span>, <span class="st">'SHIB-USD'</span>, <span class="st">'BAT-USD'</span>, <span class="st">'DYP-USD'</span>, <span class="st">'CHIP-USD'</span>, <span class="st">'SEI-USD'</span>, <span class="st">'TURBO-USD'</span>, <span class="st">'TREE-USD'</span>, <span class="st">'MPL-USD'</span>, <span class="st">'REZ-USD'</span>, <span class="st">'IMX-USD'</span>, <span class="st">'IOTX-USD'</span>, <span class="st">'ZORA-USD'</span>, <span class="st">'YB-USD'</span>, <span class="st">'POLS-USD'</span>, <span class="st">'CORECHAIN-USD'</span>, <span class="st">'DOGE-USD'</span>, <span class="st">'COOKIE-USD'</span>, <span class="st">'GROVE-USD'</span>, <span class="st">'ZRX-USD'</span>, <span class="st">'XYO-USD'</span>, <span class="st">'SHDW-USD'</span>, <span class="st">'SPA-USD'</span>, <span class="st">'BOBA-USD'</span>, <span class="st">'FOX-USD'</span>, <span class="st">'NEX-USD'</span>, <span class="st">'DIA-USD'</span>, <span class="st">'SEAM-USD'</span>, <span class="st">'COVAL-USD'</span>, <span class="st">'NMR-USD'</span>, <span class="st">'MSOL-USD'</span>, <span class="st">'LOOM-USD'</span>, <span class="st">'BTC-USD'</span>, <span class="st">'TRU-USD'</span>, <span class="st">'MET-USD'</span>, <span class="st">'TOSHI-USD'</span>, <span class="st">'ELA-USD'</span>, <span class="st">'PNUT-USD'</span>, <span class="st">'PRCL-USD'</span>, <span class="st">'MUSE-USD'</span>, <span class="st">'MCO2-USD'</span>, <span class="st">'AURORA-USD'</span>, <span class="st">'ASTER-USD'</span>, <span class="st">'SKR-USD'</span>, <span class="st">'MON-USD'</span>, <span class="st">'DBR-USD'</span>, <span class="st">'MOVE-USD'</span>, <span class="st">'DESO-USD'</span>, <span class="st">'JTO-USD'</span>, <span class="st">'PENDLE-USD'</span>, <span class="st">'PENGU-USD'</span>, <span class="st">'BUSD-USD'</span>, <span class="st">'VIRTUAL-USD'</span>, <span class="st">'RSR-USD'</span>, <span class="st">'BTRST-USD'</span>, <span class="st">'COW-USD'</span>, <span class="st">'MOG-USD'</span>, <span class="st">'BIRB-USD'</span>, <span class="st">'JUPITER-USD'</span>, <span class="st">'INDEX-USD'</span>, <span class="st">'ORN-USD'</span>, <span class="st">'EDGEX-USD'</span>, <span class="st">'DOT-USD'</span>, <span class="st">'MOBILE-USD'</span>, <span class="st">'MEZO-USD'</span>, <span class="st">'XRP-USD'</span>, <span class="st">'NEWT-USD'</span>, <span class="st">'COSMOSDYDX-USD'</span>, <span class="st">'KEEP-USD'</span>, <span class="st">'AUDIO-USD'</span>, <span class="st">'LDO-USD'</span>, <span class="st">'HOPR-USD'</span>, <span class="st">'RE-USD'</span>, <span class="st">'REQ-USD'</span>, <span class="st">'ATOM-USD'</span>, <span class="st">'AVAX-USD'</span>, <span class="st">'GFI-USD'</span>, <span class="st">'FIDA-USD'</span>, <span class="st">'WLD-USD'</span>, <span class="st">'API3-USD'</span>, <span class="st">'ERN-USD'</span>, <span class="st">'VOXEL-USD'</span>, <span class="st">'SKY-USD'</span>, <span class="st">'RED-USD'</span>],</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">type</span>:<span class="bu">str</span><span class="op">=</span><span class="st">'csv'</span>, interval:<span class="bu">int</span><span class="op">=</span><span class="dv">3600</span>, all_tokens:<span class="bu">bool</span><span class="op">=</span><span class="va">True</span>, refresh_24h:<span class="bu">bool</span><span class="op">=</span><span class="va">False</span>, pause:<span class="bu">int</span><span class="op">=</span><span class="dv">0</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><em>Downloads and maintains historical price data for Coinbase tokens, saving to files.</em></p>
+<p>Args: folder_path (str): Path where token data files will be stored. Defaults to “../data/coinbase” token_list (list): List of token IDs to process. Defaults to all USD trading pairs from coinbase_usd_tokens() type (str): File format to save data - either “csv” or “parquet”. Defaults to “csv” interval (int): Time interval in seconds between price points. Defaults to 3600 (1 hour) all_tokens (bool): If True, includes any additional tokens found in the folder path. Defaults to True refresh_24h (bool): If True, replaces at least 24 hours. Defaults to False</p>
+<p>The function: - Creates the folder_path if it doesn’t exist - Date/Time is UTC - For each token, checks if data file exists: - If exists: Loads file and appends any new data since last recorded date - If not exists: Downloads full history starting from 2016 - Saves data in specified format, handling duplicates and sorting by date - For hourly data (interval=3600), aligns to hour boundaries</p>
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L277" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="coinbase_data_update" class="level3">
+<h3 class="anchored" data-anchor-id="coinbase_data_update">coinbase_data_update</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> coinbase_data_update(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    folder_path:<span class="bu">str</span><span class="op">=</span><span class="st">'../data/coinbase'</span>, token:<span class="bu">str</span><span class="op">=</span><span class="st">'AAVE-USD'</span>, <span class="bu">type</span>:<span class="bu">str</span><span class="op">=</span><span class="st">'parquet'</span>, interval:<span class="bu">int</span><span class="op">=</span><span class="dv">3600</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    refresh_24h:<span class="bu">bool</span><span class="op">=</span><span class="va">True</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><em>Downloads new historical price data for Coinbase tokens… no saving</em></p>
+<p>Args: folder_path (str): Path where token data files will be stored. Defaults to “../data/coinbase” token (str): token IDs to process type (str): File format to save data - either “csv” or “parquet”. Defaults to “parquet” interval (int): Time interval in seconds between price points. Defaults to 3600 (1 hour) refresh_24h (bool): If True, replaces at least 24 hours. Defaults to True</p>
+<p>Returns: df (pandas.DataFrame): DataFrame of historical price data</p>
+<p>The function: - Date/Time is UTC - For each token, checks if data file exists: - If exists: Loads file and appends any new data since last recorded date - If not exists: Downloads full history starting from 2016 - For hourly data (interval=3600), aligns to hour boundaries</p>
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L339" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="read_all_files" class="level3">
+<h3 class="anchored" data-anchor-id="read_all_files">read_all_files</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_all_files(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    folder_path:<span class="bu">str</span><span class="op">=</span><span class="st">'../data/coinbase'</span>, <span class="bu">type</span>:<span class="bu">str</span><span class="op">=</span><span class="st">'csv'</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><em>Read and combine all files from a folder into a single DataFrame.</em></p>
+<p>Args: folder_path (str): Path to the folder containing the files. Defaults to “../data/coinbase”. type (str): File type to read - either “csv” or “parquet”. Defaults to “csv”.</p>
+<p>Returns: pandas.DataFrame: Combined DataFrame containing data from all files in the folder.</p>
+<p>Raises: ValueError: If file type is not supported (must be “csv” or “parquet”).</p>
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L367" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="coinbase_price_last_day" class="level3">
+<h3 class="anchored" data-anchor-id="coinbase_price_last_day">coinbase_price_last_day</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> coinbase_price_last_day(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    pair:<span class="bu">str</span><span class="op">=</span><span class="st">'BTC-USD'</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><em>Fetch the last day’s price for a given Coinbase token.</em> This fuction is a helper function around coinbase_price_history().</p>
+<p>Args: pair (str): Coinbase token pair, e.g., “BTC-USD”. Defaults to “BTC-USD”.</p>
+<p>Returns: pandas dataframe: Last 24 hours price data.</p>
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L386" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="binance_format" class="level3">
+<h3 class="anchored" data-anchor-id="binance_format">binance_format</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> binance_format(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    df</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><em>Convert coinbase dataframe to binance format.</em></p>
+<p>Args: df (pandas dataframe): Coinbase dataframe.</p>
+<p>Returns: pandas dataframe: Binance format dataframe.</p>
+</section>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples</h2>
+<p>Load the package</p>
+<div id="89ad9d45" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> token_data.coinbase <span class="im">import</span> <span class="op">*</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="list-the-available-tokens-on-coinbase" class="level3">
+<h3 class="anchored" data-anchor-id="list-the-available-tokens-on-coinbase">List the available tokens on Coinbase</h3>
+<p>List the available tokens on Coinbase.</p>
+<div id="91cda63b" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>tokens <span class="op">=</span> coinbase_tokens()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tokens)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             id base_currency quote_currency quote_increment base_increment  \
+0     STORJ-BTC         STORJ            BTC      0.00000001           0.01   
+1       DDX-USD           DDX            USD          0.0001           0.01   
+2       XRP-EUR           XRP            EUR          0.0001       0.000001   
+3       AXL-USD           AXL            USD          0.0001            0.1   
+4       OGN-USD           OGN            USD         0.00001           0.01   
+..          ...           ...            ...             ...            ...   
+745  COOKIE-USD        COOKIE            USD         0.00001            0.1   
+746  KERNEL-USD        KERNEL            USD          0.0001           0.01   
+747     EOS-BTC           EOS            BTC      0.00000001            0.1   
+748     ERN-EUR           ERN            EUR            0.01          0.001   
+749     NCT-USD           NCT            USD         0.00001              1   
+
+    display_name min_market_funds  margin_enabled  post_only  limit_only  \
+0      STORJ-BTC         0.000016           False      False       False   
+1        DDX-USD                1           False      False       False   
+2        XRP-EUR                1           False      False       False   
+3        AXL-USD                1           False      False       False   
+4        OGN-USD                1           False      False       False   
+..           ...              ...             ...        ...         ...   
+745   COOKIE/USD                1           False      False       False   
+746   KERNEL/USD                1           False      False       False   
+747      EOS-BTC         0.000016           False      False        True   
+748      ERN-EUR                1           False      False       False   
+749      NCT-USD                1           False      False       False   
+
+     cancel_only    status status_message  trading_disabled  fx_stablecoin  \
+0          False  delisted                             True          False   
+1          False  delisted                             True          False   
+2          False    online                            False          False   
+3          False    online                            False          False   
+4          False    online                            False          False   
+..           ...       ...            ...               ...            ...   
+745        False    online                            False          False   
+746        False    online                            False          False   
+747        False    online                            False          False   
+748        False  delisted                             True          False   
+749        False    online                            False          False   
+
+    max_slippage_percentage  auction_mode high_bid_limit_percentage  
+0                0.03000000         False                            
+1                0.03000000         False                            
+2                0.05000000         False                            
+3                0.03000000         False                            
+4                0.03000000         False                            
+..                      ...           ...                       ...  
+745              0.03000000         False                            
+746              0.03000000         False                            
+747              0.03000000         False                            
+748              0.03000000         False                            
+749              0.03000000         False                            
+
+[750 rows x 18 columns]</code></pre>
+</div>
+</div>
+<p>To make it simpler, we can filter the tokens by the quote currency. In this case, we filter for USD.</p>
+<div id="c062c3f6" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>usd_tokens <span class="op">=</span> coinbase_usd_tokens()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(usd_tokens)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             id base_currency quote_currency quote_increment base_increment  \
+1       DDX-USD           DDX            USD          0.0001           0.01   
+3       AXL-USD           AXL            USD          0.0001            0.1   
+4       OGN-USD           OGN            USD         0.00001           0.01   
+5       CTX-USD           CTX            USD          0.0001          0.001   
+6       LCX-USD           LCX            USD          0.0001            0.1   
+..          ...           ...            ...             ...            ...   
+743   ALICE-USD         ALICE            USD           0.001          0.001   
+744    ATOM-USD          ATOM            USD           0.001           0.01   
+745  COOKIE-USD        COOKIE            USD         0.00001            0.1   
+746  KERNEL-USD        KERNEL            USD          0.0001           0.01   
+749     NCT-USD           NCT            USD         0.00001              1   
+
+    display_name min_market_funds  margin_enabled  post_only  limit_only  \
+1        DDX-USD                1           False      False       False   
+3        AXL-USD                1           False      False       False   
+4        OGN-USD                1           False      False       False   
+5        CTX-USD                5           False      False       False   
+6        LCX-USD                1           False      False       False   
+..           ...              ...             ...        ...         ...   
+743    ALICE-USD                1           False      False       False   
+744     ATOM-USD                1           False      False       False   
+745   COOKIE/USD                1           False      False       False   
+746   KERNEL/USD                1           False      False       False   
+749      NCT-USD                1           False      False       False   
+
+     cancel_only    status status_message  trading_disabled  fx_stablecoin  \
+1          False  delisted                             True          False   
+3          False    online                            False          False   
+4          False    online                            False          False   
+5          False    online                            False          False   
+6          False    online                            False          False   
+..           ...       ...            ...               ...            ...   
+743        False    online                            False          False   
+744        False    online                            False          False   
+745        False    online                            False          False   
+746        False    online                            False          False   
+749        False    online                            False          False   
+
+    max_slippage_percentage  auction_mode high_bid_limit_percentage  
+1                0.03000000         False                            
+3                0.03000000         False                            
+4                0.03000000         False                            
+5                0.05000000         False                            
+6                0.03000000         False                            
+..                      ...           ...                       ...  
+743              0.03000000         False                            
+744              0.03000000         False                            
+745              0.03000000         False                            
+746              0.03000000         False                            
+749              0.03000000         False                            
+
+[409 rows x 18 columns]</code></pre>
+</div>
+</div>
+</section>
+<section id="data-pull-examples" class="level3">
+<h3 class="anchored" data-anchor-id="data-pull-examples">Data pull examples</h3>
+<p>Download the historical price of BTC-USD for few months at every hour. IMPORTANT: datetime is in UTC!</p>
+<div id="aab69bf1" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> coinbase_price_history()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                datetime       low      high      open     close       volume  \
+0    2024-01-01 00:00:00  42261.58  42543.64  42288.58  42452.66   379.197253   
+1    2024-01-01 01:00:00  42415.00  42749.99  42453.83  42594.68   396.201924   
+2    2024-01-01 02:00:00  42488.03  42625.68  42594.58  42571.32   227.141166   
+3    2024-01-01 03:00:00  42235.00  42581.26  42571.32  42325.11   306.005694   
+4    2024-01-01 04:00:00  42200.00  42393.48  42325.10  42389.77   296.233644   
+...                  ...       ...       ...       ...       ...          ...   
+2900 2024-04-30 20:00:00  59087.36  60082.82  59098.18  59869.99  1655.908771   
+2901 2024-04-30 21:00:00  59862.17  60326.56  59865.66  60100.36   615.103455   
+2902 2024-04-30 22:00:00  60070.00  60990.48  60100.01  60526.64   727.224395   
+2903 2024-04-30 23:00:00  60330.92  60878.39  60529.65  60622.10   346.354179   
+2904 2024-05-01 00:00:00  60015.99  60785.49  60621.20  60173.03   499.935743   
+
+         pair  
+0     BTC-USD  
+1     BTC-USD  
+2     BTC-USD  
+3     BTC-USD  
+4     BTC-USD  
+...       ...  
+2900  BTC-USD  
+2901  BTC-USD  
+2902  BTC-USD  
+2903  BTC-USD  
+2904  BTC-USD  
+
+[2905 rows x 7 columns]</code></pre>
+</div>
+</div>
+<p>Download all history available in coinbase for the tokens saved in folder “../data/coinbase” This process can take a while specially if you are downloading many tokens the first time.</p>
+<p>Full download with no files in the folder takes almost 5 hours. After that, it is much faster (~ 6 minutes). Clearly it will depend on your internet speed and the last time you did the download.</p>
+<div id="4928da8a" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>coinbase_to_file(<span class="bu">type</span><span class="op">=</span><span class="st">"parquet"</span>) <span class="co"># takes almost 5 hours if there no files in the folder!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now read the file from folder “../data/coinbase”:</p>
+<div id="bb8890d4" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"../data/coinbase/AAVE-USD.parquet"</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 datetime      low     high     open    close    volume  \
+0     2020-12-15 17:00:00   87.700   90.400   90.400   88.347  4289.548   
+1     2020-12-15 18:00:00   85.620   88.407   88.010   86.000  3802.529   
+2     2020-12-15 19:00:00   84.575   89.500   86.105   85.952  2835.124   
+3     2020-12-15 20:00:00   84.828   85.952   85.952   85.599   798.670   
+4     2020-12-15 21:00:00   84.744   85.893   85.599   85.208   442.464   
+...                   ...      ...      ...      ...      ...       ...   
+43116 2025-11-16 15:00:00  172.870  177.020  176.960  173.110  1348.973   
+43117 2025-11-16 16:00:00  168.680  174.490  173.110  169.380  8729.763   
+43118 2025-11-16 17:00:00  167.700  170.920  169.290  170.000  2096.065   
+43119 2025-11-16 18:00:00  169.610  174.290  169.920  171.960  1601.832   
+43120 2025-11-16 19:00:00  171.950  175.000  171.950  174.270   398.023   
+
+           pair  
+0      AAVE-USD  
+1      AAVE-USD  
+2      AAVE-USD  
+3      AAVE-USD  
+4      AAVE-USD  
+...         ...  
+43116  AAVE-USD  
+43117  AAVE-USD  
+43118  AAVE-USD  
+43119  AAVE-USD  
+43120  AAVE-USD  
+
+[43121 rows x 7 columns]</code></pre>
+</div>
+</div>
+<p>Read all files in the folder into a single dataframe:</p>
+<div id="1553d11c" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> read_all_files(<span class="bu">type</span><span class="op">=</span><span class="st">"parquet"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 datetime      low     high     open    close      volume  \
+0     2022-06-28 19:00:00  21.6500  23.5000  23.2800  21.7000     980.997   
+1     2022-06-28 20:00:00  21.2300  21.7000  21.7000  21.2800     541.653   
+2     2022-06-28 21:00:00  21.1600  21.4000  21.2600  21.4000     240.221   
+3     2022-06-28 22:00:00  21.0600  21.4000  21.4000  21.1100      38.458   
+4     2022-06-28 23:00:00  20.8000  21.0100  21.0000  20.8000      37.091   
+...                   ...      ...      ...      ...      ...         ...   
+22012 2025-11-16 15:00:00   0.0322   0.0328   0.0328   0.0322  178390.090   
+22013 2025-11-16 16:00:00   0.0318   0.0325   0.0321   0.0319  133830.780   
+22014 2025-11-16 17:00:00   0.0313   0.0320   0.0319   0.0318  335783.100   
+22015 2025-11-16 18:00:00   0.0316   0.0323   0.0318   0.0317  357474.070   
+22016 2025-11-16 19:00:00   0.0317   0.0321   0.0318   0.0320   79237.040   
+
+            pair  
+0      METIS-USD  
+1      METIS-USD  
+2      METIS-USD  
+3      METIS-USD  
+4      METIS-USD  
+...          ...  
+22012  VOXEL-USD  
+22013  VOXEL-USD  
+22014  VOXEL-USD  
+22015  VOXEL-USD  
+22016  VOXEL-USD  
+
+[9102566 rows x 7 columns]</code></pre>
+</div>
+</div>
+<p>Download the last day’s price for AAVE-USD:</p>
+<div id="e4ba547c" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>coinbase_price_last_day(pair<span class="op">=</span><span class="st">'AAVE-USD'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">datetime</th>
+<th data-quarto-table-cell-role="th">low</th>
+<th data-quarto-table-cell-role="th">high</th>
+<th data-quarto-table-cell-role="th">open</th>
+<th data-quarto-table-cell-role="th">close</th>
+<th data-quarto-table-cell-role="th">volume</th>
+<th data-quarto-table-cell-role="th">pair</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">23</th>
+<td>2025-11-15 20:00:00</td>
+<td>178.36</td>
+<td>180.37</td>
+<td>180.34</td>
+<td>178.79</td>
+<td>1183.481</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">22</th>
+<td>2025-11-15 21:00:00</td>
+<td>177.47</td>
+<td>179.88</td>
+<td>178.84</td>
+<td>177.91</td>
+<td>938.407</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">21</th>
+<td>2025-11-15 22:00:00</td>
+<td>177.72</td>
+<td>179.40</td>
+<td>177.88</td>
+<td>178.49</td>
+<td>269.133</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">20</th>
+<td>2025-11-15 23:00:00</td>
+<td>178.14</td>
+<td>178.94</td>
+<td>178.42</td>
+<td>178.39</td>
+<td>362.334</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">19</th>
+<td>2025-11-16 00:00:00</td>
+<td>176.64</td>
+<td>178.80</td>
+<td>178.39</td>
+<td>177.44</td>
+<td>308.090</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">18</th>
+<td>2025-11-16 01:00:00</td>
+<td>175.31</td>
+<td>177.81</td>
+<td>177.41</td>
+<td>177.18</td>
+<td>591.766</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">17</th>
+<td>2025-11-16 02:00:00</td>
+<td>176.74</td>
+<td>179.04</td>
+<td>177.16</td>
+<td>178.67</td>
+<td>4384.649</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">16</th>
+<td>2025-11-16 03:00:00</td>
+<td>177.87</td>
+<td>179.59</td>
+<td>178.67</td>
+<td>179.36</td>
+<td>3985.333</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">15</th>
+<td>2025-11-16 04:00:00</td>
+<td>178.53</td>
+<td>179.89</td>
+<td>179.48</td>
+<td>179.68</td>
+<td>2148.309</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">14</th>
+<td>2025-11-16 05:00:00</td>
+<td>179.68</td>
+<td>181.78</td>
+<td>179.70</td>
+<td>180.50</td>
+<td>2426.158</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">13</th>
+<td>2025-11-16 06:00:00</td>
+<td>179.72</td>
+<td>181.72</td>
+<td>180.48</td>
+<td>179.83</td>
+<td>371.690</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">12</th>
+<td>2025-11-16 07:00:00</td>
+<td>179.54</td>
+<td>181.23</td>
+<td>179.79</td>
+<td>181.19</td>
+<td>481.606</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">11</th>
+<td>2025-11-16 08:00:00</td>
+<td>179.54</td>
+<td>181.54</td>
+<td>181.24</td>
+<td>180.12</td>
+<td>439.774</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">10</th>
+<td>2025-11-16 09:00:00</td>
+<td>179.20</td>
+<td>181.59</td>
+<td>180.06</td>
+<td>181.59</td>
+<td>575.820</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">9</th>
+<td>2025-11-16 10:00:00</td>
+<td>180.61</td>
+<td>182.31</td>
+<td>181.54</td>
+<td>180.72</td>
+<td>2323.787</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">8</th>
+<td>2025-11-16 11:00:00</td>
+<td>176.12</td>
+<td>180.74</td>
+<td>180.72</td>
+<td>176.18</td>
+<td>482.762</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">7</th>
+<td>2025-11-16 12:00:00</td>
+<td>175.36</td>
+<td>177.57</td>
+<td>176.23</td>
+<td>176.66</td>
+<td>1078.297</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">6</th>
+<td>2025-11-16 13:00:00</td>
+<td>175.35</td>
+<td>177.69</td>
+<td>176.66</td>
+<td>176.37</td>
+<td>926.597</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">5</th>
+<td>2025-11-16 14:00:00</td>
+<td>175.59</td>
+<td>177.55</td>
+<td>176.39</td>
+<td>176.97</td>
+<td>1515.514</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">4</th>
+<td>2025-11-16 15:00:00</td>
+<td>172.87</td>
+<td>177.02</td>
+<td>176.96</td>
+<td>173.11</td>
+<td>1348.973</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">3</th>
+<td>2025-11-16 16:00:00</td>
+<td>168.68</td>
+<td>174.49</td>
+<td>173.11</td>
+<td>169.38</td>
+<td>8729.763</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">2</th>
+<td>2025-11-16 17:00:00</td>
+<td>167.70</td>
+<td>170.92</td>
+<td>169.29</td>
+<td>170.00</td>
+<td>2096.065</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">1</th>
+<td>2025-11-16 18:00:00</td>
+<td>169.61</td>
+<td>174.29</td>
+<td>169.92</td>
+<td>171.96</td>
+<td>1601.832</td>
+<td>AAVE-USD</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">0</th>
+<td>2025-11-16 19:00:00</td>
+<td>171.95</td>
+<td>175.03</td>
+<td>171.95</td>
+<td>174.21</td>
+<td>746.800</td>
+<td>AAVE-USD</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Update the data for AAVE-USD and convert it to Binance format (minor changes in column names and sequence). Note: the datetime column is in UTC and the row datetime represents the full hour. For example, if we run this code at 9:15:00 the row is labelled as 9:00:00 with the close price at 9:15. If we run the code at 8:59:00, the row is labelled as 8:00:00 with the close price at 8:59.</p>
+<div id="a0704f36" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> coinbase_data_update(token<span class="op">=</span><span class="st">'AAVE-USD'</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>binance_df <span class="op">=</span> binance_format(df)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(binance_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Processing AAVE-USD
+                           date     Open     High      Low    Close    Volume  \
+0     2020-12-15 17:00:00+00:00   90.400   90.400   87.700   88.347  4289.548   
+1     2020-12-15 18:00:00+00:00   88.010   88.407   85.620   86.000  3802.529   
+2     2020-12-15 19:00:00+00:00   86.105   89.500   84.575   85.952  2835.124   
+3     2020-12-15 20:00:00+00:00   85.952   85.952   84.828   85.599   798.670   
+4     2020-12-15 21:00:00+00:00   85.599   85.893   84.744   85.208   442.464   
+...                         ...      ...      ...      ...      ...       ...   
+43116 2025-11-16 15:00:00+00:00  176.960  177.020  172.870  173.110  1348.973   
+43117 2025-11-16 16:00:00+00:00  173.110  174.490  168.680  169.380  8729.763   
+43118 2025-11-16 17:00:00+00:00  169.290  170.920  167.700  170.000  2096.065   
+43119 2025-11-16 18:00:00+00:00  169.920  174.290  169.610  171.960  1601.832   
+43120 2025-11-16 19:00:00+00:00  171.950  175.030  171.950  174.210   746.800   
+
+       pair  
+0      aave  
+1      aave  
+2      aave  
+3      aave  
+4      aave  
+...     ...  
+43116  aave  
+43117  aave  
+43118  aave  
+43119  aave  
+43120  aave  
+
+[43121 rows x 7 columns]</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/silvaac\.github\.io\/token_data");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/silvaac/token_data/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
