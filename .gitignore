@@ -12,13 +12,15 @@ _tmp*
 tmp*
 tags
 *.pkg
-config_hyperliquid.json
-config_hyperliquid_old.json
+*.parquet
+config_hyperliquid*.json
 .pypirc
+tokenenv*/
 run.py
 run1.py
 run2.py
 run3.py
+run4.py
 run_binance.py
 run_kukoin.py
 run_lighter.py
