@@ -11,6 +11,12 @@
 - `pip install -e ".[dev]"` — editable install (uses build isolation; fetches latest setuptools).
 - The `dev` extra is declared via `setup.py` (`extras_require`), not in `pyproject.toml`.
 
+## Local environment
+- Use the `env/` venv (Python 3.14, nbdev 3.3.3 pinned to match CI): `export PATH="$PWD/env/bin:$PATH"`.
+- `hyperliquid_tokens()`/`setup()` load `../config_hyperliquid.json` relative to cwd, so
+  smoke tests that hit the SDK must run from `nbs/`.
+- Never track `config_hyperliquid*.json` — they contain a private key (`.gitignore` covers them).
+
 ## nbdev commands (use nbdev 3.3.3 to match CI)
 - `nbdev-clean` — strip notebook outputs.
 - `nbdev-export` — sync notebooks -> `token_data/*.py` + `_modidx.py` + `pyproject.toml`.

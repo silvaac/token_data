@@ -58,7 +58,7 @@ def setup(base_url=None, skip_ws=False, perp_dexs=None,config='../config_hyperli
 
 # %% ../nbs/hyperliquid.ipynb #d052833a
 _BASE_URL = "https://api.hyperliquid.xyz"
-_HIP3_PREFIXES = ["xyz", "flx", "vntl", "hyna", "km", "abcd", "cash", "para", "mkts"]
+_HIP3_PREFIXES = ["xyz", "flx", "vntl", "hyna", "km", "abcd", "cash", "para", "mkts", "io"]
 _resolve_cache = {}
 
 def _hl_post(payload, base_url=None, timeout=30):
@@ -109,7 +109,11 @@ def resolve_hyperliquid_ticker(coin, info=None, base_url=None):
         pass
 
     # Search HIP-3 dexes
-    for prefix in _HIP3_PREFIXES:
+    try:
+        prefixes = [p for p in hyperliquid_perp_dexs(base_url=bu) if p]
+    except Exception:
+        prefixes = _HIP3_PREFIXES
+    for prefix in prefixes:
         try:
             dex_meta = _hl_post({"type": "meta", "dex": prefix}, base_url=bu)
             dex_names = {u["name"] for u in dex_meta.get("universe", [])}
@@ -327,19 +331,23 @@ def retrieve_hyperliquid_spot_price(coin="ETH", base='USDC',interval="1h",
         return None
 
 # %% ../nbs/hyperliquid.ipynb #5dadf3a4
-def hyperliquid_tokens(info=None,rm_delisted=True,dex=None):
+def hyperliquid_tokens(info=None,rm_delisted=True,dex=None,rm_isolated=True):
     """
     List perpetual tokens available on Hyperliquid.
 
     Args:
         info (Info, optional): SDK Info client. Created automatically if *None*.
-        rm_delisted (bool): Remove delisted and isolated-only tokens (default *True*).
+        rm_delisted (bool): Remove delisted tokens (default *True*).
         dex (str, optional): Which perp dex universe to query.
 
             - ``None`` (default) – native perps only (unchanged legacy behaviour).
             - A dex name string (e.g. ``"xyz"``) – that builder-dex universe.
               Returned ``name`` values are already prefixed (e.g. ``"xyz:XLE"``).
             - ``"all"`` – concatenates native **and** every HIP-3 dex universe.
+
+        rm_isolated (bool): Remove isolated-only tokens (default *True*).
+            Set to *False* to include RWA/HIP-3 assets such as ``xyz:SOFTBANK``
+            that trade in isolated-only mode.
 
     Returns:
         pandas.DataFrame with columns ``szDecimals``, ``name``, ``maxLeverage``, etc.
@@ -361,7 +369,9 @@ def hyperliquid_tokens(info=None,rm_delisted=True,dex=None):
         df['isDelisted'] = ~df['isDelisted'].isna()
         df['onlyIsolated'] = ~df['onlyIsolated'].isna()
         if rm_delisted:
-            df = df.loc[(~df['isDelisted']) & (~df['onlyIsolated'])]
+            df = df.loc[~df['isDelisted']]
+        if rm_isolated:
+            df = df.loc[~df['onlyIsolated']]
         return df
 
     if dex is None:
@@ -371,11 +381,17 @@ def hyperliquid_tokens(info=None,rm_delisted=True,dex=None):
         df['isDelisted'] = ~df['isDelisted'].isna()
         df['onlyIsolated'] = ~df['onlyIsolated'].isna()
         if rm_delisted:
-            df = df.loc[(~df['isDelisted']) & (~df['onlyIsolated'])]
+            df = df.loc[~df['isDelisted']]
+        if rm_isolated:
+            df = df.loc[~df['onlyIsolated']]
         return df
     elif dex == "all":
         frames = [_fetch_universe(None)]
-        for prefix in _HIP3_PREFIXES:
+        try:
+            prefixes = [p for p in hyperliquid_perp_dexs(base_url=base_url) if p]
+        except Exception:
+            prefixes = _HIP3_PREFIXES
+        for prefix in prefixes:
             try:
                 f = _fetch_universe(prefix)
                 if not f.empty:
@@ -385,6 +401,7 @@ def hyperliquid_tokens(info=None,rm_delisted=True,dex=None):
         return pd.concat(frames, ignore_index=True)
     else:
         return _fetch_universe(dex)
+
 
 # %% ../nbs/hyperliquid.ipynb #311912f3
 def funding_calc(rate,premium,max_rate=0.0005,min_rate=-0.0005):
@@ -1053,6 +1070,11 @@ class HyperliquidPerpManager(HyperliquidDataManager):
         refresh_hours (int, optional): Hours of data to refresh when updating. Defaults to 24
         info (Info, optional): Hyperliquid Info client. If None, creates a new one.
         verbose (bool, optional): If True, prints progress messages. Defaults to True
+        dex (str, optional): Which perp dex universe to use when loading all tickers.
+            ``None`` for native only, ``"all"`` for native + HIP-3/RWA dexes (default).
+        rm_delisted (bool, optional): Remove delisted tokens when loading all tickers. Defaults to True.
+        rm_isolated (bool, optional): Remove isolated-only tokens when loading all tickers.
+            Defaults to False so that RWA/HIP-3 assets such as ``xyz:SOFTBANK`` are included.
     
     Examples:
         # Load existing perp data for ETH
@@ -1075,9 +1097,12 @@ class HyperliquidPerpManager(HyperliquidDataManager):
     
     def __init__(self, ticker=None, data_dir="../data/hyperliquid", interval="1h",
                  file_type="parquet", update=False, save=False, refresh_hours=24,
-                 info=None, verbose=True):
-        # Set data type before calling parent constructor
+                 info=None, verbose=True, dex="all", rm_delisted=True, rm_isolated=False):
+        # Set data type and dex before calling parent constructor
         self.data_type = "perp"
+        self.dex = dex
+        self.rm_delisted = rm_delisted
+        self.rm_isolated = rm_isolated
         
         # Call parent constructor
         super().__init__(ticker=ticker, data_dir=data_dir, interval=interval,
@@ -1108,7 +1133,9 @@ class HyperliquidPerpManager(HyperliquidDataManager):
         """Get all available perpetual tokens from Hyperliquid."""
         try:
             if self.info is not None:
-                tickers = hyperliquid_tokens(info=self.info)
+                tickers = hyperliquid_tokens(info=self.info, dex=self.dex,
+                                              rm_delisted=self.rm_delisted,
+                                              rm_isolated=self.rm_isolated)
                 tickers = tickers['name'].tolist()
                 if self.verbose:
                     print(f"Found {len(tickers)} perpetual tokens")
@@ -1598,6 +1625,11 @@ class HyperliquidFundingManager(HyperliquidDataManager):
         round_to_hour (bool, optional): If True, rounds datetime to nearest hour. Defaults to True
         info (Info, optional): Hyperliquid Info client. If None, creates a new one.
         verbose (bool, optional): If True, prints progress messages. Defaults to True
+        dex (str, optional): Which perp dex universe to use when loading all tickers.
+            ``None`` for native only, ``"all"`` for native + HIP-3/RWA dexes (default).
+        rm_delisted (bool, optional): Remove delisted tokens when loading all tickers. Defaults to True.
+        rm_isolated (bool, optional): Remove isolated-only tokens when loading all tickers.
+            Defaults to False so that RWA/HIP-3 assets such as ``xyz:SOFTBANK`` are included.
     
     Examples:
         # Load existing funding data for ETH
@@ -1619,10 +1651,13 @@ class HyperliquidFundingManager(HyperliquidDataManager):
     
     def __init__(self, ticker=None, data_dir="../data/hyperliquid", 
                  file_type="parquet", update=False, save=False, refresh_hours=24,
-                 round_to_hour=True, info=None, verbose=True):
-        # Set data type and round_to_hour before calling parent constructor
+                 round_to_hour=True, info=None, verbose=True, dex="all", rm_delisted=True, rm_isolated=False):
+        # Set data type, round_to_hour, and dex before calling parent constructor
         self.data_type = "funding"
         self.round_to_hour = round_to_hour
+        self.dex = dex
+        self.rm_delisted = rm_delisted
+        self.rm_isolated = rm_isolated
         
         # Call parent constructor (interval not used for funding data, but required by parent)
         super().__init__(ticker=ticker, data_dir=data_dir, interval="1h",
@@ -1653,7 +1688,9 @@ class HyperliquidFundingManager(HyperliquidDataManager):
                 if self.verbose:
                     print(f"Found {len(tickers)} perpetual tokens from folder")
                 return tickers
-            tickers = hyperliquid_tokens(info=self.info)
+            tickers = hyperliquid_tokens(info=self.info, dex=self.dex,
+                                          rm_delisted=self.rm_delisted,
+                                          rm_isolated=self.rm_isolated)
             tickers = tickers['name'].tolist()
             if self.verbose:
                 print(f"Found {len(tickers)} tokens")
