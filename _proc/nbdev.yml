@@ -7,3 +7,8 @@ website:
   description: "Token data from a series of sources"
   repo-branch: main
   repo-url: "https://github.com/silvaac/token_data"
+
+format-links:
+  - html
+  - format: commonmark
+    text: Markdown

@@ -8,7 +8,7 @@ folder named after the exchange (e.g. `../data/binance`).
 
 Notes:
 
-- The main Binance API is **geo-blocked in some regions (e.g. the US)**. Use `binance_available()`
+- The main Binance API is **geo-blocked in some regions (e.g. the US)**. Use [`binance_available()`](https://silvaac.github.io/token_data/binance.html#binance_available)
   to check reachability; the live test cells in this notebook skip gracefully when the API cannot
   be reached. From the US you can pass `exchange_id='binanceus'` to the functions below.
 - Binance serves deep history (up to 1000 candles per request), so full backfills are possible.
@@ -16,7 +16,10 @@ Notes:
 
 ** Finally, datetime columns are in UTC. **
 
+::: {#2eeaaba1 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.722336+00:00","shell.execute_reply":"2026-09-09T00:07:19.741380+00:00","total":0.019046291999984533}}' execution_count=3}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L16){target="_blank" style="float:right; font-size:smaller"}
 
 ### binance_available
 
@@ -37,9 +40,13 @@ Args:
 
 Returns:
     bool: True if the API responds, False otherwise (geo-block, network error, etc.)
+:::
 
 
+::: {#42489cae .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.742190+00:00","shell.execute_reply":"2026-09-09T00:07:19.743521+00:00","total":0.0013315409887582064}}' execution_count=5}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L39){target="_blank" style="float:right; font-size:smaller"}
 
 ### retry_fetch_ohlcv
 
@@ -65,9 +72,13 @@ Returns:
 
 Raises:
     Exception: The last ccxt error if all retries fail
+:::
 
 
+::: {#062e1b5b .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.744250+00:00","shell.execute_reply":"2026-09-09T00:07:19.745698+00:00","total":0.0014489579916698858}}' execution_count=7}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L75){target="_blank" style="float:right; font-size:smaller"}
 
 ### scrape_ohlcv
 
@@ -92,9 +103,13 @@ Args:
 
 Returns:
     list: List of OHLCV candles [timestamp_ms, open, high, low, close, volume]
+:::
 
 
+::: {#cc389d75 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.746230+00:00","shell.execute_reply":"2026-09-09T00:07:19.747343+00:00","total":0.0011137499968754128}}' execution_count=9}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L117){target="_blank" style="float:right; font-size:smaller"}
 
 ### ohlcv_to_df
 
@@ -116,9 +131,13 @@ Returns:
         - open, high, low, close, volume: OHLCV values
         - pair: Trading pair symbol
     Sorted by datetime with duplicate timestamps removed.
+:::
 
 
+::: {#36ee3d28 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.748212+00:00","shell.execute_reply":"2026-09-09T00:07:19.749709+00:00","total":0.001497959005064331}}' execution_count=11}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L141){target="_blank" style="float:right; font-size:smaller"}
 
 ### binance_ohlcv
 
@@ -146,9 +165,13 @@ Args:
 
 Returns:
     pandas.DataFrame: Tidy OHLCV DataFrame (see `ohlcv_to_df`)
+:::
 
 
+::: {#46ad8a10 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.750333+00:00","shell.execute_reply":"2026-09-09T00:07:19.751668+00:00","total":0.0013373339897952974}}' execution_count=13}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L173){target="_blank" style="float:right; font-size:smaller"}
 
 ### binance_usdt_tokens
 
@@ -172,6 +195,7 @@ Returns:
         - base: Base currency (e.g. 'BTC')
         - quote: Always 'USDT' for this filtered dataset
         - active: Whether the market is currently active
+:::
 
 
 #### Example / tests
@@ -229,9 +253,10 @@ else:
 :::
 
 
+::: {#fe8bd57a .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.752510+00:00","shell.execute_reply":"2026-09-09T00:07:19.753759+00:00","total":0.0012497080024331808}}' execution_count=15}
 ---
 
-[source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L175){target="_blank" style="float:right; font-size:smaller"}
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L199){target="_blank" style="float:right; font-size:smaller"}
 
 ### save_file
 
@@ -251,9 +276,13 @@ Args:
 
 The function saves the DataFrame to the specified path, handling the file extension automatically.
 For CSV files, the index is not saved. Creates the folder if it doesn't exist.
+:::
 
 
+::: {#1c0ddbb3 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.754240+00:00","shell.execute_reply":"2026-09-09T00:07:19.755297+00:00","total":0.0010582910035736859}}' execution_count=17}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L230){target="_blank" style="float:right; font-size:smaller"}
 
 ### file_name_to_symbol
 
@@ -266,9 +295,13 @@ def file_name_to_symbol(
 *Convert a file name back into a ccxt symbol.*
 
 Example: 'BTC-USDT_1h.parquet' -> 'BTC/USDT'
+:::
 
 
+::: {#ae066f6e .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.755332+00:00","shell.execute_reply":"2026-09-09T00:07:19.756604+00:00","total":0.0012728330038953573}}' execution_count=18}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L222){target="_blank" style="float:right; font-size:smaller"}
 
 ### symbol_to_file_name
 
@@ -281,6 +314,7 @@ def symbol_to_file_name(
 *Convert a ccxt symbol and timeframe into a file name (without extension).*
 
 Example: ('BTC/USDT', '1h') -> 'BTC-USDT_1h'
+:::
 
 
 ::: {#5fa0ed70 .cell}
@@ -299,7 +333,10 @@ print('save_file round-trip OK')
 :::
 
 
+::: {#c71f53ee .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.758303+00:00","shell.execute_reply":"2026-09-09T00:07:19.760413+00:00","total":0.0021121249883435667}}' execution_count=20}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L241){target="_blank" style="float:right; font-size:smaller"}
 
 ### binance_to_file
 
@@ -336,6 +373,7 @@ The function:
     - If exists: Loads the file and appends new data, refreshing the last `refresh_hours`
     - If not exists: Downloads full history starting from `first_date`
 - Saves data in the specified format, handling duplicates and sorting by datetime
+:::
 
 
 #### Example / tests

@@ -19,6 +19,10 @@ Notes:
 
 ------------------------------------------------------------------------
 
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L39"
+target="_blank" style="float:right; font-size:smaller">source</a>
+
 ### retry_fetch_ohlcv
 
 ``` python
@@ -44,6 +48,10 @@ close, volume\]
 Raises: Exception: The last ccxt error if all retries fail
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L75"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### scrape_ohlcv
 
@@ -71,6 +79,10 @@ close, volume\]
 
 ------------------------------------------------------------------------
 
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L117"
+target="_blank" style="float:right; font-size:smaller">source</a>
+
 ### ohlcv_to_df
 
 ``` python
@@ -91,6 +103,10 @@ values - pair: Trading pair symbol Sorted by datetime with duplicate
 timestamps removed.
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/kucoin.py#L118"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### kucoin_ohlcv
 
@@ -116,6 +132,10 @@ optional): If True, prints progress messages. Defaults to False
 Returns: pandas.DataFrame: Tidy OHLCV DataFrame (see `ohlcv_to_df`)
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/kucoin.py#L148"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### kucoin_usdt_tokens
 
@@ -378,7 +398,7 @@ tokens.head()
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L175"
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L199"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### save_file
@@ -402,6 +422,10 @@ Creates the folder if it doesn’t exist.
 
 ------------------------------------------------------------------------
 
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L230"
+target="_blank" style="float:right; font-size:smaller">source</a>
+
 ### file_name_to_symbol
 
 ``` python
@@ -415,6 +439,10 @@ def file_name_to_symbol(
 Example: ‘BTC-USDT_1h.parquet’ -\> ‘BTC/USDT’
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L222"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### symbol_to_file_name
 
@@ -445,6 +473,10 @@ print('save_file round-trip OK')
     save_file round-trip OK
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/kucoin.py#L214"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### kucoin_to_file
 

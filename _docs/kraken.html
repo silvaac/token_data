@@ -210,20 +210,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#kraken" id="toc-kraken" class="nav-link active" data-scroll-target="#kraken">Kraken</a>
-  <ul class="collapse">
-  <li><a href="#retry_fetch_ohlcv" id="toc-retry_fetch_ohlcv" class="nav-link" data-scroll-target="#retry_fetch_ohlcv">retry_fetch_ohlcv</a></li>
-  <li><a href="#scrape_ohlcv" id="toc-scrape_ohlcv" class="nav-link" data-scroll-target="#scrape_ohlcv">scrape_ohlcv</a></li>
-  <li><a href="#ohlcv_to_df" id="toc-ohlcv_to_df" class="nav-link" data-scroll-target="#ohlcv_to_df">ohlcv_to_df</a></li>
-  <li><a href="#kraken_ohlcv" id="toc-kraken_ohlcv" class="nav-link" data-scroll-target="#kraken_ohlcv">kraken_ohlcv</a></li>
-  <li><a href="#kraken_usd_tokens" id="toc-kraken_usd_tokens" class="nav-link" data-scroll-target="#kraken_usd_tokens">kraken_usd_tokens</a></li>
-  <li><a href="#save_file" id="toc-save_file" class="nav-link" data-scroll-target="#save_file">save_file</a></li>
-  <li><a href="#file_name_to_symbol" id="toc-file_name_to_symbol" class="nav-link" data-scroll-target="#file_name_to_symbol">file_name_to_symbol</a></li>
-  <li><a href="#symbol_to_file_name" id="toc-symbol_to_file_name" class="nav-link" data-scroll-target="#symbol_to_file_name">symbol_to_file_name</a></li>
-  <li><a href="#kraken_to_file" id="toc-kraken_to_file" class="nav-link" data-scroll-target="#kraken_to_file">kraken_to_file</a></li>
-  </ul></li>
+  <li><a href="#kraken" id="toc-kraken" class="nav-link active" data-scroll-target="#kraken">Kraken</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/silvaac/token_data/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="kraken.md"><i class="bi bi-file-code"></i>CommonMark</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/silvaac/token_data/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="kraken.md"><i class="bi bi-file-code"></i>Markdown</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
@@ -241,7 +230,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Rate limits are handled by ccxt (<code>enableRateLimit=True</code>).</li>
 </ul>
 <p>** Finally, datetime columns are in UTC. **</p>
+<div id="7f43bbe2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.789372+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.807444+00:00&quot;,&quot;total&quot;:0.01807379200181458}}" data-execution_count="3">
 <hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L39" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="retry_fetch_ohlcv" class="level3">
 <h3 class="anchored" data-anchor-id="retry_fetch_ohlcv">retry_fetch_ohlcv</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> retry_fetch_ohlcv(</span>
@@ -251,8 +242,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Args: exchange (ccxt.Exchange): Instantiated ccxt exchange object max_retries (int): Maximum number of retries before raising the last error symbol (str): Trading pair symbol (e.g.&nbsp;“BTC/USD”) timeframe (str): Candle timeframe (e.g.&nbsp;“1m”, “1h”, “1d”) since (int): Start time in milliseconds since epoch (UTC) limit (int): Maximum number of candles to fetch verbose (bool, optional): If True, prints progress messages. Defaults to False</p>
 <p>Returns: list: List of OHLCV candles [timestamp_ms, open, high, low, close, volume]</p>
 <p>Raises: Exception: The last ccxt error if all retries fail</p>
-<hr>
 </section>
+</div>
+<div id="c488365e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.808297+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.809710+00:00&quot;,&quot;total&quot;:0.0014134170050965622}}" data-execution_count="5">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L75" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="scrape_ohlcv" class="level3">
 <h3 class="anchored" data-anchor-id="scrape_ohlcv">scrape_ohlcv</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scrape_ohlcv(</span>
@@ -261,8 +255,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Download OHLCV candles in pages of <code>limit</code> bars between <code>since</code> and <code>end</code>.</em></p>
 <p>Args: exchange (ccxt.Exchange): Instantiated ccxt exchange object (markets loaded) symbol (str): Trading pair symbol (e.g.&nbsp;“BTC/USD”) timeframe (str): Candle timeframe (e.g.&nbsp;“1m”, “1h”, “1d”) since (int or str): Start time in milliseconds since epoch or ISO 8601 string end (int or str, optional): End time in milliseconds or ISO 8601 string. Defaults to now. max_retries (int, optional): Retries per page. Defaults to 3 limit (int, optional): Candles per request. Defaults to 720 (Kraken maximum) verbose (bool, optional): If True, prints progress messages. Defaults to False</p>
 <p>Returns: list: List of OHLCV candles [timestamp_ms, open, high, low, close, volume]</p>
-<hr>
 </section>
+</div>
+<div id="d8d8a627" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.810176+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.811180+00:00&quot;,&quot;total&quot;:0.0010048750118585303}}" data-execution_count="7">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L117" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="ohlcv_to_df" class="level3">
 <h3 class="anchored" data-anchor-id="ohlcv_to_df">ohlcv_to_df</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ohlcv_to_df(</span>
@@ -271,8 +268,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Convert a raw ccxt OHLCV list into a tidy DataFrame.</em></p>
 <p>Args: ohlcv (list): List of candles [timestamp_ms, open, high, low, close, volume] symbol (str): Trading pair symbol added as the <code>pair</code> column</p>
 <p>Returns: pandas.DataFrame: DataFrame with columns: - datetime: Candle timestamp (UTC, timezone-aware) - open, high, low, close, volume: OHLCV values - pair: Trading pair symbol Sorted by datetime with duplicate timestamps removed.</p>
-<hr>
 </section>
+</div>
+<div id="3e360eaf" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.811670+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.813432+00:00&quot;,&quot;total&quot;:0.0017621669976506382}}" data-execution_count="9">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/kraken.py#L119" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="kraken_ohlcv" class="level3">
 <h3 class="anchored" data-anchor-id="kraken_ohlcv">kraken_ohlcv</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> kraken_ohlcv(</span>
@@ -282,8 +282,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Download OHLCV candles for a symbol from Kraken.</em></p>
 <p>Args: symbol (str, optional): Trading pair symbol. Defaults to “BTC/USD” timeframe (str, optional): Candle timeframe. Defaults to “1h” since (int or str, optional): Start time (ms since epoch or ISO 8601). If None, downloads the most recent ~<code>limit</code> candles (Kraken only serves about 720 recent candles per timeframe). end (int or str, optional): End time (ms or ISO 8601). Defaults to now max_retries (int, optional): Retries per page. Defaults to 3 limit (int, optional): Candles per request. Defaults to 720 exchange (ccxt.kraken, optional): Reusable exchange instance. If None, a new one is created verbose (bool, optional): If True, prints progress messages. Defaults to False</p>
 <p>Returns: pandas.DataFrame: Tidy OHLCV DataFrame (see <code>ohlcv_to_df</code>)</p>
+</section>
+</div>
 <section id="example-tests" class="level4">
-<h4 class="anchored" data-anchor-id="example-tests">Example / tests</h4>
+<h4 class="anchored">Example / tests</h4>
 <div id="a583c08f" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick live test: download ~2 days of hourly BTC/USD candles</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> (pd.Timestamp.now(tz<span class="op">=</span><span class="st">'UTC'</span>) <span class="op">-</span> pd.Timedelta(days<span class="op">=</span><span class="dv">2</span>)).strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">T%H:%M:%SZ'</span>)</span>
@@ -295,7 +297,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> (df_test[<span class="st">'pair'</span>] <span class="op">==</span> <span class="st">'BTC/USD'</span>).<span class="bu">all</span>()</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(df_test) <span class="op">&gt;</span> <span class="dv">24</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>df_test.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="cell-output cell-output-display">
 <div>
 
 
@@ -379,7 +381,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">list</span>(df_sample.columns) <span class="op">==</span> [<span class="st">'datetime'</span>, <span class="st">'open'</span>, <span class="st">'high'</span>, <span class="st">'low'</span>, <span class="st">'close'</span>, <span class="st">'volume'</span>, <span class="st">'pair'</span>]</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">str</span>(df_sample[<span class="st">'datetime'</span>].dt.tz) <span class="op">==</span> <span class="st">'UTC'</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>df_sample</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display">
 <div>
 
 
@@ -423,9 +425,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<div id="ff3eb378" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.813973+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.815244+00:00&quot;,&quot;total&quot;:0.0012761249963659793}}" data-execution_count="11">
 <hr>
-</section>
-</section>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/kraken.py#L150" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="kraken_usd_tokens" class="level3">
 <h3 class="anchored" data-anchor-id="kraken_usd_tokens">kraken_usd_tokens</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> kraken_usd_tokens(</span>
@@ -434,6 +436,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Retrieves all active Kraken spot trading pairs quoted in USD.</em></p>
 <p>Args: exchange (ccxt.kraken, optional): Reusable exchange instance. If None, a new one is created</p>
 <p>Returns: pandas.DataFrame: DataFrame with columns: - id: Kraken market id (e.g.&nbsp;‘XBTUSD’) - symbol: Unified ccxt symbol (e.g.&nbsp;‘BTC/USD’) - base: Base currency (e.g.&nbsp;‘BTC’) - quote: Always ‘USD’ for this filtered dataset - active: Whether the market is currently active</p>
+</section>
+</div>
 <div id="ba4abbb1" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Live test: token universe contains the major pairs</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>tokens <span class="op">=</span> kraken_usd_tokens()</span>
@@ -441,7 +445,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">'BTC/USD'</span> <span class="kw">in</span> tokens[<span class="st">'symbol'</span>].tolist()</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> (tokens[<span class="st">'quote'</span>] <span class="op">==</span> <span class="st">'USD'</span>).<span class="bu">all</span>()</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>tokens.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display">
 <div>
 
 
@@ -503,9 +507,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<div id="56b2e5ac" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.815785+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.816879+00:00&quot;,&quot;total&quot;:0.0010954159952234477}}" data-execution_count="13">
 <hr>
-<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L175" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L199" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="save_file" class="level3">
 <h3 class="anchored" data-anchor-id="save_file">save_file</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_file(</span>
@@ -514,8 +518,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Save a pandas DataFrame to a file in either CSV or Parquet format.</em></p>
 <p>Args: df (pandas.DataFrame): The DataFrame to save folder_path (str): Directory path where the file will be saved file_name (str): Name of the file without extension type (str, optional): File format - either “csv” or “parquet”. Defaults to “parquet”</p>
 <p>The function saves the DataFrame to the specified path, handling the file extension automatically. For CSV files, the index is not saved. Creates the folder if it doesn’t exist.</p>
-<hr>
 </section>
+</div>
+<div id="fe6e2b57" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.817360+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.818188+00:00&quot;,&quot;total&quot;:0.0008283750066766515}}" data-execution_count="15">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L230" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="file_name_to_symbol" class="level3">
 <h3 class="anchored" data-anchor-id="file_name_to_symbol">file_name_to_symbol</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> file_name_to_symbol(</span>
@@ -523,8 +530,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Convert a file name back into a ccxt symbol.</em></p>
 <p>Example: ‘BTC-USD_1h.parquet’ -&gt; ‘BTC/USD’</p>
-<hr>
 </section>
+</div>
+<div id="c5f03923" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.818215+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.819053+00:00&quot;,&quot;total&quot;:0.0008384579996345565}}" data-execution_count="16">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L222" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="symbol_to_file_name" class="level3">
 <h3 class="anchored" data-anchor-id="symbol_to_file_name">symbol_to_file_name</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> symbol_to_file_name(</span>
@@ -532,6 +542,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Convert a ccxt symbol and timeframe into a file name (without extension).</em></p>
 <p>Example: (‘BTC/USD’, ‘1h’) -&gt; ‘BTC-USD_1h’</p>
+</section>
+</div>
 <div id="5501dfef" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Offline test: save_file round-trip and file-name helpers</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>tmp_dir <span class="op">=</span> tempfile.mkdtemp()</span>
@@ -546,8 +558,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>save_file round-trip OK</code></pre>
 </div>
 </div>
+<div id="0e20c839" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.820149+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.821612+00:00&quot;,&quot;total&quot;:0.001463082997361198}}" data-execution_count="18">
 <hr>
-</section>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/kraken.py#L216" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="kraken_to_file" class="level3">
 <h3 class="anchored" data-anchor-id="kraken_to_file">kraken_to_file</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> kraken_to_file(</span>
@@ -557,6 +570,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Downloads and maintains historical Kraken OHLCV data, saving one file per pair.</em></p>
 <p>Args: folder_path (str): Path where pair data files will be stored, named after the exchange. Defaults to “../data/kraken” token_list (list): List of ccxt symbols to process. Defaults to [‘BTC/USD’, ‘ETH/USD’] type (str): File format to save data - either “csv” or “parquet”. Defaults to “parquet” timeframe (str): Candle timeframe (e.g.&nbsp;“1m”, “1h”, “1d”). Defaults to “1h” refresh_hours (int): Hours of the most recent data to re-download when updating. Defaults to 24 all_tokens (bool): If True, includes any additional pairs found in the folder path. Defaults to True pause (int): Seconds to wait between pairs. Defaults to 1 verbose (bool): If True, prints download progress. Defaults to False</p>
 <p>The function: - Creates the folder_path if it doesn’t exist - Date/Time is UTC - For each pair, checks if a data file exists: - If exists: Loads the file and appends new data, refreshing the last <code>refresh_hours</code> - If not exists: Downloads the maximum available history (~720 candles on Kraken) - Saves data in the specified format, handling duplicates and sorting by datetime</p>
+</section>
+</div>
+</section>
 <section id="example-tests-1" class="level4">
 <h4 class="anchored" data-anchor-id="example-tests-1">Example / tests</h4>
 <div id="ec52488e" class="cell">
@@ -580,7 +596,7 @@ Processing BTC/USD
 First run: 700 rows, second run: 700 rows</code></pre>
 </div>
 </div>
-<div id="c32b33e6" class="cell" data-execution_count="17">
+<div id="c32b33e6" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download / update a set of USD pairs into the exchange-named data folder</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For all USD pairs use: token_list = kraken_usd_tokens()['symbol'].tolist()</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>kraken_to_file(folder_path<span class="op">=</span><span class="st">"../data/kraken"</span>,</span>
@@ -594,7 +610,6 @@ Processing ETH/USD</code></pre>
 </div>
 
 
-</section>
 </section>
 </section>
 

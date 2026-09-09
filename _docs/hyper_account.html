@@ -217,25 +217,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
-  <li><a href="#get_user_fills-function" id="toc-get_user_fills-function" class="nav-link" data-scroll-target="#get_user_fills-function">get_user_fills function</a>
-  <ul class="collapse">
-  <li><a href="#get_user_fills" id="toc-get_user_fills" class="nav-link" data-scroll-target="#get_user_fills">get_user_fills</a></li>
-  </ul></li>
-  <li><a href="#get_user_funding_history-function" id="toc-get_user_funding_history-function" class="nav-link" data-scroll-target="#get_user_funding_history-function">get_user_funding_history function</a>
-  <ul class="collapse">
-  <li><a href="#get_user_funding_history" id="toc-get_user_funding_history" class="nav-link" data-scroll-target="#get_user_funding_history">get_user_funding_history</a></li>
-  </ul></li>
-  <li><a href="#get_user_ledger_updates-function" id="toc-get_user_ledger_updates-function" class="nav-link" data-scroll-target="#get_user_ledger_updates-function">get_user_ledger_updates function</a>
-  <ul class="collapse">
-  <li><a href="#get_user_ledger_updates" id="toc-get_user_ledger_updates" class="nav-link" data-scroll-target="#get_user_ledger_updates">get_user_ledger_updates</a></li>
-  </ul></li>
-  <li><a href="#get_account_summary-function" id="toc-get_account_summary-function" class="nav-link" data-scroll-target="#get_account_summary-function">get_account_summary function</a>
-  <ul class="collapse">
-  <li><a href="#get_account_summary" id="toc-get_account_summary" class="nav-link" data-scroll-target="#get_account_summary">get_account_summary</a></li>
-  </ul></li>
+  <li><a href="#get_user_fills-function" id="toc-get_user_fills-function" class="nav-link" data-scroll-target="#get_user_fills-function">get_user_fills function</a></li>
+  <li><a href="#get_user_funding_history-function" id="toc-get_user_funding_history-function" class="nav-link" data-scroll-target="#get_user_funding_history-function">get_user_funding_history function</a></li>
+  <li><a href="#get_user_ledger_updates-function" id="toc-get_user_ledger_updates-function" class="nav-link" data-scroll-target="#get_user_ledger_updates-function">get_user_ledger_updates function</a></li>
+  <li><a href="#get_account_summary-function" id="toc-get_account_summary-function" class="nav-link" data-scroll-target="#get_account_summary-function">get_account_summary function</a></li>
   <li><a href="#trade" id="toc-trade" class="nav-link" data-scroll-target="#trade">Trade</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/silvaac/token_data/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hyper_account.html.md"><i class="bi bi-file-code"></i>CommonMark</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/silvaac/token_data/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="hyper_account.html.md"><i class="bi bi-file-code"></i>Markdown</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -269,6 +257,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="get_user_fills-function" class="level2">
 <h2 class="anchored" data-anchor-id="get_user_fills-function">get_user_fills function</h2>
 <p>Function to list all trades and fills for a given account.</p>
+<div id="e80642dd" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.652030+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.671349+00:00&quot;,&quot;total&quot;:0.019321957995998673}}" data-execution_count="3">
 <hr>
 <p><a href="https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L15" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="get_user_fills" class="level3">
@@ -289,6 +278,8 @@ eth_fills = fills_df[fills_df['coin'] == 'ETH']
 # Calculate total fees paid
 total_fees = fills_df['fee'].sum()</code></pre>
 <p>Notes: - DataFrame is indexed by datetime (converted from milliseconds) - All numeric columns are converted to float for calculations - Sorted by datetime in ascending order</p>
+</section>
+</div>
 <div id="8297e15e" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fills_df <span class="op">=</span> get_user_fills(address, info<span class="op">=</span>info)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -348,10 +339,10 @@ datetime
 </div>
 </div>
 </section>
-</section>
 <section id="get_user_funding_history-function" class="level2">
 <h2 class="anchored" data-anchor-id="get_user_funding_history-function">get_user_funding_history function</h2>
 <p>Function to retrieve funding rate history for a personal account. This is what your account is paying or receiving in USDC per hour.</p>
+<div id="c1025535" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.673013+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.675121+00:00&quot;,&quot;total&quot;:0.0021090420050313696}}" data-execution_count="5">
 <hr>
 <p><a href="https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L120" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="get_user_funding_history" class="level3">
@@ -376,6 +367,8 @@ total_funding = funding_df['usdc'].sum()
 # Get funding by coin
 funding_by_coin = funding_df.groupby('coin')['usdc'].sum()</code></pre>
 <p>Notes: - DataFrame is indexed by datetime (converted from milliseconds) - Positive usdc values indicate funding received - Negative usdc values indicate funding paid - All numeric columns are converted to float for calculations - Sorted by datetime in ascending order</p>
+</section>
+</div>
 <div id="3f9be36f" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get last 30 days of funding payments</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>funding_df <span class="op">=</span> get_user_funding_history(address, lookback<span class="op">=</span><span class="dv">90</span>, info<span class="op">=</span>info)</span>
@@ -456,9 +449,9 @@ datetime
 </div>
 </div>
 </section>
-</section>
 <section id="get_user_ledger_updates-function" class="level2">
 <h2 class="anchored" data-anchor-id="get_user_ledger_updates-function">get_user_ledger_updates function</h2>
+<div id="abeeec4d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.676628+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.678722+00:00&quot;,&quot;total&quot;:0.0020949579920852557}}" data-execution_count="7">
 <hr>
 <p><a href="https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L248" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="get_user_ledger_updates" class="level3">
@@ -488,6 +481,8 @@ withdrawals = ledger_df[ledger_df['type'] == 'withdraw']['usdc'].sum()
 to_perp = ledger_df[(ledger_df['type'] == 'accountClassTransfer') &amp; 
                    (ledger_df['toPerp'] == True)]</code></pre>
 <p>Notes: - DataFrame is indexed by datetime (converted from milliseconds) - All numeric columns are converted to float for calculations - Sorted by datetime in ascending order - Does not include funding payments (use get_user_funding_history for that) - Common transaction types: * ‘deposit’: Deposits to account * ‘withdraw’: Withdrawals from account * ‘accountClassTransfer’: Transfers between spot and perpetual accounts</p>
+</section>
+</div>
 <div id="e6d77150" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test the function</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ledger_df <span class="op">=</span> get_user_ledger_updates(address, info<span class="op">=</span>info, lookback<span class="op">=</span><span class="dv">90</span>)</span>
@@ -611,10 +606,10 @@ Transfers from Perpetual: $35.00</code></pre>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co">#help(info.user_state)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-</section>
 <section id="get_account_summary-function" class="level2">
 <h2 class="anchored" data-anchor-id="get_account_summary-function">get_account_summary function</h2>
 <p>In order to validate these results, you can use the Hyperliquid Portfolio. Log-in Hyperliquid and navegate to the “Portfolio” page/tab.</p>
+<div id="e7c84880" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.681601+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.684792+00:00&quot;,&quot;total&quot;:0.003193584008840844}}" data-execution_count="9">
 <hr>
 <p><a href="https://github.com/silvaac/token_data/blob/main/token_data/hyper_account.py#L389" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="get_account_summary" class="level3">
@@ -631,6 +626,8 @@ Transfers from Perpetual: $35.00</code></pre>
     print(f"Current Value: ${summary['current_value']:,.2f}")
     print(f"Total P&amp;L: ${summary['total_pnl']:,.2f} ({summary['pnl_percentage']:.2f}%)")</code></pre>
 <p>Notes: - All values are in USDC - P&amp;L includes both realized and unrealized gains/losses - Current value = spot balance + perp margin + current position values - Uses current market prices from info.all_mids() to value positions - Requires access to user_state, spot_user_state, and ledger updates</p>
+</section>
+</div>
 <p>Deposit history is correct, same as previous function.</p>
 <p>Spot balance is correct and it is the sum of USDC balance and the spot position in USDC at the time the function is called.</p>
 <p>Perp balance is correct and it is the sum of the USDC balance and the perp position in USDC at the time the function is called.</p>
@@ -767,7 +764,6 @@ Profit/Loss:
 </div>
 </div>
 </div>
-</section>
 </section>
 <section id="trade" class="level2">
 <h2 class="anchored" data-anchor-id="trade">Trade</h2>

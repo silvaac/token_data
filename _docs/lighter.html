@@ -210,20 +210,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#lighter" id="toc-lighter" class="nav-link active" data-scroll-target="#lighter">Lighter</a>
-  <ul class="collapse">
-  <li><a href="#lighter_spot_markets" id="toc-lighter_spot_markets" class="nav-link" data-scroll-target="#lighter_spot_markets">lighter_spot_markets</a></li>
-  <li><a href="#retry_fetch_candles" id="toc-retry_fetch_candles" class="nav-link" data-scroll-target="#retry_fetch_candles">retry_fetch_candles</a></li>
-  <li><a href="#scrape_candles" id="toc-scrape_candles" class="nav-link" data-scroll-target="#scrape_candles">scrape_candles</a></li>
-  <li><a href="#candles_to_df" id="toc-candles_to_df" class="nav-link" data-scroll-target="#candles_to_df">candles_to_df</a></li>
-  <li><a href="#lighter_candles" id="toc-lighter_candles" class="nav-link" data-scroll-target="#lighter_candles">lighter_candles</a></li>
-  <li><a href="#save_file" id="toc-save_file" class="nav-link" data-scroll-target="#save_file">save_file</a></li>
-  <li><a href="#file_name_to_symbol" id="toc-file_name_to_symbol" class="nav-link" data-scroll-target="#file_name_to_symbol">file_name_to_symbol</a></li>
-  <li><a href="#symbol_to_file_name" id="toc-symbol_to_file_name" class="nav-link" data-scroll-target="#symbol_to_file_name">symbol_to_file_name</a></li>
-  <li><a href="#lighter_to_file" id="toc-lighter_to_file" class="nav-link" data-scroll-target="#lighter_to_file">lighter_to_file</a></li>
-  </ul></li>
+  <li><a href="#lighter" id="toc-lighter" class="nav-link active" data-scroll-target="#lighter">Lighter</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/silvaac/token_data/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lighter.md"><i class="bi bi-file-code"></i>CommonMark</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/silvaac/token_data/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="lighter.md"><i class="bi bi-file-code"></i>Markdown</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
@@ -243,7 +232,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Symbols use <code>/</code> as separator (e.g.&nbsp;<code>LIT/USDC</code>).</li>
 </ul>
 <p>** Finally, datetime columns are in UTC. **</p>
+<div id="0bbe2624" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.575262+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.594340+00:00&quot;,&quot;total&quot;:0.019080334008322097}}" data-execution_count="4">
 <hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L41" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="lighter_spot_markets" class="level3">
 <h3 class="anchored" data-anchor-id="lighter_spot_markets">lighter_spot_markets</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lighter_spot_markets(</span>
@@ -252,8 +243,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Retrieve all spot markets from Lighter via the explorer API.</em></p>
 <p>Args: explorer_url (str): Lighter explorer API base URL. Defaults to mainnet explorer.</p>
 <p>Returns: pandas.DataFrame: DataFrame with columns: - symbol: Trading pair symbol (e.g.&nbsp;‘LIT/USDC’) - market_id: Integer market ID used for candle requests</p>
-<hr>
 </section>
+</div>
+<div id="89db0ddf" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.595840+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.597761+00:00&quot;,&quot;total&quot;:0.0019260830013081431}}" data-execution_count="7">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L71" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="retry_fetch_candles" class="level3">
 <h3 class="anchored" data-anchor-id="retry_fetch_candles">retry_fetch_candles</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> retry_fetch_candles(</span>
@@ -263,8 +257,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Fetch a single page of candles from Lighter, retrying on failure.</em></p>
 <p>Args: market_id (int): Lighter market ID resolution (str): Candle resolution (e.g.&nbsp;‘1h’, ‘1d’) start_ts (int): Start timestamp in seconds since epoch end_ts (int): End timestamp in seconds since epoch count_back (int): Number of candles to fetch (max 500). Defaults to 500 max_retries (int): Maximum retries before raising. Defaults to 3 base_url (str): Lighter API base URL verbose (bool): If True, prints progress. Defaults to False</p>
 <p>Returns: list: List of candle dicts with keys t (ms), o, h, l, c, v, V, i</p>
-<hr>
 </section>
+</div>
+<div id="d44bbafe" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.598724+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.600248+00:00&quot;,&quot;total&quot;:0.0015253750025294721}}" data-execution_count="9">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L116" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="scrape_candles" class="level3">
 <h3 class="anchored" data-anchor-id="scrape_candles">scrape_candles</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scrape_candles(</span>
@@ -275,8 +272,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Lighter’s <code>count_back</code> parameter returns the most recent N candles before <code>end_timestamp</code>, so we paginate <strong>backwards</strong>: after each fetch, we move <code>end_timestamp</code> to just before the oldest candle received and repeat until we reach <code>since</code> or the API returns no more data.</p>
 <p>Args: market_id (int): Lighter market ID timeframe (str): Candle timeframe (e.g.&nbsp;‘1m’, ‘1h’, ‘1d’) since (int or str): Start time in seconds since epoch or ISO 8601 string end (int or str, optional): End time in seconds or ISO 8601. Defaults to now max_retries (int): Retries per page. Defaults to 3 limit (int): Candles per request (max 500). Defaults to 500 base_url (str): Lighter API base URL verbose (bool): If True, prints progress. Defaults to False</p>
 <p>Returns: list: List of candle dicts with keys t (ms), o, h, l, c, v, V, i</p>
-<hr>
 </section>
+</div>
+<div id="40741c84" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.600927+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.602173+00:00&quot;,&quot;total&quot;:0.0012474169925553724}}" data-execution_count="11">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L169" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="candles_to_df" class="level3">
 <h3 class="anchored" data-anchor-id="candles_to_df">candles_to_df</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> candles_to_df(</span>
@@ -285,8 +285,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Convert a list of Lighter candle dicts into a tidy DataFrame.</em></p>
 <p>Args: candles (list): List of candle dicts with keys t (ms), o, h, l, c, v symbol (str): Trading pair symbol added as the <code>pair</code> column</p>
 <p>Returns: pandas.DataFrame: DataFrame with columns: - datetime: Candle timestamp (UTC, timezone-aware) - open, high, low, close, volume: OHLCV values - pair: Trading pair symbol Sorted by datetime with duplicate timestamps removed.</p>
-<hr>
 </section>
+</div>
+<div id="8ed08a64" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.602701+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.603863+00:00&quot;,&quot;total&quot;:0.0011626249906839803}}" data-execution_count="13">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L206" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="lighter_candles" class="level3">
 <h3 class="anchored" data-anchor-id="lighter_candles">lighter_candles</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lighter_candles(</span>
@@ -297,9 +300,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Download candles for a symbol from Lighter.</em></p>
 <p>Args: symbol (str, optional): Trading pair symbol (e.g.&nbsp;‘LIT/USDC’). Defaults to ‘LIT/USDC’ timeframe (str, optional): Candle timeframe. Defaults to ‘1h’ since (int or str, optional): Start time (seconds since epoch or ISO 8601). If None, downloads the most recent ~<code>limit</code> candles. end (int or str, optional): End time (seconds or ISO 8601). Defaults to now max_retries (int, optional): Retries per page. Defaults to 3 limit (int, optional): Candles per request (max 500). Defaults to 500 base_url (str): Lighter API base URL explorer_url (str): Lighter explorer API base URL for market lookup verbose (bool, optional): If True, prints progress. Defaults to False</p>
 <p>Returns: pandas.DataFrame: Tidy OHLCV DataFrame (see <code>candles_to_df</code>)</p>
+</section>
+</div>
 <section id="example-tests" class="level4">
-<h4 class="anchored" data-anchor-id="example-tests">Example / tests</h4>
-<div id="a1b2c3dd" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-07-15T01:46:01.395436Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-07-15T01:46:01.395370Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-07-15T01:46:02.291245Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-07-15T01:46:02.290989Z&quot;}}">
+<h4 class="anchored">Example / tests</h4>
+<div id="a1b2c3dd" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Live test: spot markets are available</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>markets <span class="op">=</span> lighter_spot_markets()</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="kw">not</span> markets.empty</span>
@@ -307,7 +312,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">'market_id'</span> <span class="kw">in</span> markets.columns</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">'LIT/USDC'</span> <span class="kw">in</span> markets[<span class="st">'symbol'</span>].tolist()</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>markets.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display">
 <div>
 
 
@@ -351,7 +356,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="a1b2c3de" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-07-15T01:46:02.292455Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-07-15T01:46:02.292381Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-07-15T01:46:03.642433Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-07-15T01:46:03.642161Z&quot;}}">
+<div id="a1b2c3de" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick live test: download ~2 days of hourly LIT/USDC candles</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> (pd.Timestamp.now(tz<span class="op">=</span><span class="st">'UTC'</span>) <span class="op">-</span> pd.Timedelta(days<span class="op">=</span><span class="dv">2</span>)).strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">T%H:%M:%SZ'</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df_test <span class="op">=</span> lighter_candles(symbol<span class="op">=</span><span class="st">'LIT/USDC'</span>, timeframe<span class="op">=</span><span class="st">'1h'</span>, since<span class="op">=</span>start)</span>
@@ -362,7 +367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> (df_test[<span class="st">'pair'</span>] <span class="op">==</span> <span class="st">'LIT/USDC'</span>).<span class="bu">all</span>()</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(df_test) <span class="op">&gt;</span> <span class="dv">24</span></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>df_test.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display">
 <div>
 
 
@@ -436,7 +441,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="a1b2c3df" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-07-15T01:46:03.643597Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-07-15T01:46:03.643530Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-07-15T01:46:03.655642Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-07-15T01:46:03.655379Z&quot;}}">
+<div id="a1b2c3df" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Offline test: candles_to_df shapes raw candles correctly and removes duplicates</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> [{<span class="st">'t'</span>: <span class="dv">1700000000000</span>, <span class="st">'o'</span>: <span class="fl">1.0</span>, <span class="st">'h'</span>: <span class="fl">2.0</span>, <span class="st">'l'</span>: <span class="fl">0.5</span>, <span class="st">'c'</span>: <span class="fl">1.5</span>, <span class="st">'v'</span>: <span class="fl">10.0</span>, <span class="st">'i'</span>: <span class="dv">1</span>},</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>          {<span class="st">'t'</span>: <span class="dv">1700003600000</span>, <span class="st">'o'</span>: <span class="fl">1.5</span>, <span class="st">'h'</span>: <span class="fl">2.5</span>, <span class="st">'l'</span>: <span class="fl">1.0</span>, <span class="st">'c'</span>: <span class="fl">2.0</span>, <span class="st">'v'</span>: <span class="fl">20.0</span>, <span class="st">'i'</span>: <span class="dv">2</span>},</span>
@@ -446,7 +451,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">list</span>(df_sample.columns) <span class="op">==</span> [<span class="st">'datetime'</span>, <span class="st">'open'</span>, <span class="st">'high'</span>, <span class="st">'low'</span>, <span class="st">'close'</span>, <span class="st">'volume'</span>, <span class="st">'pair'</span>]</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">str</span>(df_sample[<span class="st">'datetime'</span>].dt.tz) <span class="op">==</span> <span class="st">'UTC'</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>df_sample</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell-output cell-output-display">
 <div>
 
 
@@ -490,10 +495,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<div id="9818a651" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.604500+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.606721+00:00&quot;,&quot;total&quot;:0.002225292002549395}}" data-execution_count="15">
 <hr>
-<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L175" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-</section>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L199" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="save_file" class="level3">
 <h3 class="anchored" data-anchor-id="save_file">save_file</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_file(</span>
@@ -501,8 +505,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Save a pandas DataFrame to a file in either CSV or Parquet format.</em></p>
 <p>Args: df (pandas.DataFrame): The DataFrame to save folder_path (str): Directory path where the file will be saved file_name (str): Name of the file without extension type (str, optional): File format - either “csv” or “parquet”. Defaults to “parquet”</p>
-<hr>
 </section>
+</div>
+<div id="c136be50" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.607373+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.608573+00:00&quot;,&quot;total&quot;:0.0012021250004181638}}" data-execution_count="17">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L230" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="file_name_to_symbol" class="level3">
 <h3 class="anchored" data-anchor-id="file_name_to_symbol">file_name_to_symbol</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> file_name_to_symbol(</span>
@@ -510,8 +517,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Convert a file name back into a symbol.</em></p>
 <p>Example: ‘LIT-USDC_1h.parquet’ -&gt; ‘LIT/USDC’</p>
-<hr>
 </section>
+</div>
+<div id="877880dc" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.608617+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.609768+00:00&quot;,&quot;total&quot;:0.0011519580002641305}}" data-execution_count="18">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L222" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="symbol_to_file_name" class="level3">
 <h3 class="anchored" data-anchor-id="symbol_to_file_name">symbol_to_file_name</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> symbol_to_file_name(</span>
@@ -519,7 +529,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Convert a symbol and timeframe into a file name (without extension).</em></p>
 <p>Example: (‘LIT/USDC’, ‘1h’) -&gt; ‘LIT-USDC_1h’</p>
-<div id="a1b2c3e2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-07-15T01:46:03.675448Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-07-15T01:46:03.675375Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-07-15T01:46:03.735472Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-07-15T01:46:03.735224Z&quot;}}">
+</section>
+</div>
+<div id="a1b2c3e2" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Offline test: save_file round-trip and file-name helpers</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tempfile</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>tmp_dir <span class="op">=</span> tempfile.mkdtemp()</span>
@@ -534,8 +546,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>save_file round-trip OK</code></pre>
 </div>
 </div>
+<div id="abb16d15" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.611079+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.612893+00:00&quot;,&quot;total&quot;:0.001815583003917709}}" data-execution_count="20">
 <hr>
-</section>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L277" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="lighter_to_file" class="level3">
 <h3 class="anchored" data-anchor-id="lighter_to_file">lighter_to_file</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lighter_to_file(</span>
@@ -547,9 +560,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Downloads and maintains historical Lighter candle data, saving one file per pair.</em></p>
 <p>Args: folder_path (str): Path where pair data files will be stored. Defaults to “../data/lighter” token_list (list): List of symbols to process. Defaults to [‘LIT/USDC’] type (str): File format to save data - either “csv” or “parquet”. Defaults to “parquet” timeframe (str): Candle timeframe (e.g.&nbsp;“1m”, “1h”, “1d”). Defaults to “1h” refresh_hours (int): Hours of the most recent data to re-download when updating. Defaults to 24 first_date (str): ISO 8601 start date used for the initial full-history download. Defaults to ‘2024-01-01T00:00:00Z’ all_tokens (bool): If True, includes any additional pairs found in the folder path. Defaults to True pause (int): Seconds to wait between pairs. Defaults to 1 base_url (str): Lighter API base URL explorer_url (str): Lighter explorer API base URL for market lookup verbose (bool): If True, prints download progress. Defaults to False</p>
 <p>The function: - Creates the folder_path if it doesn’t exist - Date/Time is UTC - For each pair, checks if a data file exists: - If exists: Loads the file and appends new data, refreshing the last <code>refresh_hours</code> - If not exists: Downloads full history starting from <code>first_date</code> - Saves data in the specified format, handling duplicates and sorting by datetime</p>
+</section>
+</div>
+</section>
 <section id="example-tests-1" class="level4">
 <h4 class="anchored" data-anchor-id="example-tests-1">Example / tests</h4>
-<div id="a1b2c3e5" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-07-15T01:46:03.747221Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-07-15T01:46:03.747151Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-07-15T01:46:06.695289Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-07-15T01:46:06.694953Z&quot;}}">
+<div id="a1b2c3e5" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Live test: download LIT/USDC into a temporary folder, then re-run incrementally</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tempfile</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>lighter_dir <span class="op">=</span> tempfile.mkdtemp()</span>
@@ -573,7 +589,7 @@ Processing LIT/USDC
 First run: 500 rows, second run: 500 rows</code></pre>
 </div>
 </div>
-<div id="a1b2c3e6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-07-15T01:46:06.696573Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-07-15T01:46:06.696494Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-07-15T01:46:18.779991Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-07-15T01:46:18.779556Z&quot;}}" data-execution_count="19">
+<div id="a1b2c3e6" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download / update a set of spot pairs into the exchange-named data folder</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>lighter_to_file(folder_path<span class="op">=</span><span class="st">"../data/lighter"</span>,</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>               token_list<span class="op">=</span>[<span class="st">'LIT/USDC'</span>],</span>
@@ -584,7 +600,6 @@ First run: 500 rows, second run: 500 rows</code></pre>
 </div>
 
 
-</section>
 </section>
 </section>
 

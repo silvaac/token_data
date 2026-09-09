@@ -92,14 +92,14 @@ def hyperliquid_perp_dexs(
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L138"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L142"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### retrieve_hyperliquid_perp_price
 
 ``` python
 def retrieve_hyperliquid_perp_price(
-    coin:str='ETH', interval:str='1h', end_date:str='2026-07-26T23:42:10Z', start_date:str='2026-07-24T23:42:10Z',
+    coin:str='ETH', interval:str='1h', end_date:str='2026-09-09T00:07:19Z', start_date:str='2026-09-07T00:07:19Z',
     info:NoneType=None
 ):
 ```
@@ -160,7 +160,7 @@ print(perp.head())
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L237"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L241"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### spot_tickers
@@ -199,15 +199,15 @@ print(f'spot ticker for ETH: ', stk)
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L294"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L298"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### retrieve_hyperliquid_spot_price
 
 ``` python
 def retrieve_hyperliquid_spot_price(
-    coin:str='ETH', base:str='USDC', interval:str='1h', end_date:str='2026-07-26T23:42:10Z',
-    start_date:str='2026-07-24T23:42:10Z', info:NoneType=None, recheck:bool=False
+    coin:str='ETH', base:str='USDC', interval:str='1h', end_date:str='2026-09-09T00:07:19Z',
+    start_date:str='2026-09-07T00:07:19Z', info:NoneType=None, recheck:bool=False
 ):
 ```
 
@@ -250,27 +250,31 @@ print(f'spot ticker for ETH: ', stk)
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L330"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L334"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### hyperliquid_tokens
 
 ``` python
 def hyperliquid_tokens(
-    info:NoneType=None, rm_delisted:bool=True, dex:NoneType=None
+    info:NoneType=None, rm_delisted:bool=True, dex:NoneType=None, rm_isolated:bool=True
 ):
 ```
 
 *List perpetual tokens available on Hyperliquid.*
 
 Args: info (Info, optional): SDK Info client. Created automatically if
-*None*. rm_delisted (bool): Remove delisted and isolated-only tokens
-(default *True*). dex (str, optional): Which perp dex universe to query.
+*None*. rm_delisted (bool): Remove delisted tokens (default *True*). dex
+(str, optional): Which perp dex universe to query.
 
         - ``None`` (default) – native perps only (unchanged legacy behaviour).
         - A dex name string (e.g. ``"xyz"``) – that builder-dex universe.
           Returned ``name`` values are already prefixed (e.g. ``"xyz:XLE"``).
         - ``"all"`` – concatenates native **and** every HIP-3 dex universe.
+
+    rm_isolated (bool): Remove isolated-only tokens (default *True*).
+        Set to *False* to include RWA/HIP-3 assets such as ``xyz:SOFTBANK``
+        that trade in isolated-only mode.
 
 Returns: pandas.DataFrame with columns `szDecimals`, `name`,
 `maxLeverage`, etc.
@@ -317,7 +321,7 @@ print(tokens)
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L390"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L407"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### funding_calc
@@ -333,14 +337,14 @@ def funding_calc(
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L394"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L411"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### retrieve_hyperliquid_funding_history
 
 ``` python
 def retrieve_hyperliquid_funding_history(
-    coin:str='ETH', end_date:str='2026-07-26T23:42:10Z', start_date:str='2026-07-24T23:42:10Z', info:NoneType=None,
+    coin:str='ETH', end_date:str='2026-09-09T00:07:19Z', start_date:str='2026-09-07T00:07:19Z', info:NoneType=None,
     calc:bool=False
 ):
 ```
@@ -386,7 +390,7 @@ print(f_r.tail())
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L498"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L515"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### retrieve_hyperliquid_data
@@ -667,7 +671,7 @@ def unix_to_datetime(t):
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L628"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L645"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### retrieve_hyperliquid_l2_snapshot
@@ -737,7 +741,7 @@ print(f"Snapshot time: {l2_snapshot['datetime'].iloc[0]}")
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L715"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L732"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### hyperliquid_mids
@@ -1732,7 +1736,7 @@ data, it aligns to the hour.
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L781"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L798"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### save_hyperliquid_file
@@ -1758,7 +1762,7 @@ it doesn’t exist.
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L807"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L824"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### HyperliquidDataManager
@@ -1799,7 +1803,7 @@ their DataFrames
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L1038"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L1055"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### HyperliquidPerpManager
@@ -1807,7 +1811,8 @@ target="_blank" style="float:right; font-size:smaller">source</a>
 ``` python
 def HyperliquidPerpManager(
     ticker:NoneType=None, data_dir:str='../data/hyperliquid', interval:str='1h', file_type:str='parquet',
-    update:bool=False, save:bool=False, refresh_hours:int=24, info:NoneType=None, verbose:bool=True
+    update:bool=False, save:bool=False, refresh_hours:int=24, info:NoneType=None, verbose:bool=True, dex:str='all',
+    rm_delisted:bool=True, rm_isolated:bool=False
 ):
 ```
 
@@ -1828,7 +1833,13 @@ optional): If True, saves updated data back to file. Defaults to False
 refresh_hours (int, optional): Hours of data to refresh when updating.
 Defaults to 24 info (Info, optional): Hyperliquid Info client. If None,
 creates a new one. verbose (bool, optional): If True, prints progress
-messages. Defaults to True
+messages. Defaults to True dex (str, optional): Which perp dex universe
+to use when loading all tickers. `None` for native only, `"all"` for
+native + HIP-3/RWA dexes (default). rm_delisted (bool, optional): Remove
+delisted tokens when loading all tickers. Defaults to True. rm_isolated
+(bool, optional): Remove isolated-only tokens when loading all tickers.
+Defaults to False so that RWA/HIP-3 assets such as `xyz:SOFTBANK` are
+included.
 
 Examples: \# Load existing perp data for ETH manager =
 HyperliquidPerpManager(ticker=“ETH”, interval=“1h”, info=info) eth_data
@@ -1928,7 +1939,7 @@ print(df)
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L1317"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L1344"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### HyperliquidSpotManager
@@ -2363,7 +2374,7 @@ mananger6.get_data()
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L1584"
+href="https://github.com/silvaac/token_data/blob/main/token_data/hyperliquid.py#L1611"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### HyperliquidFundingManager
@@ -2371,7 +2382,8 @@ target="_blank" style="float:right; font-size:smaller">source</a>
 ``` python
 def HyperliquidFundingManager(
     ticker:NoneType=None, data_dir:str='../data/hyperliquid', file_type:str='parquet', update:bool=False,
-    save:bool=False, refresh_hours:int=24, round_to_hour:bool=True, info:NoneType=None, verbose:bool=True
+    save:bool=False, refresh_hours:int=24, round_to_hour:bool=True, info:NoneType=None, verbose:bool=True,
+    dex:str='all', rm_delisted:bool=True, rm_isolated:bool=False
 ):
 ```
 
@@ -2391,7 +2403,13 @@ data to refresh when updating. Defaults to 24 round_to_hour (bool,
 optional): If True, rounds datetime to nearest hour. Defaults to True
 info (Info, optional): Hyperliquid Info client. If None, creates a new
 one. verbose (bool, optional): If True, prints progress messages.
-Defaults to True
+Defaults to True dex (str, optional): Which perp dex universe to use
+when loading all tickers. `None` for native only, `"all"` for native +
+HIP-3/RWA dexes (default). rm_delisted (bool, optional): Remove delisted
+tokens when loading all tickers. Defaults to True. rm_isolated (bool,
+optional): Remove isolated-only tokens when loading all tickers.
+Defaults to False so that RWA/HIP-3 assets such as `xyz:SOFTBANK` are
+included.
 
 Examples: \# Load existing funding data for ETH manager =
 HyperliquidFundingManager(ticker=“ETH”, info=info) eth_data =

@@ -15,7 +15,10 @@ Notes:
 
 ** Finally, datetime columns are in UTC. **
 
+::: {#7f43bbe2 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.789372+00:00","shell.execute_reply":"2026-09-09T00:07:19.807444+00:00","total":0.01807379200181458}}' execution_count=3}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L39){target="_blank" style="float:right; font-size:smaller"}
 
 ### retry_fetch_ohlcv
 
@@ -41,9 +44,13 @@ Returns:
 
 Raises:
     Exception: The last ccxt error if all retries fail
+:::
 
 
+::: {#c488365e .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.808297+00:00","shell.execute_reply":"2026-09-09T00:07:19.809710+00:00","total":0.0014134170050965622}}' execution_count=5}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L75){target="_blank" style="float:right; font-size:smaller"}
 
 ### scrape_ohlcv
 
@@ -68,9 +75,13 @@ Args:
 
 Returns:
     list: List of OHLCV candles [timestamp_ms, open, high, low, close, volume]
+:::
 
 
+::: {#d8d8a627 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.810176+00:00","shell.execute_reply":"2026-09-09T00:07:19.811180+00:00","total":0.0010048750118585303}}' execution_count=7}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L117){target="_blank" style="float:right; font-size:smaller"}
 
 ### ohlcv_to_df
 
@@ -92,9 +103,13 @@ Returns:
         - open, high, low, close, volume: OHLCV values
         - pair: Trading pair symbol
     Sorted by datetime with duplicate timestamps removed.
+:::
 
 
+::: {#3e360eaf .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.811670+00:00","shell.execute_reply":"2026-09-09T00:07:19.813432+00:00","total":0.0017621669976506382}}' execution_count=9}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/kraken.py#L119){target="_blank" style="float:right; font-size:smaller"}
 
 ### kraken_ohlcv
 
@@ -121,6 +136,7 @@ Args:
 
 Returns:
     pandas.DataFrame: Tidy OHLCV DataFrame (see `ohlcv_to_df`)
+:::
 
 
 #### Example / tests
@@ -139,7 +155,7 @@ assert len(df_test) > 24
 df_test.tail()
 ```
 
-::: {.cell-output .cell-output-display execution_count=8}
+::: {.cell-output .cell-output-display}
 ```{=html}
 <div>
 <style scoped>
@@ -240,7 +256,7 @@ assert str(df_sample['datetime'].dt.tz) == 'UTC'
 df_sample
 ```
 
-::: {.cell-output .cell-output-display execution_count=9}
+::: {.cell-output .cell-output-display}
 ```{=html}
 <div>
 <style scoped>
@@ -298,7 +314,10 @@ df_sample
 :::
 
 
+::: {#ff3eb378 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.813973+00:00","shell.execute_reply":"2026-09-09T00:07:19.815244+00:00","total":0.0012761249963659793}}' execution_count=11}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/kraken.py#L150){target="_blank" style="float:right; font-size:smaller"}
 
 ### kraken_usd_tokens
 
@@ -320,6 +339,7 @@ Returns:
         - base: Base currency (e.g. 'BTC')
         - quote: Always 'USD' for this filtered dataset
         - active: Whether the market is currently active
+:::
 
 
 ::: {#ba4abbb1 .cell}
@@ -332,7 +352,7 @@ assert (tokens['quote'] == 'USD').all()
 tokens.head()
 ```
 
-::: {.cell-output .cell-output-display execution_count=11}
+::: {.cell-output .cell-output-display}
 ```{=html}
 <div>
 <style scoped>
@@ -408,9 +428,10 @@ tokens.head()
 :::
 
 
+::: {#56b2e5ac .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.815785+00:00","shell.execute_reply":"2026-09-09T00:07:19.816879+00:00","total":0.0010954159952234477}}' execution_count=13}
 ---
 
-[source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L175){target="_blank" style="float:right; font-size:smaller"}
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L199){target="_blank" style="float:right; font-size:smaller"}
 
 ### save_file
 
@@ -430,9 +451,13 @@ Args:
 
 The function saves the DataFrame to the specified path, handling the file extension automatically.
 For CSV files, the index is not saved. Creates the folder if it doesn't exist.
+:::
 
 
+::: {#fe6e2b57 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.817360+00:00","shell.execute_reply":"2026-09-09T00:07:19.818188+00:00","total":0.0008283750066766515}}' execution_count=15}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L230){target="_blank" style="float:right; font-size:smaller"}
 
 ### file_name_to_symbol
 
@@ -445,9 +470,13 @@ def file_name_to_symbol(
 *Convert a file name back into a ccxt symbol.*
 
 Example: 'BTC-USD_1h.parquet' -> 'BTC/USD'
+:::
 
 
+::: {#c5f03923 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.818215+00:00","shell.execute_reply":"2026-09-09T00:07:19.819053+00:00","total":0.0008384579996345565}}' execution_count=16}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L222){target="_blank" style="float:right; font-size:smaller"}
 
 ### symbol_to_file_name
 
@@ -460,6 +489,7 @@ def symbol_to_file_name(
 *Convert a ccxt symbol and timeframe into a file name (without extension).*
 
 Example: ('BTC/USD', '1h') -> 'BTC-USD_1h'
+:::
 
 
 ::: {#5501dfef .cell}
@@ -483,7 +513,10 @@ save_file round-trip OK
 :::
 
 
+::: {#0e20c839 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.820149+00:00","shell.execute_reply":"2026-09-09T00:07:19.821612+00:00","total":0.001463082997361198}}' execution_count=18}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/kraken.py#L216){target="_blank" style="float:right; font-size:smaller"}
 
 ### kraken_to_file
 
@@ -516,6 +549,7 @@ The function:
     - If exists: Loads the file and appends new data, refreshing the last `refresh_hours`
     - If not exists: Downloads the maximum available history (~720 candles on Kraken)
 - Saves data in the specified format, handling duplicates and sorting by datetime
+:::
 
 
 #### Example / tests
@@ -548,7 +582,7 @@ First run: 700 rows, second run: 700 rows
 :::
 
 
-::: {#c32b33e6 .cell execution_count=17}
+::: {#c32b33e6 .cell}
 ``` {.python .cell-code}
 # Download / update a set of USD pairs into the exchange-named data folder
 # For all USD pairs use: token_list = kraken_usd_tokens()['symbol'].tolist()

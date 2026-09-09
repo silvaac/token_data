@@ -15,7 +15,10 @@ Notes:
 
 ** Finally, datetime columns are in UTC. **
 
+::: {#0bbe2624 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.575262+00:00","shell.execute_reply":"2026-09-09T00:07:19.594340+00:00","total":0.019080334008322097}}' execution_count=4}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L41){target="_blank" style="float:right; font-size:smaller"}
 
 ### lighter_spot_markets
 
@@ -34,9 +37,13 @@ Returns:
     pandas.DataFrame: DataFrame with columns:
         - symbol: Trading pair symbol (e.g. 'LIT/USDC')
         - market_id: Integer market ID used for candle requests
+:::
 
 
+::: {#89db0ddf .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.595840+00:00","shell.execute_reply":"2026-09-09T00:07:19.597761+00:00","total":0.0019260830013081431}}' execution_count=7}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L71){target="_blank" style="float:right; font-size:smaller"}
 
 ### retry_fetch_candles
 
@@ -61,9 +68,13 @@ Args:
 
 Returns:
     list: List of candle dicts with keys t (ms), o, h, l, c, v, V, i
+:::
 
 
+::: {#d44bbafe .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.598724+00:00","shell.execute_reply":"2026-09-09T00:07:19.600248+00:00","total":0.0015253750025294721}}' execution_count=9}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L116){target="_blank" style="float:right; font-size:smaller"}
 
 ### scrape_candles
 
@@ -93,9 +104,13 @@ Args:
 
 Returns:
     list: List of candle dicts with keys t (ms), o, h, l, c, v, V, i
+:::
 
 
+::: {#40741c84 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.600927+00:00","shell.execute_reply":"2026-09-09T00:07:19.602173+00:00","total":0.0012474169925553724}}' execution_count=11}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L169){target="_blank" style="float:right; font-size:smaller"}
 
 ### candles_to_df
 
@@ -117,9 +132,13 @@ Returns:
         - open, high, low, close, volume: OHLCV values
         - pair: Trading pair symbol
     Sorted by datetime with duplicate timestamps removed.
+:::
 
 
+::: {#8ed08a64 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.602701+00:00","shell.execute_reply":"2026-09-09T00:07:19.603863+00:00","total":0.0011626249906839803}}' execution_count=13}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L206){target="_blank" style="float:right; font-size:smaller"}
 
 ### lighter_candles
 
@@ -147,11 +166,12 @@ Args:
 
 Returns:
     pandas.DataFrame: Tidy OHLCV DataFrame (see `candles_to_df`)
+:::
 
 
 #### Example / tests
 
-::: {#a1b2c3dd .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-07-15T01:46:01.395436Z","iopub.status.busy":"2026-07-15T01:46:01.395370Z","iopub.status.idle":"2026-07-15T01:46:02.291245Z","shell.execute_reply":"2026-07-15T01:46:02.290989Z"}}'}
+::: {#a1b2c3dd .cell}
 ``` {.python .cell-code}
 # Live test: spot markets are available
 markets = lighter_spot_markets()
@@ -162,7 +182,7 @@ assert 'LIT/USDC' in markets['symbol'].tolist()
 markets.head()
 ```
 
-::: {.cell-output .cell-output-display execution_count=11}
+::: {.cell-output .cell-output-display}
 ```{=html}
 <div>
 <style scoped>
@@ -220,7 +240,7 @@ markets.head()
 :::
 
 
-::: {#a1b2c3de .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-07-15T01:46:02.292455Z","iopub.status.busy":"2026-07-15T01:46:02.292381Z","iopub.status.idle":"2026-07-15T01:46:03.642433Z","shell.execute_reply":"2026-07-15T01:46:03.642161Z"}}'}
+::: {#a1b2c3de .cell}
 ``` {.python .cell-code}
 # Quick live test: download ~2 days of hourly LIT/USDC candles
 start = (pd.Timestamp.now(tz='UTC') - pd.Timedelta(days=2)).strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -234,7 +254,7 @@ assert len(df_test) > 24
 df_test.tail()
 ```
 
-::: {.cell-output .cell-output-display execution_count=12}
+::: {.cell-output .cell-output-display}
 ```{=html}
 <div>
 <style scoped>
@@ -322,7 +342,7 @@ df_test.tail()
 :::
 
 
-::: {#a1b2c3df .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-07-15T01:46:03.643597Z","iopub.status.busy":"2026-07-15T01:46:03.643530Z","iopub.status.idle":"2026-07-15T01:46:03.655642Z","shell.execute_reply":"2026-07-15T01:46:03.655379Z"}}'}
+::: {#a1b2c3df .cell}
 ``` {.python .cell-code}
 # Offline test: candles_to_df shapes raw candles correctly and removes duplicates
 sample = [{'t': 1700000000000, 'o': 1.0, 'h': 2.0, 'l': 0.5, 'c': 1.5, 'v': 10.0, 'i': 1},
@@ -335,7 +355,7 @@ assert str(df_sample['datetime'].dt.tz) == 'UTC'
 df_sample
 ```
 
-::: {.cell-output .cell-output-display execution_count=13}
+::: {.cell-output .cell-output-display}
 ```{=html}
 <div>
 <style scoped>
@@ -393,9 +413,10 @@ df_sample
 :::
 
 
+::: {#9818a651 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.604500+00:00","shell.execute_reply":"2026-09-09T00:07:19.606721+00:00","total":0.002225292002549395}}' execution_count=15}
 ---
 
-[source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L175){target="_blank" style="float:right; font-size:smaller"}
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L199){target="_blank" style="float:right; font-size:smaller"}
 
 ### save_file
 
@@ -412,9 +433,13 @@ Args:
     folder_path (str): Directory path where the file will be saved
     file_name (str): Name of the file without extension
     type (str, optional): File format - either "csv" or "parquet". Defaults to "parquet"
+:::
 
 
+::: {#c136be50 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.607373+00:00","shell.execute_reply":"2026-09-09T00:07:19.608573+00:00","total":0.0012021250004181638}}' execution_count=17}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L230){target="_blank" style="float:right; font-size:smaller"}
 
 ### file_name_to_symbol
 
@@ -427,9 +452,13 @@ def file_name_to_symbol(
 *Convert a file name back into a symbol.*
 
 Example: 'LIT-USDC_1h.parquet' -> 'LIT/USDC'
+:::
 
 
+::: {#877880dc .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.608617+00:00","shell.execute_reply":"2026-09-09T00:07:19.609768+00:00","total":0.0011519580002641305}}' execution_count=18}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L222){target="_blank" style="float:right; font-size:smaller"}
 
 ### symbol_to_file_name
 
@@ -442,9 +471,10 @@ def symbol_to_file_name(
 *Convert a symbol and timeframe into a file name (without extension).*
 
 Example: ('LIT/USDC', '1h') -> 'LIT-USDC_1h'
+:::
 
 
-::: {#a1b2c3e2 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-07-15T01:46:03.675448Z","iopub.status.busy":"2026-07-15T01:46:03.675375Z","iopub.status.idle":"2026-07-15T01:46:03.735472Z","shell.execute_reply":"2026-07-15T01:46:03.735224Z"}}'}
+::: {#a1b2c3e2 .cell}
 ``` {.python .cell-code}
 # Offline test: save_file round-trip and file-name helpers
 import tempfile
@@ -466,7 +496,10 @@ save_file round-trip OK
 :::
 
 
+::: {#abb16d15 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.611079+00:00","shell.execute_reply":"2026-09-09T00:07:19.612893+00:00","total":0.001815583003917709}}' execution_count=20}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L277){target="_blank" style="float:right; font-size:smaller"}
 
 ### lighter_to_file
 
@@ -505,11 +538,12 @@ The function:
     - If exists: Loads the file and appends new data, refreshing the last `refresh_hours`
     - If not exists: Downloads full history starting from `first_date`
 - Saves data in the specified format, handling duplicates and sorting by datetime
+:::
 
 
 #### Example / tests
 
-::: {#a1b2c3e5 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-07-15T01:46:03.747221Z","iopub.status.busy":"2026-07-15T01:46:03.747151Z","iopub.status.idle":"2026-07-15T01:46:06.695289Z","shell.execute_reply":"2026-07-15T01:46:06.694953Z"}}'}
+::: {#a1b2c3e5 .cell}
 ``` {.python .cell-code}
 # Live test: download LIT/USDC into a temporary folder, then re-run incrementally
 import tempfile
@@ -540,7 +574,7 @@ First run: 500 rows, second run: 500 rows
 :::
 
 
-::: {#a1b2c3e6 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-07-15T01:46:06.696573Z","iopub.status.busy":"2026-07-15T01:46:06.696494Z","iopub.status.idle":"2026-07-15T01:46:18.779991Z","shell.execute_reply":"2026-07-15T01:46:18.779556Z"}}' execution_count=19}
+::: {#a1b2c3e6 .cell}
 ``` {.python .cell-code}
 # Download / update a set of spot pairs into the exchange-named data folder
 lighter_to_file(folder_path="../data/lighter",

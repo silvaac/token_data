@@ -210,20 +210,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#kucoin" id="toc-kucoin" class="nav-link active" data-scroll-target="#kucoin">KuCoin</a>
-  <ul class="collapse">
-  <li><a href="#retry_fetch_ohlcv" id="toc-retry_fetch_ohlcv" class="nav-link" data-scroll-target="#retry_fetch_ohlcv">retry_fetch_ohlcv</a></li>
-  <li><a href="#scrape_ohlcv" id="toc-scrape_ohlcv" class="nav-link" data-scroll-target="#scrape_ohlcv">scrape_ohlcv</a></li>
-  <li><a href="#ohlcv_to_df" id="toc-ohlcv_to_df" class="nav-link" data-scroll-target="#ohlcv_to_df">ohlcv_to_df</a></li>
-  <li><a href="#kucoin_ohlcv" id="toc-kucoin_ohlcv" class="nav-link" data-scroll-target="#kucoin_ohlcv">kucoin_ohlcv</a></li>
-  <li><a href="#kucoin_usdt_tokens" id="toc-kucoin_usdt_tokens" class="nav-link" data-scroll-target="#kucoin_usdt_tokens">kucoin_usdt_tokens</a></li>
-  <li><a href="#save_file" id="toc-save_file" class="nav-link" data-scroll-target="#save_file">save_file</a></li>
-  <li><a href="#file_name_to_symbol" id="toc-file_name_to_symbol" class="nav-link" data-scroll-target="#file_name_to_symbol">file_name_to_symbol</a></li>
-  <li><a href="#symbol_to_file_name" id="toc-symbol_to_file_name" class="nav-link" data-scroll-target="#symbol_to_file_name">symbol_to_file_name</a></li>
-  <li><a href="#kucoin_to_file" id="toc-kucoin_to_file" class="nav-link" data-scroll-target="#kucoin_to_file">kucoin_to_file</a></li>
-  </ul></li>
+  <li><a href="#kucoin" id="toc-kucoin" class="nav-link active" data-scroll-target="#kucoin">KuCoin</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/silvaac/token_data/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="kucoin.md"><i class="bi bi-file-code"></i>CommonMark</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/silvaac/token_data/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="kucoin.md"><i class="bi bi-file-code"></i>Markdown</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
@@ -241,7 +230,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Rate limits are handled by ccxt (<code>enableRateLimit=True</code>).</li>
 </ul>
 <p>** Finally, datetime columns are in UTC. **</p>
+<div id="f4865dfa" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.773108+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.791426+00:00&quot;,&quot;total&quot;:0.018319458002224565}}" data-execution_count="3">
 <hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L39" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="retry_fetch_ohlcv" class="level3">
 <h3 class="anchored" data-anchor-id="retry_fetch_ohlcv">retry_fetch_ohlcv</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> retry_fetch_ohlcv(</span>
@@ -251,8 +242,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Args: exchange (ccxt.Exchange): Instantiated ccxt exchange object max_retries (int): Maximum number of retries before raising the last error symbol (str): Trading pair symbol (e.g.&nbsp;“BTC/USDT”) timeframe (str): Candle timeframe (e.g.&nbsp;“1m”, “1h”, “1d”) since (int): Start time in milliseconds since epoch (UTC) limit (int): Maximum number of candles to fetch verbose (bool, optional): If True, prints progress messages. Defaults to False</p>
 <p>Returns: list: List of OHLCV candles [timestamp_ms, open, high, low, close, volume]</p>
 <p>Raises: Exception: The last ccxt error if all retries fail</p>
-<hr>
 </section>
+</div>
+<div id="e546f003" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.792329+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.793781+00:00&quot;,&quot;total&quot;:0.0014538340037688613}}" data-execution_count="5">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L75" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="scrape_ohlcv" class="level3">
 <h3 class="anchored" data-anchor-id="scrape_ohlcv">scrape_ohlcv</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scrape_ohlcv(</span>
@@ -261,8 +255,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Download OHLCV candles in pages of <code>limit</code> bars between <code>since</code> and <code>end</code>.</em></p>
 <p>Args: exchange (ccxt.Exchange): Instantiated ccxt exchange object (markets loaded) symbol (str): Trading pair symbol (e.g.&nbsp;“BTC/USDT”) timeframe (str): Candle timeframe (e.g.&nbsp;“1m”, “1h”, “1d”) since (int or str): Start time in milliseconds since epoch or ISO 8601 string end (int or str, optional): End time in milliseconds or ISO 8601 string. Defaults to now. max_retries (int, optional): Retries per page. Defaults to 3 limit (int, optional): Candles per request. Defaults to 1500 (KuCoin maximum) verbose (bool, optional): If True, prints progress messages. Defaults to False</p>
 <p>Returns: list: List of OHLCV candles [timestamp_ms, open, high, low, close, volume]</p>
-<hr>
 </section>
+</div>
+<div id="6eb67a75" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.794288+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.795335+00:00&quot;,&quot;total&quot;:0.001048208010615781}}" data-execution_count="7">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L117" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="ohlcv_to_df" class="level3">
 <h3 class="anchored" data-anchor-id="ohlcv_to_df">ohlcv_to_df</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ohlcv_to_df(</span>
@@ -271,8 +268,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Convert a raw ccxt OHLCV list into a tidy DataFrame.</em></p>
 <p>Args: ohlcv (list): List of candles [timestamp_ms, open, high, low, close, volume] symbol (str): Trading pair symbol added as the <code>pair</code> column</p>
 <p>Returns: pandas.DataFrame: DataFrame with columns: - datetime: Candle timestamp (UTC, timezone-aware) - open, high, low, close, volume: OHLCV values - pair: Trading pair symbol Sorted by datetime with duplicate timestamps removed.</p>
-<hr>
 </section>
+</div>
+<div id="321636f3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.795850+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.797873+00:00&quot;,&quot;total&quot;:0.002027583002927713}}" data-execution_count="9">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/kucoin.py#L118" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="kucoin_ohlcv" class="level3">
 <h3 class="anchored" data-anchor-id="kucoin_ohlcv">kucoin_ohlcv</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> kucoin_ohlcv(</span>
@@ -282,8 +282,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Download OHLCV candles for a symbol from KuCoin.</em></p>
 <p>Args: symbol (str, optional): Trading pair symbol. Defaults to “BTC/USDT” timeframe (str, optional): Candle timeframe. Defaults to “1h” since (int or str, optional): Start time (ms since epoch or ISO 8601). If None, downloads the most recent ~<code>limit</code> candles. end (int or str, optional): End time (ms or ISO 8601). Defaults to now max_retries (int, optional): Retries per page. Defaults to 3 limit (int, optional): Candles per request. Defaults to 1500 exchange (ccxt.kucoin, optional): Reusable exchange instance. If None, a new one is created verbose (bool, optional): If True, prints progress messages. Defaults to False</p>
 <p>Returns: pandas.DataFrame: Tidy OHLCV DataFrame (see <code>ohlcv_to_df</code>)</p>
-<hr>
 </section>
+</div>
+<div id="3358735e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.798430+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.799559+00:00&quot;,&quot;total&quot;:0.001128832998801954}}" data-execution_count="11">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/kucoin.py#L148" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="kucoin_usdt_tokens" class="level3">
 <h3 class="anchored" data-anchor-id="kucoin_usdt_tokens">kucoin_usdt_tokens</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> kucoin_usdt_tokens(</span>
@@ -292,8 +295,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Retrieves all active KuCoin spot trading pairs quoted in USDT.</em></p>
 <p>Args: exchange (ccxt.kucoin, optional): Reusable exchange instance. If None, a new one is created</p>
 <p>Returns: pandas.DataFrame: DataFrame with columns: - id: KuCoin market id (e.g.&nbsp;‘BTC-USDT’) - symbol: Unified ccxt symbol (e.g.&nbsp;‘BTC/USDT’) - base: Base currency (e.g.&nbsp;‘BTC’) - quote: Always ‘USDT’ for this filtered dataset - active: Whether the market is currently active</p>
+</section>
+</div>
 <section id="example-tests" class="level4">
-<h4 class="anchored" data-anchor-id="example-tests">Example / tests</h4>
+<h4 class="anchored">Example / tests</h4>
 <div id="094e5976" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick live test: download ~2 days of hourly BTC/USDT candles</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> (pd.Timestamp.now(tz<span class="op">=</span><span class="st">'UTC'</span>) <span class="op">-</span> pd.Timedelta(days<span class="op">=</span><span class="dv">2</span>)).strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">T%H:%M:%SZ'</span>)</span>
@@ -305,7 +310,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> (df_test[<span class="st">'pair'</span>] <span class="op">==</span> <span class="st">'BTC/USDT'</span>).<span class="bu">all</span>()</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(df_test) <span class="op">&gt;</span> <span class="dv">24</span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>df_test.tail()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display">
 <div>
 
 
@@ -389,7 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">list</span>(df_sample.columns) <span class="op">==</span> [<span class="st">'datetime'</span>, <span class="st">'open'</span>, <span class="st">'high'</span>, <span class="st">'low'</span>, <span class="st">'close'</span>, <span class="st">'volume'</span>, <span class="st">'pair'</span>]</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">str</span>(df_sample[<span class="st">'datetime'</span>].dt.tz) <span class="op">==</span> <span class="st">'UTC'</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>df_sample</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display">
 <div>
 
 
@@ -440,7 +445,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="st">'BTC/USDT'</span> <span class="kw">in</span> tokens[<span class="st">'symbol'</span>].tolist()</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> (tokens[<span class="st">'quote'</span>] <span class="op">==</span> <span class="st">'USDT'</span>).<span class="bu">all</span>()</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>tokens.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display">
 <div>
 
 
@@ -502,10 +507,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<div id="f6124e9f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.800180+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.801117+00:00&quot;,&quot;total&quot;:0.0009378329996252432}}" data-execution_count="13">
 <hr>
-<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L175" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-</section>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L199" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="save_file" class="level3">
 <h3 class="anchored" data-anchor-id="save_file">save_file</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_file(</span>
@@ -514,8 +518,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Save a pandas DataFrame to a file in either CSV or Parquet format.</em></p>
 <p>Args: df (pandas.DataFrame): The DataFrame to save folder_path (str): Directory path where the file will be saved file_name (str): Name of the file without extension type (str, optional): File format - either “csv” or “parquet”. Defaults to “parquet”</p>
 <p>The function saves the DataFrame to the specified path, handling the file extension automatically. For CSV files, the index is not saved. Creates the folder if it doesn’t exist.</p>
-<hr>
 </section>
+</div>
+<div id="1820e5c0" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.801489+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.802473+00:00&quot;,&quot;total&quot;:0.000985249993391335}}" data-execution_count="15">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L230" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="file_name_to_symbol" class="level3">
 <h3 class="anchored" data-anchor-id="file_name_to_symbol">file_name_to_symbol</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> file_name_to_symbol(</span>
@@ -523,8 +530,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Convert a file name back into a ccxt symbol.</em></p>
 <p>Example: ‘BTC-USDT_1h.parquet’ -&gt; ‘BTC/USDT’</p>
-<hr>
 </section>
+</div>
+<div id="489cec1e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.802509+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.803450+00:00&quot;,&quot;total&quot;:0.0009425000025657937}}" data-execution_count="16">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L222" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="symbol_to_file_name" class="level3">
 <h3 class="anchored" data-anchor-id="symbol_to_file_name">symbol_to_file_name</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> symbol_to_file_name(</span>
@@ -532,6 +542,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Convert a ccxt symbol and timeframe into a file name (without extension).</em></p>
 <p>Example: (‘BTC/USDT’, ‘1h’) -&gt; ‘BTC-USDT_1h’</p>
+</section>
+</div>
 <div id="a45d1daa" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Offline test: save_file round-trip and file-name helpers</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tempfile</span>
@@ -547,8 +559,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>save_file round-trip OK</code></pre>
 </div>
 </div>
+<div id="8658dede" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.804757+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.806508+00:00&quot;,&quot;total&quot;:0.0017532920028315857}}" data-execution_count="18">
 <hr>
-</section>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/kucoin.py#L214" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="kucoin_to_file" class="level3">
 <h3 class="anchored" data-anchor-id="kucoin_to_file">kucoin_to_file</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> kucoin_to_file(</span>
@@ -559,6 +572,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Downloads and maintains historical KuCoin OHLCV data, saving one file per pair.</em></p>
 <p>Args: folder_path (str): Path where pair data files will be stored, named after the exchange. Defaults to “../data/kucoin” token_list (list): List of ccxt symbols to process. Defaults to [‘BTC/USDT’, ‘ETH/USDT’] type (str): File format to save data - either “csv” or “parquet”. Defaults to “parquet” timeframe (str): Candle timeframe (e.g.&nbsp;“1m”, “1h”, “1d”). Defaults to “1h” refresh_hours (int): Hours of the most recent data to re-download when updating. Defaults to 24 first_date (str): ISO 8601 start date used for the initial full-history download of a pair. Defaults to ‘2021-01-01T00:00:00Z’ all_tokens (bool): If True, includes any additional pairs found in the folder path. Defaults to True pause (int): Seconds to wait between pairs. Defaults to 1 verbose (bool): If True, prints download progress. Defaults to False</p>
 <p>The function: - Creates the folder_path if it doesn’t exist - Date/Time is UTC - For each pair, checks if a data file exists: - If exists: Loads the file and appends new data, refreshing the last <code>refresh_hours</code> - If not exists: Downloads full history starting from <code>first_date</code> - Saves data in the specified format, handling duplicates and sorting by datetime</p>
+</section>
+</div>
+</section>
 <section id="example-tests-1" class="level4">
 <h4 class="anchored" data-anchor-id="example-tests-1">Example / tests</h4>
 <div id="0137c211" class="cell">
@@ -585,7 +601,7 @@ Processing BTC/USDT
 First run: 72 rows, second run: 72 rows</code></pre>
 </div>
 </div>
-<div id="fc5989fb" class="cell" data-execution_count="17">
+<div id="fc5989fb" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download / update a set of USDT pairs into the exchange-named data folder</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For all USDT pairs use: token_list = kucoin_usdt_tokens()['symbol'].tolist()</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>kucoin_to_file(folder_path<span class="op">=</span><span class="st">"../data/kucoin"</span>,</span>
@@ -600,7 +616,6 @@ Processing SOL/USDT</code></pre>
 </div>
 
 
-</section>
 </section>
 </section>
 

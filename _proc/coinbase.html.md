@@ -8,6 +8,7 @@ Notice also that there are limits of what one can download. See the documentatio
 
 ** Finally, datetime columns are in UTC. **
 
+::: {#64d0c9c9 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.502747+00:00","shell.execute_reply":"2026-09-09T00:07:19.522274+00:00","total":0.019531167010427453}}' execution_count=3}
 ---
 
 [source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L17){target="_blank" style="float:right; font-size:smaller"}
@@ -16,8 +17,8 @@ Notice also that there are limits of what one can download. See the documentatio
 
 ```python
 def retrieve_coinbase_price(
-    pair:str='BTC-USD', time_interval:int=3600, end_date:str='2026-07-26T19:48:04Z',
-    start_date:str='2026-07-24T19:48:04Z'
+    pair:str='BTC-USD', time_interval:int=3600, end_date:str='2026-09-08T20:07:19Z',
+    start_date:str='2026-09-06T20:07:19Z'
 ):
 ```
 
@@ -48,8 +49,10 @@ Notes:
     - Maximum of 200 candles can be retrieved per request
     - Attempting to exceed these limits will result in an error and return None
     - All datetime values are in UTC timezone
+:::
 
 
+::: {#e292985b .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.522892+00:00","shell.execute_reply":"2026-09-09T00:07:19.524446+00:00","total":0.001556750008603558}}' execution_count=5}
 ---
 
 [source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L69){target="_blank" style="float:right; font-size:smaller"}
@@ -75,8 +78,10 @@ Returns:
         - display_name: Human readable name of the trading pair
         - status: Trading status of the pair
         And other metadata columns provided by the Coinbase API
+:::
 
 
+::: {#a95e91e5 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.524929+00:00","shell.execute_reply":"2026-09-09T00:07:19.526091+00:00","total":0.001164832996437326}}' execution_count=7}
 ---
 
 [source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L94){target="_blank" style="float:right; font-size:smaller"}
@@ -99,8 +104,10 @@ Returns:
         - display_name: Human readable name of the trading pair
         - status: Trading status of the pair
         And other metadata columns provided by the Coinbase API
+:::
 
 
+::: {#e66b44f6 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.527191+00:00","shell.execute_reply":"2026-09-09T00:07:19.528765+00:00","total":0.001575958012836054}}' execution_count=9}
 ---
 
 [source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L114){target="_blank" style="float:right; font-size:smaller"}
@@ -140,11 +147,13 @@ Raises:
 The function handles Coinbase's API limitations by automatically splitting requests
 into smaller chunks if the date range would exceed the maximum allowed candles
 per request.
+:::
 
 
+::: {#418a69f1 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.529228+00:00","shell.execute_reply":"2026-09-09T00:07:19.531496+00:00","total":0.002271332996315323}}' execution_count=11}
 ---
 
-[source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L175){target="_blank" style="float:right; font-size:smaller"}
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L199){target="_blank" style="float:right; font-size:smaller"}
 
 ### save_file
 
@@ -164,8 +173,10 @@ Args:
 
 The function saves the DataFrame to the specified path, handling the file extension automatically.
 For CSV files, the index is not saved. For Parquet files, default Parquet settings are used.
+:::
 
 
+::: {#6531e940 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:20.849318+00:00","shell.execute_reply":"2026-09-09T00:07:20.852261+00:00","total":0.0029447499982779846}}' execution_count=13}
 ---
 
 [source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L194){target="_blank" style="float:right; font-size:smaller"}
@@ -175,7 +186,7 @@ For CSV files, the index is not saved. For Parquet files, default Parquet settin
 ```python
 def coinbase_to_file(
     folder_path:str='../data/coinbase',
-    token_list:list=['STX-USD', 'POLS-USD', 'TOSHI-USD', 'SYN-USD', 'BTC-USD', 'DIMO-USD', 'GTC-USD', 'ETHFI-USD', 'TRUMP-USD', 'JUPITER-USD', 'RAI-USD', 'RE-USD', 'KAIO-USD', 'WAL-USD', 'CLV-USD', 'UNFI-USD', 'ALCX-USD', 'DASH-USD', 'MONA-USD', 'SOL-USD', 'BIGTIME-USD', 'DRIFT-USD', 'IMU-USD', 'ACH-USD', 'PRCL-USD', 'REZ-USD', 'NEWT-USD', 'DESO-USD', 'ANT-USD', 'HBAR-USD', 'ARPA-USD', 'OPN-USD', 'MPL-USD', 'INDEX-USD', 'IDEX-USD', 'BERA-USD', 'OMNI-USD', 'BIT-USD', 'SYND-USD', 'RED-USD', 'RAY-USD', 'BOND-USD', 'HONEY-USD', 'YB-USD', 'POND-USD', 'ALLO-USD', 'PYR-USD', 'BICO-USD', 'ETC-USD', 'AVNT-USD', 'SYRUP-USD', 'AIOZ-USD', 'PIRATE-USD', 'LA-USD', 'O-USD', 'API3-USD', 'KMNO-USD', 'SEAM-USD', 'ARB-USD', 'OCEAN-USD', 'RSC-USD', 'VELO-USD', 'CHECK-USD', 'XLM-USD', 'BLEND-USD', 'NOICE-USD', 'FLUID-USD', 'ALT-USD', 'ME-USD', 'TVK-USD', 'GNO-USD', 'BIO-USD', 'MOVE-USD', 'PEPE-USD', 'CELR-USD', 'DEEP-USD', 'JASMY-USD', 'WELL-USD', 'RAD-USD', 'SUP-USD', 'JTO-USD', 'GAL-USD', 'ENA-USD', 'GWEI-USD', 'BUSD-USD', 'ALEO-USD', 'KARRAT-USD', 'SKY-USD', 'VET-USD', 'NEST-USD', 'LAYER-USD', 'BIRB-USD', 'ASM-USD', 'DNT-USD', 'GODS-USD', 'CBETH-USD', 'MOODENG-USD', 'ZETACHAIN-USD', 'CTSI-USD', 'DOGE-USD', 'CHIP-USD', 'PUNDIX-USD', 'AKT-USD', 'POPCAT-USD', 'ABT-USD', 'ATH-USD', 'ZKP-USD', 'ARX-USD', 'XTZ-USD', 'ALICE-USD', 'WIF-USD', 'MEZO-USD', 'UMA-USD', 'IMX-USD', 'SPELL-USD', 'HNT-USD', 'RONIN-USD', 'PLUME-USD', 'FARM-USD', 'CFG-USD', '2Z-USD', 'RLC-USD', 'WMTX-USD', 'CRO-USD', 'BAT-USD', 'ORCA-USD', 'SWFTC-USD', 'RAVE-USD', 'ASTER-USD', 'AVT-USD', 'EIGEN-USD', 'GROVE-USD', 'BTRST-USD', 'BNT-USD', 'MANA-USD', 'MAMO-USD', 'RGT-USD', 'VGX-USD', 'AURORA-USD', 'RLS-USD', 'KRL-USD', 'ACS-USD', 'PUMP-USD', 'KAT-USD', 'LMTS-USD', 'HYPE-USD', 'SYLO-USD', 'OOKI-USD', 'BNB-USD', 'OSMO-USD', 'MSOL-USD', 'GHST-USD', 'ZKC-USD', 'OPG-USD', 'TURBO-USD', 'MEGA-USD', 'PLU-USD', 'S-USD', 'ZK-USD', 'RPL-USD', 'CRV-USD', 'PROS-USD', 'FAI-USD', 'USDS-USD', 'NEON-USD', 'IOTX-USD', 'HYPER-USD', 'SXT-USD', 'EGLD-USD', 'LRDS-USD', 'VARA-USD', 'COOKIE-USD', 'VOXEL-USD', 'INV-USD', 'XYO-USD', 'WET-USD', 'ZORA-USD', 'QNT-USD', 'FOX-USD', 'KTA-USD', 'RARI-USD', 'ALEPH-USD', 'WCFG-USD', 'ZRO-USD', 'REP-USD', 'TRU-USD', 'DYP-USD', 'FUN1-USD', 'ELSA-USD', 'VVV-USD', 'ATA-USD', 'OMG-USD', 'CHZ-USD', 'SHIB-USD', 'XRP-USD', 'ZRX-USD', 'PERP-USD', 'DIEM-USD', 'MIR-USD', 'WCT-USD', 'VTHO-USD', 'ICNT-USD', 'TROLL-USD', 'RSR-USD', 'PAXG-USD', 'DOLO-USD', 'WLUNA-USD', 'MOBILE-USD', 'SD-USD', 'BASED1-USD', 'AUDIO-USD', 'C98-USD', 'BLAST-USD', 'PENGU-USD', 'MXC-USD', 'UNI-USD', 'LCX-USD', 'MNDE-USD', 'LINEA-USD', 'MKR-USD', 'FIL-USD', 'FARTCOIN-USD', 'EURC-USD', 'BONK-USD', 'OGN-USD', 'PRL-USD', 'SUPER-USD', 'ONDO-USD', 'HOME-USD', 'DBR-USD', 'APR-USD', 'NCT-USD', 'WBTC-USD', 'PENDLE-USD', 'WRON-USD', 'BILL-USD', 'COVAL-USD', 'SUKU-USD', 'INJ-USD', 'CTR-USD', 'HIGH-USD', 'SIGN-USD', 'QSP-USD', 'DAR-USD', 'EDGEX-USD', 'TOWNS-USD', 'MLN-USD', 'AUCTION-USD', '00-USD', 'REQ-USD', 'APT-USD', 'AWE-USD', 'USD1-USD', 'LIGHTER-USD', 'POL-USD', 'CTX-USD', 'FIGHT-USD', 'KNC-USD', 'SNX-USD', 'VIRTUAL-USD', 'UPI-USD', 'XPL-USD', 'NEAR-USD', 'WLFI-USD', 'GALA-USD', 'GLM-USD', 'BARD-USD', 'REN-USD', 'COW-USD', 'SAND-USD', 'QI-USD', 'RNDR-USD', 'DIA-USD', 'HOPR-USD', 'GUSD-USD', 'T-USD', 'AI-USD', 'PNUT-USD', 'COMP-USD', 'ATOM-USD', 'DOOD-USD', 'POWR-USD', 'SHPING-USD', 'MAGIC-USD', 'MORPHO-USD', 'TNSR-USD', 'ANKR-USD', 'BNKR-USD', 'LOKA-USD', 'FET-USD', 'SPX-USD', 'TRUST-USD', 'BOBBOB-USD', 'NOM-USD', 'LDO-USD', 'APE-USD', 'THQ-USD', 'CAP-USD', 'BADGER-USD', 'ENJ-USD', 'LRC-USD', 'IP-USD', 'MCO2-USD', 'WAMPL-USD', 'MANTLE-USD', 'MUSE-USD', 'JITOSOL-USD', 'META-USD', 'RBN-USD', 'YFI-USD', 'FIDA-USD', 'AAVE-USD', 'BAL-USD', 'DREP-USD', 'XAN-USD', 'CORECHAIN-USD', 'GIGA-USD', 'JUP-USD', 'ROBO-USD', 'FLOKI-USD', 'LTC-USD', 'CRPT-USD', 'SENT-USD', 'AMP-USD', 'SKL-USD', 'DDX-USD', 'TIME-USD', 'LINK-USD', 'USELESS-USD', 'ZAMA-USD', 'BLZ-USD', 'WAXL-USD', 'NMR-USD', 'FX-USD', 'DOT-USD', 'TAO-USD', 'W-USD', 'SUI-USD', 'COSMOSDYDX-USD', 'DEGEN-USD', 'GYEN-USD', 'MINA-USD', 'TRB-USD', 'FLOW-USD', 'SEI-USD', 'ALGO-USD', 'TON-USD', 'AZTEC-USD', 'HFT-USD', 'CVC-USD', 'SUSHI-USD', 'MET-USD', 'COTI-USD', 'PYUSD-USD', 'B3-USD', 'ACX-USD', 'ERA-USD', 'USDT-USD', 'BOBA-USD', 'EDGE-USD', 'FORT-USD', 'PNG-USD', 'PROVE-USD', 'ZEC-USD', 'L3-USD', 'MTL-USD', 'LQTY-USD', 'GMT-USD', 'BLUR-USD', 'STG-USD', 'PRO-USD', 'YFII-USD', 'POLY-USD', 'STRK-USD', 'NEX-USD', 'UP-USD', 'NKN-USD', 'ADA-USD', 'TRIA-USD', 'DEXT-USD', 'ILV-USD', 'XCN-USD', 'GEOD-USD', 'SNT-USD', 'MON-USD', 'MUSD-USD', 'MATIC-USD', 'EOS-USD', 'WLD-USD', 'EUL-USD', 'MOG-USD', 'ICP-USD', 'NU-USD', 'KEYCAT-USD', 'AXS-USD', 'KAITO-USD', 'AST-USD', 'ERN-USD', 'STORJ-USD', 'GFI-USD', 'MDT-USD', 'MEDIA-USD', 'PROMPT-USD', 'CLANKER-USD', 'MULTI-USD', 'AGLD-USD', 'TRAC-USD', 'BCH-USD', 'BREV-USD', 'FORTH-USD', 'RLY-USD', 'ARKM-USD', 'CVX-USD', 'KSM-USD', 'A8-USD', 'ELA-USD', 'IO-USD', 'SPA-USD', 'INX-USD', 'LPT-USD', 'LOOM-USD', 'KEEP-USD', 'AVAX-USD', 'PAX-USD', 'PYTH-USD', 'G-USD', 'ETH-USD', 'TREE-USD', 'GRT-USD', 'SWELL-USD', 'UST-USD', 'CAKE-USD', 'PRQ-USD', 'PRIME-USD', 'OXT-USD', 'IRYS-USD', 'SPK-USD', 'KITE-USD', 'AERO-USD', 'RENDER-USD', 'TRIBE-USD', 'AXL-USD', 'CGLD-USD', 'SKR-USD', 'KERNEL-USD', 'MATH-USD', '1INCH-USD', 'DRV-USD', 'ZEN-USD', 'SAPIEN-USD', 'TONE-USD', 'RARE-USD', 'ROSE-USD', 'MPLX-USD', 'DAI-USD', 'AERGO-USD', 'FIS-USD', 'ENS-USD', 'QUICK-USD', 'FLR-USD', 'OP-USD', 'GST-USD', 'ESP-USD', 'METIS-USD', 'ORN-USD', 'RNBW-USD', 'DOGINME-USD', 'SAFE-USD', 'ZETA-USD', 'SQD-USD', 'FLOCK-USD', 'LIT-USD', 'MASK-USD', 'BAND-USD', 'TIA-USD', 'PLA-USD', 'SHDW-USD', 'KAVA-USD', 'BEAM-USD', 'RECALL-USD', 'LSETH-USD'],
+    token_list:list=['THQ-USD', 'WLUNA-USD', 'IMX-USD', 'RAI-USD', 'BLEND-USD', 'DESO-USD', 'OCEAN-USD', 'ATA-USD', 'AKT-USD', 'BICO-USD', 'NU-USD', 'LPT-USD', 'MATIC-USD', 'VVV-USD', 'SKY-USD', 'BONK-USD', 'UNFI-USD', 'LINEA-USD', 'ZRO-USD', 'YFII-USD', 'ATOM-USD', 'SIGN-USD', 'LTC-USD', 'NOM-USD', 'MEGA-USD', 'RNBW-USD', 'STORJ-USD', 'TVK-USD', 'ZK-USD', 'NEON-USD', 'ALGO-USD', 'GTC-USD', 'KTA-USD', 'LIGHTER-USD', 'AVT-USD', 'A8-USD', 'SOL-USD', 'VIRTUAL-USD', 'BILL-USD', 'LIT-USD', 'NEAR-USD', 'DOT-USD', 'BTRST-USD', 'KEYCAT-USD', 'MANA-USD', 'GFI-USD', 'POL-USD', 'PRL-USD', 'OP-USD', 'HFT-USD', 'AVAX-USD', 'DAI-USD', 'KRL-USD', 'PUMP-USD', 'COVAL-USD', 'LQTY-USD', 'BNKR-USD', 'DBR-USD', 'WRON-USD', 'ASTER-USD', 'OGN-USD', 'CTSI-USD', 'SNT-USD', 'LOOM-USD', 'PIRATE-USD', 'GIGA-USD', 'GAL-USD', 'ZAMA-USD', 'ARX-USD', 'KAT-USD', 'SKR-USD', 'TURBO-USD', 'LOKA-USD', 'DNT-USD', 'PRIME-USD', 'OPN-USD', 'AMP-USD', 'NEST-USD', 'GYEN-USD', 'WELL-USD', 'ABT-USD', 'QSP-USD', 'XAN-USD', 'DAR-USD', 'PAX-USD', 'VTHO-USD', 'KEEP-USD', 'MUSE-USD', 'YFI-USD', 'POND-USD', 'DYP-USD', 'SQD-USD', 'MAGIC-USD', 'MONA-USD', 'HIGH-USD', 'CRO-USD', 'YB-USD', 'GALA-USD', 'AXS-USD', 'CVX-USD', 'RGT-USD', 'NEX-USD', 'APE-USD', 'UNI-USD', 'KARRAT-USD', 'MOODENG-USD', 'ASM-USD', 'POPCAT-USD', 'OXT-USD', 'FLOCK-USD', 'QUICK-USD', 'SYRUP-USD', 'MET-USD', 'MORPHO-USD', 'SUI-USD', 'SEAM-USD', 'WCFG-USD', 'BEAM-USD', 'FORTH-USD', 'ZETA-USD', 'TRU-USD', 'DRIFT-USD', 'GNO-USD', 'IRYS-USD', 'CAKE-USD', 'UST-USD', 'TRIBE-USD', 'SUSHI-USD', 'MSOL-USD', 'RBN-USD', 'AST-USD', 'HOPR-USD', 'FET-USD', 'FX-USD', 'LINK-USD', 'AZTEC-USD', 'USD1-USD', 'FOX-USD', 'BOND-USD', 'L3-USD', 'REZ-USD', 'USELESS-USD', 'RLS-USD', 'BARD-USD', 'PLA-USD', 'RENDER-USD', 'PERP-USD', 'DEXT-USD', 'ILV-USD', 'GHST-USD', 'TOWNS-USD', 'ZEN-USD', 'ALEPH-USD', 'DRV-USD', 'PUNDIX-USD', 'SWELL-USD', 'EUL-USD', 'ETHFI-USD', 'TRB-USD', 'RNDR-USD', 'INX-USD', 'CP-USD', 'ORCA-USD', 'ROBO-USD', 'C98-USD', 'XPL-USD', 'RARI-USD', 'EDGEX-USD', 'PROMPT-USD', 'ALIGN-USD', 'SUKU-USD', 'ANT-USD', 'ATH-USD', 'EURC-USD', 'HBAR-USD', 'FIS-USD', 'BTC-USD', 'REP-USD', 'CGLD-USD', 'JITOSOL-USD', 'HYPER-USD', 'ARB-USD', 'ADA-USD', 'AWE-USD', 'ZORA-USD', 'COSMOSDYDX-USD', 'JTO-USD', 'ELA-USD', 'SPX-USD', 'XLM-USD', 'STX-USD', 'AGLD-USD', 'SXT-USD', 'TONE-USD', 'RAD-USD', 'SHPING-USD', 'FORT-USD', 'ALICE-USD', 'POLY-USD', 'ANKR-USD', 'ERN-USD', 'XYO-USD', 'JUPITER-USD', 'CTR-USD', 'FIGHT-USD', '2Z-USD', 'USDS-USD', 'ARKM-USD', 'ONDO-USD', 'EOS-USD', 'DOGINME-USD', 'ELSA-USD', 'MXC-USD', 'DOOD-USD', 'TIME-USD', 'PRO-USD', 'GRASS-USD', 'XRP-USD', 'LCX-USD', 'SYN-USD', 'W-USD', 'BNT-USD', 'SYLO-USD', 'WIF-USD', 'COW-USD', 'POWR-USD', 'GUSD-USD', 'HYPE-USD', 'TIA-USD', 'VGX-USD', 'WLD-USD', 'EIGEN-USD', 'WAL-USD', 'TAO-USD', 'RLC-USD', 'HNT-USD', 'UMA-USD', 'CBETH-USD', 'WCT-USD', 'NCT-USD', 'BASED1-USD', 'KAITO-USD', 'MTL-USD', 'HOME-USD', 'INDEX-USD', 'SHIB-USD', 'RPL-USD', 'DIEM-USD', 'MKR-USD', 'MINA-USD', 'FLR-USD', 'TRUST-USD', 'FLOW-USD', 'STRK-USD', 'BUSD-USD', 'MEZO-USD', 'IO-USD', 'DEGEN-USD', 'VOXEL-USD', 'BLAST-USD', 'FLOKI-USD', 'MEDIA-USD', 'APR-USD', 'POLS-USD', 'XCN-USD', 'METIS-USD', 'BREV-USD', 'FLUID-USD', 'GEOD-USD', 'SNX-USD', 'AVNT-USD', 'B3-USD', 'MULTI-USD', 'SAPIEN-USD', 'CELR-USD', 'S-USD', 'DRB-USD', 'REN-USD', 'MOBILE-USD', 'ENA-USD', 'CAP-USD', 'GMT-USD', 'ENS-USD', 'CVC-USD', 'KAVA-USD', 'COTI-USD', 'MOVE-USD', 'RAY-USD', 'PEPE-USD', 'CLV-USD', 'LRDS-USD', 'WLFI-USD', 'GROVE-USD', 'IDEX-USD', 'LSETH-USD', 'FARTCOIN-USD', 'GST-USD', 'O-USD', 'ACS-USD', 'KMNO-USD', 'GLM-USD', 'AERGO-USD', 'INJ-USD', 'GRVT-USD', 'MPL-USD', 'COOKIE-USD', 'DREP-USD', 'PRQ-USD', 'HONEY-USD', 'GRT-USD', 'PNG-USD', 'ALLO-USD', 'FUN1-USD', 'BIO-USD', 'ROSE-USD', 'SENT-USD', 'API3-USD', 'CLANKER-USD', 'G-USD', 'UPI-USD', 'BERA-USD', 'ALEO-USD', 'T-USD', 'SWFTC-USD', 'ETC-USD', 'DIMO-USD', 'KNC-USD', 'CTX-USD', 'AAVE-USD', 'GWEI-USD', 'AURORA-USD', 'NOICE-USD', 'SKL-USD', 'FIL-USD', 'JASMY-USD', 'KAIO-USD', 'NEWT-USD', 'TREE-USD', 'RONIN-USD', 'USDT-USD', 'IOTX-USD', 'SUP-USD', 'DIA-USD', 'MCO2-USD', 'WAMPL-USD', 'RSR-USD', 'PYR-USD', 'SAND-USD', 'AUCTION-USD', 'OMG-USD', 'ARPA-USD', 'OMNI-USD', 'ACX-USD', 'MNDE-USD', 'TOSHI-USD', 'TRAC-USD', 'NKN-USD', 'TNSR-USD', 'TON-USD', 'BAL-USD', 'DDX-USD', 'BOBBOB-USD', 'AI-USD', 'BIT-USD', 'DOGE-USD', 'WAXL-USD', 'QI-USD', 'CORECHAIN-USD', 'IP-USD', 'GODS-USD', 'CRPT-USD', 'OPG-USD', 'SEI-USD', 'DASH-USD', 'LA-USD', '1INCH-USD', 'META-USD', 'SPK-USD', 'RLY-USD', 'LDO-USD', 'BOBA-USD', 'CHZ-USD', 'ICNT-USD', 'PLU-USD', 'MATH-USD', 'PYTH-USD', 'MANTLE-USD', 'PRCL-USD', 'BADGER-USD', 'APT-USD', 'SYND-USD', 'AUDIO-USD', 'ORN-USD', 'RAVE-USD', 'ETH-USD', 'TRUMP-USD', 'RE-USD', 'LRC-USD', 'RSC-USD', 'SHDW-USD', 'BASECAT-USD', 'ALCX-USD', '00-USD', 'BLUR-USD', 'MLN-USD', 'MPLX-USD', 'BNB-USD', 'ACH-USD', 'ESP-USD', 'ZETACHAIN-USD', 'LMTS-USD', 'MAMO-USD', 'TRIA-USD', 'QNT-USD', 'MON-USD', 'MUSD-USD', 'RARE-USD', 'VARA-USD', 'OSMO-USD', 'ALT-USD', 'DEEP-USD', 'RED-USD', 'SPA-USD', 'PENDLE-USD', 'MIR-USD', 'MDT-USD', 'CHIP-USD', 'FAI-USD', 'ENJ-USD', 'KERNEL-USD', 'PROS-USD', 'KSM-USD', 'FARM-USD', 'OOKI-USD', 'MOG-USD', 'BLZ-USD', 'FIDA-USD', 'BIRB-USD', 'ZKP-USD', 'AXL-USD', 'ZRX-USD', 'IMU-USD', 'REQ-USD', 'DOLO-USD', 'SD-USD', 'BAT-USD', 'XTZ-USD', 'WET-USD', 'TROLL-USD', 'BAND-USD', 'COMP-USD', 'CRV-USD', 'UP-USD', 'VET-USD', 'EGLD-USD', 'PYUSD-USD', 'ERA-USD', 'CHECK-USD', 'SPELL-USD', 'ME-USD', 'ZEC-USD', 'RECALL-USD', 'MASK-USD', 'PNUT-USD', 'STG-USD', 'CFG-USD', 'BCH-USD', 'SAFE-USD', 'VELO-USD', 'AIOZ-USD', 'PENGU-USD', 'WMTX-USD', 'ICP-USD', 'LAYER-USD', 'NMR-USD', 'INV-USD', 'SUPER-USD', 'PLUME-USD', 'KITE-USD', 'PAXG-USD', 'BIGTIME-USD', 'ZKC-USD', 'JUP-USD', 'AERO-USD', 'PROVE-USD', 'WBTC-USD', 'EDGE-USD'],
     type:str='csv', interval:int=3600, all_tokens:bool=True, refresh_24h:bool=False, pause:int=0
 ):
 ```
@@ -198,8 +209,10 @@ The function:
     - If not exists: Downloads full history starting from 2016
 - Saves data in specified format, handling duplicates and sorting by date
 - For hourly data (interval=3600), aligns to hour boundaries
+:::
 
 
+::: {#eec6bd45 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:20.853524+00:00","shell.execute_reply":"2026-09-09T00:07:20.855460+00:00","total":0.0019389170047361404}}' execution_count=15}
 ---
 
 [source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L277){target="_blank" style="float:right; font-size:smaller"}
@@ -231,8 +244,10 @@ The function:
     - If exists: Loads file and appends any new data since last recorded date
     - If not exists: Downloads full history starting from 2016
 - For hourly data (interval=3600), aligns to hour boundaries
+:::
 
 
+::: {#42f38cea .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:20.856088+00:00","shell.execute_reply":"2026-09-09T00:07:20.857362+00:00","total":0.0012752499897032976}}' execution_count=17}
 ---
 
 [source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L339){target="_blank" style="float:right; font-size:smaller"}
@@ -256,8 +271,10 @@ Returns:
 
 Raises:
     ValueError: If file type is not supported (must be "csv" or "parquet").
+:::
 
 
+::: {#c9ff7c7b .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:20.857797+00:00","shell.execute_reply":"2026-09-09T00:07:20.858908+00:00","total":0.001111541991122067}}' execution_count=19}
 ---
 
 [source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L367){target="_blank" style="float:right; font-size:smaller"}
@@ -278,8 +295,10 @@ Args:
 
 Returns:
     pandas dataframe: Last 24 hours price data.
+:::
 
 
+::: {#690934d5 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:20.859635+00:00","shell.execute_reply":"2026-09-09T00:07:20.860975+00:00","total":0.0013404580095084384}}' execution_count=21}
 ---
 
 [source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L386){target="_blank" style="float:right; font-size:smaller"}
@@ -299,13 +318,14 @@ Args:
 
 Returns:
     pandas dataframe: Binance format dataframe.
+:::
 
 
 ## Examples
 
 Load the package
 
-::: {#89ad9d45 .cell}
+::: {#89ad9d45 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:20.861026+00:00","shell.execute_reply":"2026-09-09T00:07:21.686936+00:00","total":0.8259117909910856}}' execution_count=22}
 ``` {.python .cell-code}
 from token_data.coinbase import *
 ```

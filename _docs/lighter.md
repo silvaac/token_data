@@ -24,6 +24,10 @@ Notes:
 
 ------------------------------------------------------------------------
 
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L41"
+target="_blank" style="float:right; font-size:smaller">source</a>
+
 ### lighter_spot_markets
 
 ``` python
@@ -42,6 +46,10 @@ pair symbol (e.g. ‘LIT/USDC’) - market_id: Integer market ID used for
 candle requests
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L71"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### retry_fetch_candles
 
@@ -66,6 +74,10 @@ Returns: list: List of candle dicts with keys t (ms), o, h, l, c, v, V,
 i
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L116"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### scrape_candles
 
@@ -96,6 +108,10 @@ i
 
 ------------------------------------------------------------------------
 
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L169"
+target="_blank" style="float:right; font-size:smaller">source</a>
+
 ### candles_to_df
 
 ``` python
@@ -115,6 +131,10 @@ values - pair: Trading pair symbol Sorted by datetime with duplicate
 timestamps removed.
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L206"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### lighter_candles
 
@@ -367,7 +387,7 @@ df_sample
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L175"
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L199"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### save_file
@@ -387,6 +407,10 @@ or “parquet”. Defaults to “parquet”
 
 ------------------------------------------------------------------------
 
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L230"
+target="_blank" style="float:right; font-size:smaller">source</a>
+
 ### file_name_to_symbol
 
 ``` python
@@ -400,6 +424,10 @@ def file_name_to_symbol(
 Example: ‘LIT-USDC_1h.parquet’ -\> ‘LIT/USDC’
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L222"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### symbol_to_file_name
 
@@ -429,6 +457,10 @@ print('save_file round-trip OK')
     save_file round-trip OK
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/lighter.py#L277"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### lighter_to_file
 

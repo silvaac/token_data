@@ -207,21 +207,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#binance" id="toc-binance" class="nav-link active" data-scroll-target="#binance">Binance</a>
-  <ul class="collapse">
-  <li><a href="#binance_available" id="toc-binance_available" class="nav-link" data-scroll-target="#binance_available">binance_available</a></li>
-  <li><a href="#retry_fetch_ohlcv" id="toc-retry_fetch_ohlcv" class="nav-link" data-scroll-target="#retry_fetch_ohlcv">retry_fetch_ohlcv</a></li>
-  <li><a href="#scrape_ohlcv" id="toc-scrape_ohlcv" class="nav-link" data-scroll-target="#scrape_ohlcv">scrape_ohlcv</a></li>
-  <li><a href="#ohlcv_to_df" id="toc-ohlcv_to_df" class="nav-link" data-scroll-target="#ohlcv_to_df">ohlcv_to_df</a></li>
-  <li><a href="#binance_ohlcv" id="toc-binance_ohlcv" class="nav-link" data-scroll-target="#binance_ohlcv">binance_ohlcv</a></li>
-  <li><a href="#binance_usdt_tokens" id="toc-binance_usdt_tokens" class="nav-link" data-scroll-target="#binance_usdt_tokens">binance_usdt_tokens</a></li>
-  <li><a href="#save_file" id="toc-save_file" class="nav-link" data-scroll-target="#save_file">save_file</a></li>
-  <li><a href="#file_name_to_symbol" id="toc-file_name_to_symbol" class="nav-link" data-scroll-target="#file_name_to_symbol">file_name_to_symbol</a></li>
-  <li><a href="#symbol_to_file_name" id="toc-symbol_to_file_name" class="nav-link" data-scroll-target="#symbol_to_file_name">symbol_to_file_name</a></li>
-  <li><a href="#binance_to_file" id="toc-binance_to_file" class="nav-link" data-scroll-target="#binance_to_file">binance_to_file</a></li>
-  </ul></li>
+  <li><a href="#binance" id="toc-binance" class="nav-link active" data-scroll-target="#binance">Binance</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/silvaac/token_data/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="binance.md"><i class="bi bi-file-code"></i>CommonMark</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/silvaac/token_data/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="binance.md"><i class="bi bi-file-code"></i>Markdown</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
@@ -235,12 +223,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Manages the Binance data download and processing using the <a href="https://github.com/ccxt/ccxt">ccxt</a> package. Candles (OHLCV) are downloaded through <code>ccxt.binance</code> and saved, one file per trading pair, into a folder named after the exchange (e.g.&nbsp;<code>../data/binance</code>).</p>
 <p>Notes:</p>
 <ul>
-<li>The main Binance API is <strong>geo-blocked in some regions (e.g.&nbsp;the US)</strong>. Use <code>binance_available()</code> to check reachability; the live test cells in this notebook skip gracefully when the API cannot be reached. From the US you can pass <code>exchange_id='binanceus'</code> to the functions below.</li>
+<li>The main Binance API is <strong>geo-blocked in some regions (e.g.&nbsp;the US)</strong>. Use <a href="https://silvaac.github.io/token_data/binance.html#binance_available"><code>binance_available()</code></a> to check reachability; the live test cells in this notebook skip gracefully when the API cannot be reached. From the US you can pass <code>exchange_id='binanceus'</code> to the functions below.</li>
 <li>Binance serves deep history (up to 1000 candles per request), so full backfills are possible.</li>
 <li>Rate limits are handled by ccxt (<code>enableRateLimit=True</code>).</li>
 </ul>
 <p>** Finally, datetime columns are in UTC. **</p>
+<div id="2eeaaba1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.722336+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.741380+00:00&quot;,&quot;total&quot;:0.019046291999984533}}" data-execution_count="3">
 <hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L16" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="binance_available" class="level3">
 <h3 class="anchored" data-anchor-id="binance_available">binance_available</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> binance_available(</span>
@@ -250,8 +240,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The main Binance API is geo-blocked in some regions (e.g.&nbsp;the US, HTTP 451).</p>
 <p>Args: exchange_id (str, optional): ccxt exchange id - “binance” or “binanceus”. Defaults to “binance” timeout (int, optional): Request timeout in milliseconds. Defaults to 10000</p>
 <p>Returns: bool: True if the API responds, False otherwise (geo-block, network error, etc.)</p>
-<hr>
 </section>
+</div>
+<div id="42489cae" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.742190+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.743521+00:00&quot;,&quot;total&quot;:0.0013315409887582064}}" data-execution_count="5">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L39" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="retry_fetch_ohlcv" class="level3">
 <h3 class="anchored" data-anchor-id="retry_fetch_ohlcv">retry_fetch_ohlcv</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> retry_fetch_ohlcv(</span>
@@ -261,8 +254,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Args: exchange (ccxt.Exchange): Instantiated ccxt exchange object max_retries (int): Maximum number of retries before raising the last error symbol (str): Trading pair symbol (e.g.&nbsp;“BTC/USDT”) timeframe (str): Candle timeframe (e.g.&nbsp;“1m”, “1h”, “1d”) since (int): Start time in milliseconds since epoch (UTC) limit (int): Maximum number of candles to fetch verbose (bool, optional): If True, prints progress messages. Defaults to False</p>
 <p>Returns: list: List of OHLCV candles [timestamp_ms, open, high, low, close, volume]</p>
 <p>Raises: Exception: The last ccxt error if all retries fail</p>
-<hr>
 </section>
+</div>
+<div id="062e1b5b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.744250+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.745698+00:00&quot;,&quot;total&quot;:0.0014489579916698858}}" data-execution_count="7">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L75" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="scrape_ohlcv" class="level3">
 <h3 class="anchored" data-anchor-id="scrape_ohlcv">scrape_ohlcv</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scrape_ohlcv(</span>
@@ -271,8 +267,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Download OHLCV candles in pages of <code>limit</code> bars between <code>since</code> and <code>end</code>.</em></p>
 <p>Args: exchange (ccxt.Exchange): Instantiated ccxt exchange object (markets loaded) symbol (str): Trading pair symbol (e.g.&nbsp;“BTC/USDT”) timeframe (str): Candle timeframe (e.g.&nbsp;“1m”, “1h”, “1d”) since (int or str): Start time in milliseconds since epoch or ISO 8601 string end (int or str, optional): End time in milliseconds or ISO 8601 string. Defaults to now. max_retries (int, optional): Retries per page. Defaults to 3 limit (int, optional): Candles per request. Defaults to 1000 (Binance maximum) verbose (bool, optional): If True, prints progress messages. Defaults to False</p>
 <p>Returns: list: List of OHLCV candles [timestamp_ms, open, high, low, close, volume]</p>
-<hr>
 </section>
+</div>
+<div id="cc389d75" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.746230+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.747343+00:00&quot;,&quot;total&quot;:0.0011137499968754128}}" data-execution_count="9">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L117" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="ohlcv_to_df" class="level3">
 <h3 class="anchored" data-anchor-id="ohlcv_to_df">ohlcv_to_df</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ohlcv_to_df(</span>
@@ -281,8 +280,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Convert a raw ccxt OHLCV list into a tidy DataFrame.</em></p>
 <p>Args: ohlcv (list): List of candles [timestamp_ms, open, high, low, close, volume] symbol (str): Trading pair symbol added as the <code>pair</code> column</p>
 <p>Returns: pandas.DataFrame: DataFrame with columns: - datetime: Candle timestamp (UTC, timezone-aware) - open, high, low, close, volume: OHLCV values - pair: Trading pair symbol Sorted by datetime with duplicate timestamps removed.</p>
-<hr>
 </section>
+</div>
+<div id="36ee3d28" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.748212+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.749709+00:00&quot;,&quot;total&quot;:0.001497959005064331}}" data-execution_count="11">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L141" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="binance_ohlcv" class="level3">
 <h3 class="anchored" data-anchor-id="binance_ohlcv">binance_ohlcv</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> binance_ohlcv(</span>
@@ -292,8 +294,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Download OHLCV candles for a symbol from Binance.</em></p>
 <p>Args: symbol (str, optional): Trading pair symbol. Defaults to “BTC/USDT” timeframe (str, optional): Candle timeframe. Defaults to “1h” since (int or str, optional): Start time (ms since epoch or ISO 8601). If None, downloads the most recent ~<code>limit</code> candles. end (int or str, optional): End time (ms or ISO 8601). Defaults to now max_retries (int, optional): Retries per page. Defaults to 3 limit (int, optional): Candles per request. Defaults to 1000 exchange (ccxt.Exchange, optional): Reusable exchange instance. If None, a new one is created exchange_id (str, optional): ccxt exchange id used when <code>exchange</code> is None - “binance” or “binanceus”. Defaults to “binance” verbose (bool, optional): If True, prints progress messages. Defaults to False</p>
 <p>Returns: pandas.DataFrame: Tidy OHLCV DataFrame (see <code>ohlcv_to_df</code>)</p>
-<hr>
 </section>
+</div>
+<div id="46ad8a10" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.750333+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.751668+00:00&quot;,&quot;total&quot;:0.0013373339897952974}}" data-execution_count="13">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L173" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="binance_usdt_tokens" class="level3">
 <h3 class="anchored" data-anchor-id="binance_usdt_tokens">binance_usdt_tokens</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> binance_usdt_tokens(</span>
@@ -302,8 +307,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Retrieves all active Binance spot trading pairs quoted in USDT.</em></p>
 <p>Args: exchange (ccxt.Exchange, optional): Reusable exchange instance. If None, a new one is created exchange_id (str, optional): ccxt exchange id used when <code>exchange</code> is None - “binance” or “binanceus”. Defaults to “binance”</p>
 <p>Returns: pandas.DataFrame: DataFrame with columns: - id: Binance market id (e.g.&nbsp;‘BTCUSDT’) - symbol: Unified ccxt symbol (e.g.&nbsp;‘BTC/USDT’) - base: Base currency (e.g.&nbsp;‘BTC’) - quote: Always ‘USDT’ for this filtered dataset - active: Whether the market is currently active</p>
+</section>
+</div>
 <section id="example-tests" class="level4">
-<h4 class="anchored" data-anchor-id="example-tests">Example / tests</h4>
+<h4 class="anchored">Example / tests</h4>
 <p>The live tests below run only if the Binance API is reachable from this machine (it is geo-blocked in some regions, e.g.&nbsp;the US). Offline tests always run.</p>
 <div id="f8a29dae" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Offline test: ohlcv_to_df shapes raw candles correctly and removes duplicates</span></span>
@@ -343,10 +350,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Skipping live Binance token universe test (API unreachable, likely geo-blocked)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<div id="fe8bd57a" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.752510+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.753759+00:00&quot;,&quot;total&quot;:0.0012497080024331808}}" data-execution_count="15">
 <hr>
-<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L175" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-</section>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L199" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="save_file" class="level3">
 <h3 class="anchored" data-anchor-id="save_file">save_file</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_file(</span>
@@ -355,8 +361,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Save a pandas DataFrame to a file in either CSV or Parquet format.</em></p>
 <p>Args: df (pandas.DataFrame): The DataFrame to save folder_path (str): Directory path where the file will be saved file_name (str): Name of the file without extension type (str, optional): File format - either “csv” or “parquet”. Defaults to “parquet”</p>
 <p>The function saves the DataFrame to the specified path, handling the file extension automatically. For CSV files, the index is not saved. Creates the folder if it doesn’t exist.</p>
-<hr>
 </section>
+</div>
+<div id="1c0ddbb3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.754240+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.755297+00:00&quot;,&quot;total&quot;:0.0010582910035736859}}" data-execution_count="17">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L230" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="file_name_to_symbol" class="level3">
 <h3 class="anchored" data-anchor-id="file_name_to_symbol">file_name_to_symbol</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> file_name_to_symbol(</span>
@@ -364,8 +373,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Convert a file name back into a ccxt symbol.</em></p>
 <p>Example: ‘BTC-USDT_1h.parquet’ -&gt; ‘BTC/USDT’</p>
-<hr>
 </section>
+</div>
+<div id="ae066f6e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.755332+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.756604+00:00&quot;,&quot;total&quot;:0.0012728330038953573}}" data-execution_count="18">
+<hr>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L222" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="symbol_to_file_name" class="level3">
 <h3 class="anchored" data-anchor-id="symbol_to_file_name">symbol_to_file_name</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> symbol_to_file_name(</span>
@@ -373,6 +385,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>):</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Convert a ccxt symbol and timeframe into a file name (without extension).</em></p>
 <p>Example: (‘BTC/USDT’, ‘1h’) -&gt; ‘BTC-USDT_1h’</p>
+</section>
+</div>
 <div id="5fa0ed70" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Offline test: save_file round-trip and file-name helpers</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tempfile</span>
@@ -385,8 +399,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> file_name_to_symbol(<span class="st">'BTC-USDT_1h.parquet'</span>) <span class="op">==</span> <span class="st">'BTC/USDT'</span></span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'save_file round-trip OK'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<div id="c71f53ee" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-09-09T00:07:19.758303+00:00&quot;,&quot;shell.execute_reply&quot;:&quot;2026-09-09T00:07:19.760413+00:00&quot;,&quot;total&quot;:0.0021121249883435667}}" data-execution_count="20">
 <hr>
-</section>
+<p><a href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L241" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="binance_to_file" class="level3">
 <h3 class="anchored" data-anchor-id="binance_to_file">binance_to_file</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> binance_to_file(</span>
@@ -397,6 +412,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>Downloads and maintains historical Binance OHLCV data, saving one file per pair.</em></p>
 <p>Args: folder_path (str): Path where pair data files will be stored, named after the exchange. Defaults to “../data/binance” token_list (list): List of ccxt symbols to process. Defaults to [‘BTC/USDT’, ‘ETH/USDT’] type (str): File format to save data - either “csv” or “parquet”. Defaults to “parquet” timeframe (str): Candle timeframe (e.g.&nbsp;“1m”, “1h”, “1d”). Defaults to “1h” refresh_hours (int): Hours of the most recent data to re-download when updating. Defaults to 24 first_date (str): ISO 8601 start date used for the initial full-history download of a pair. Defaults to ‘2021-01-01T00:00:00Z’ all_tokens (bool): If True, includes any additional pairs found in the folder path. Defaults to True pause (int): Seconds to wait between pairs. Defaults to 1 exchange_id (str): ccxt exchange id - “binance” or “binanceus”. Defaults to “binance” verbose (bool): If True, prints download progress. Defaults to False</p>
 <p>The function: - Creates the folder_path if it doesn’t exist - Date/Time is UTC - For each pair, checks if a data file exists: - If exists: Loads the file and appends new data, refreshing the last <code>refresh_hours</code> - If not exists: Downloads full history starting from <code>first_date</code> - Saves data in the specified format, handling duplicates and sorting by datetime</p>
+</section>
+</div>
+</section>
 <section id="example-tests-1" class="level4">
 <h4 class="anchored" data-anchor-id="example-tests-1">Example / tests</h4>
 <div id="29b85c16" class="cell">
@@ -432,7 +450,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
-</section>
 </section>
 </section>
 

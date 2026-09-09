@@ -12,9 +12,11 @@ into a folder named after the exchange (e.g. `../data/binance`).
 Notes:
 
 - The main Binance API is **geo-blocked in some regions (e.g. the US)**.
-  Use `binance_available()` to check reachability; the live test cells
-  in this notebook skip gracefully when the API cannot be reached. From
-  the US you can pass `exchange_id='binanceus'` to the functions below.
+  Use
+  [`binance_available()`](https://silvaac.github.io/token_data/binance.html#binance_available)
+  to check reachability; the live test cells in this notebook skip
+  gracefully when the API cannot be reached. From the US you can pass
+  `exchange_id='binanceus'` to the functions below.
 - Binance serves deep history (up to 1000 candles per request), so full
   backfills are possible.
 - Rate limits are handled by ccxt (`enableRateLimit=True`).
@@ -22,6 +24,10 @@ Notes:
 \*\* Finally, datetime columns are in UTC. \*\*
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L16"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### binance_available
 
@@ -44,6 +50,10 @@ Returns: bool: True if the API responds, False otherwise (geo-block,
 network error, etc.)
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L39"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### retry_fetch_ohlcv
 
@@ -71,6 +81,10 @@ Raises: Exception: The last ccxt error if all retries fail
 
 ------------------------------------------------------------------------
 
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L75"
+target="_blank" style="float:right; font-size:smaller">source</a>
+
 ### scrape_ohlcv
 
 ``` python
@@ -97,6 +111,10 @@ close, volume\]
 
 ------------------------------------------------------------------------
 
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L117"
+target="_blank" style="float:right; font-size:smaller">source</a>
+
 ### ohlcv_to_df
 
 ``` python
@@ -117,6 +135,10 @@ values - pair: Trading pair symbol Sorted by datetime with duplicate
 timestamps removed.
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L141"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### binance_ohlcv
 
@@ -144,6 +166,10 @@ optional): If True, prints progress messages. Defaults to False
 Returns: pandas.DataFrame: Tidy OHLCV DataFrame (see `ohlcv_to_df`)
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L173"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### binance_usdt_tokens
 
@@ -215,7 +241,7 @@ else:
 ------------------------------------------------------------------------
 
 <a
-href="https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L175"
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L199"
 target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### save_file
@@ -239,6 +265,10 @@ Creates the folder if it doesn’t exist.
 
 ------------------------------------------------------------------------
 
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L230"
+target="_blank" style="float:right; font-size:smaller">source</a>
+
 ### file_name_to_symbol
 
 ``` python
@@ -252,6 +282,10 @@ def file_name_to_symbol(
 Example: ‘BTC-USDT_1h.parquet’ -\> ‘BTC/USDT’
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L222"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### symbol_to_file_name
 
@@ -280,6 +314,10 @@ print('save_file round-trip OK')
 ```
 
 ------------------------------------------------------------------------
+
+<a
+href="https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L241"
+target="_blank" style="float:right; font-size:smaller">source</a>
 
 ### binance_to_file
 

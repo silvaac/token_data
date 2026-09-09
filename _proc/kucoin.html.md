@@ -13,7 +13,10 @@ Notes:
 
 ** Finally, datetime columns are in UTC. **
 
+::: {#f4865dfa .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.773108+00:00","shell.execute_reply":"2026-09-09T00:07:19.791426+00:00","total":0.018319458002224565}}' execution_count=3}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L39){target="_blank" style="float:right; font-size:smaller"}
 
 ### retry_fetch_ohlcv
 
@@ -39,9 +42,13 @@ Returns:
 
 Raises:
     Exception: The last ccxt error if all retries fail
+:::
 
 
+::: {#e546f003 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.792329+00:00","shell.execute_reply":"2026-09-09T00:07:19.793781+00:00","total":0.0014538340037688613}}' execution_count=5}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L75){target="_blank" style="float:right; font-size:smaller"}
 
 ### scrape_ohlcv
 
@@ -66,9 +73,13 @@ Args:
 
 Returns:
     list: List of OHLCV candles [timestamp_ms, open, high, low, close, volume]
+:::
 
 
+::: {#6eb67a75 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.794288+00:00","shell.execute_reply":"2026-09-09T00:07:19.795335+00:00","total":0.001048208010615781}}' execution_count=7}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L117){target="_blank" style="float:right; font-size:smaller"}
 
 ### ohlcv_to_df
 
@@ -90,9 +101,13 @@ Returns:
         - open, high, low, close, volume: OHLCV values
         - pair: Trading pair symbol
     Sorted by datetime with duplicate timestamps removed.
+:::
 
 
+::: {#321636f3 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.795850+00:00","shell.execute_reply":"2026-09-09T00:07:19.797873+00:00","total":0.002027583002927713}}' execution_count=9}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/kucoin.py#L118){target="_blank" style="float:right; font-size:smaller"}
 
 ### kucoin_ohlcv
 
@@ -118,9 +133,13 @@ Args:
 
 Returns:
     pandas.DataFrame: Tidy OHLCV DataFrame (see `ohlcv_to_df`)
+:::
 
 
+::: {#3358735e .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.798430+00:00","shell.execute_reply":"2026-09-09T00:07:19.799559+00:00","total":0.001128832998801954}}' execution_count=11}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/kucoin.py#L148){target="_blank" style="float:right; font-size:smaller"}
 
 ### kucoin_usdt_tokens
 
@@ -142,6 +161,7 @@ Returns:
         - base: Base currency (e.g. 'BTC')
         - quote: Always 'USDT' for this filtered dataset
         - active: Whether the market is currently active
+:::
 
 
 #### Example / tests
@@ -160,7 +180,7 @@ assert len(df_test) > 24
 df_test.tail()
 ```
 
-::: {.cell-output .cell-output-display execution_count=9}
+::: {.cell-output .cell-output-display}
 ```{=html}
 <div>
 <style scoped>
@@ -261,7 +281,7 @@ assert str(df_sample['datetime'].dt.tz) == 'UTC'
 df_sample
 ```
 
-::: {.cell-output .cell-output-display execution_count=10}
+::: {.cell-output .cell-output-display}
 ```{=html}
 <div>
 <style scoped>
@@ -329,7 +349,7 @@ assert (tokens['quote'] == 'USDT').all()
 tokens.head()
 ```
 
-::: {.cell-output .cell-output-display execution_count=11}
+::: {.cell-output .cell-output-display}
 ```{=html}
 <div>
 <style scoped>
@@ -405,9 +425,10 @@ tokens.head()
 :::
 
 
+::: {#f6124e9f .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.800180+00:00","shell.execute_reply":"2026-09-09T00:07:19.801117+00:00","total":0.0009378329996252432}}' execution_count=13}
 ---
 
-[source](https://github.com/silvaac/token_data/blob/main/token_data/coinbase.py#L175){target="_blank" style="float:right; font-size:smaller"}
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L199){target="_blank" style="float:right; font-size:smaller"}
 
 ### save_file
 
@@ -427,9 +448,13 @@ Args:
 
 The function saves the DataFrame to the specified path, handling the file extension automatically.
 For CSV files, the index is not saved. Creates the folder if it doesn't exist.
+:::
 
 
+::: {#1820e5c0 .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.801489+00:00","shell.execute_reply":"2026-09-09T00:07:19.802473+00:00","total":0.000985249993391335}}' execution_count=15}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L230){target="_blank" style="float:right; font-size:smaller"}
 
 ### file_name_to_symbol
 
@@ -442,9 +467,13 @@ def file_name_to_symbol(
 *Convert a file name back into a ccxt symbol.*
 
 Example: 'BTC-USDT_1h.parquet' -> 'BTC/USDT'
+:::
 
 
+::: {#489cec1e .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.802509+00:00","shell.execute_reply":"2026-09-09T00:07:19.803450+00:00","total":0.0009425000025657937}}' execution_count=16}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/binance.py#L222){target="_blank" style="float:right; font-size:smaller"}
 
 ### symbol_to_file_name
 
@@ -457,6 +486,7 @@ def symbol_to_file_name(
 *Convert a ccxt symbol and timeframe into a file name (without extension).*
 
 Example: ('BTC/USDT', '1h') -> 'BTC-USDT_1h'
+:::
 
 
 ::: {#a45d1daa .cell}
@@ -481,7 +511,10 @@ save_file round-trip OK
 :::
 
 
+::: {#8658dede .cell quarto-private-1='{"key":"execution","value":{"iopub.execute_input":"2026-09-09T00:07:19.804757+00:00","shell.execute_reply":"2026-09-09T00:07:19.806508+00:00","total":0.0017532920028315857}}' execution_count=18}
 ---
+
+[source](https://github.com/silvaac/token_data/blob/main/token_data/kucoin.py#L214){target="_blank" style="float:right; font-size:smaller"}
 
 ### kucoin_to_file
 
@@ -517,6 +550,7 @@ The function:
     - If exists: Loads the file and appends new data, refreshing the last `refresh_hours`
     - If not exists: Downloads full history starting from `first_date`
 - Saves data in the specified format, handling duplicates and sorting by datetime
+:::
 
 
 #### Example / tests
@@ -552,7 +586,7 @@ First run: 72 rows, second run: 72 rows
 :::
 
 
-::: {#fc5989fb .cell execution_count=17}
+::: {#fc5989fb .cell}
 ``` {.python .cell-code}
 # Download / update a set of USDT pairs into the exchange-named data folder
 # For all USDT pairs use: token_list = kucoin_usdt_tokens()['symbol'].tolist()
